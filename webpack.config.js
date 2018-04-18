@@ -46,6 +46,9 @@ module.exports = {
 
   optimization: {
     minimize: NODE_ENV == DEFAULT_NODE_ENV,
+    splitChunks: {
+      chunks: 'all',
+    },
   },
 
   plugins: [
