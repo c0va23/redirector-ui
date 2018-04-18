@@ -1,0 +1,35 @@
+{
+  "name": "redirecor-ui",
+  "version": "0.1.0",
+  "description": "UI for redirector",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config webpack.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/c0va23/redirector-ui"
+  },
+  "keywords": [
+    "http",
+    "ui"
+  ],
+  "dependencies": {
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "@types/react": "^16.0.11",
+    "@types/react-dom": "16.0.4"
+  },
+  "devDependencies": {
+    "awesome-typescript-loader": "^5.0.0",
+    "html-webpack-plugin": "^3.2.0",
+    "source-map-loader": "^0.2.3",
+    "ts-loader": "^4.2.0",
+    "typescript": "2.8.1",
+    "webpack": "^4.6.0",
+    "webpack-cli": "^2.0.14"
+  },
+  "author": "c0va23@gmail.com",
+  "license": "MIT"
+}
