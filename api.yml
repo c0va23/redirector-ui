@@ -1,0 +1,211 @@
+swagger: "2.0"
+info:
+  description: Redirector configure API
+  version: "1.0.0"
+  title: "Redirector API"
+  contact:
+    email: "c0va23@gmail.com"
+  license:
+    name: "MIT"
+
+tags:
+- name: config
+  description: Configuration API
+- name: redirect
+  description: Redirection handler
+
+paths:
+  /host_rules:
+    get:
+      summary: "List host rules"
+      operationId: listHostRules
+      tags:
+      - config
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      security:
+      - apiSecurity: []
+      responses:
+        200:
+          description: "List host rules"
+          schema:
+            type: array
+            items:
+              $ref: "#/definitions/HostRules"
+
+        500:
+          $ref: '#/responses/InternalServerError'
+    post:
+      summary: "Create or replace host rules"
+      description: "Update host rule if host rule exists or create host rule"
+      operationId: replaceHostRules
+      tags:
+      - config
+      consumes:
+      - application/json
+      produces:
+      - application/json
+      security:
+      - apiSecurity: []
+      parameters:
+        - name: host_rules
+          in: body
+          schema:
+            $ref: '#/definitions/HostRules'
+          required: true
+      responses:
+        400:
+          description: "Invalid JSON structure"
+        422:
+          description: "Invalid validation"
+        200:
+          description: "Create HostRules"
+          schema:
+            $ref: "#/definitions/HostRules"
+        500:
+          $ref: '#/responses/InternalServerError'
+
+  /{source_path}:
+    parameters:
+    - in: path
+      name: source_path
+      type: string
+      description: "*source_path* for match rule"
+      required: true
+    - in: header
+      name: Host
+      type: string
+      description: "*Host* for match rule"
+      required: true
+    get:
+      summary: "Source path for redirect"
+      description: |
+        If with path match any defined rule, then it redirect to rule target.
+        Otherwise return 404 response.
+      tags:
+      - redirect
+      operationId: redirect
+      responses:
+        404:
+          description: 'Response when rule for source_path and host not found'
+        500:
+          $ref: '#/responses/InternalServerError'
+        default:
+          description: |
+            Response when rule for `source_path` and host is found
+
+            Code of response equal `http_code` from `HostRule.Target`.
+            And header `Location` equal `target_path` from `HostRule.target`.
+          headers:
+            Location:
+              description: Redirect target path
+              type: string
+
+responses:
+  InternalServerError:
+    description: Internal server error
+    schema:
+      $ref: '#/definitions/ServerError'
+
+securityDefinitions:
+  apiSecurity:
+    type: basic
+
+definitions:
+  Target:
+    type: object
+    x-nullable: false
+    properties:
+      path:
+        type: string
+        x-nullable: false
+      http_code:
+        type: number
+        format: int32
+        minimum: 300
+        maximum: 399
+        x-nullable: false
+    required:
+    - path
+    - http_code
+    example:
+      {
+        path: "/target",
+        http_code: 301
+      }
+
+  HostRules:
+    type: object
+    x-nullable: false
+    properties:
+      host:
+        type: string
+        format: idn-hostname
+        x-nullable: false
+      default_target:
+        $ref: '#/definitions/Target'
+      rules:
+        type: array
+        items:
+          $ref: "#/definitions/Rule"
+    required:
+    - host
+    - default_target
+    - rules
+    example:
+      {
+        host: "example.org",
+        default_target: {
+          path: "//example.com/target",
+          http_code: 301
+        },
+        rules: [
+          {
+            source_path: 'source-path',
+            target: {
+              path: "//example.com/target",
+              http_code: 301
+            },
+            active_from: '2018-03-15T12:00:00Z'
+          }
+        ]
+      }
+
+  Rule:
+    type: object
+    x-nullable: false
+    properties:
+      source_path:
+        type: string
+        description: "Regex for match source path"
+        x-nullable: false
+      target:
+        $ref: '#/definitions/Target'
+      active_from:
+        type: string
+        format: date-time
+        x-nullable: true
+      active_to:
+        type: string
+        format: date-time
+        x-nullable: true
+    required:
+    - source_path
+    - target
+    example:
+      {
+        source_path: 'source-path',
+        target: {
+          path: '//example.com/target',
+          http_code: 301
+        },
+        active_from: '2018-03-16T12:00:00Z'
+      }
+
+  ServerError:
+    type: object
+    properties:
+      message:
+        type: string
