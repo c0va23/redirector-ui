@@ -8,12 +8,11 @@ import {
 
 import Config from "./Config"
 import LoginForm from "./components/LoginForm"
+import HostRulesList from "./components/HostRulesList"
 
 interface AppState {
   config?: Config,
 }
-
-const List = () => <div>List</div>
 
 const LOGIN_PATH = "/login"
 const HOST_RULES_LIST_PATH = '/host_rules_list'
@@ -53,13 +52,13 @@ export class App extends React.Component<any, AppState> {
     return <HashRouter>
       <Switch>
         <Route
-          path="{HOST_RULES_LIST_PATH}"
-          component={List}
+          path={HOST_RULES_LIST_PATH}
+          component={() => <HostRulesList config={this.state.config}/>}
         />
 
         <Redirect
-          from="/"
-          to="{HOST_RULES_LIST_PATH}"
+          exact
+          to={HOST_RULES_LIST_PATH}
         />
       </Switch>
     </HashRouter>
@@ -69,14 +68,12 @@ export class App extends React.Component<any, AppState> {
     return <HashRouter>
       <Switch>
         <Route
-          path="{LOGIN_PATH}"
+          path={LOGIN_PATH}
           render={this.loginForm.bind(this)}
         />
 
         <Redirect
-          exact
-          from="/"
-          to="{LOGIN_PATH}"
+          to={LOGIN_PATH}
         />
       </Switch>
     </HashRouter>
