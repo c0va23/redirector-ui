@@ -21,9 +21,7 @@ export class App extends React.Component<any, AppState> {
 
   constructor(props: any) {
     super(props)
-    this.state = {
-      config: null,
-    }
+    this.state = {}
   }
 
   render() {
@@ -53,7 +51,7 @@ export class App extends React.Component<any, AppState> {
       <Switch>
         <Route
           path={HOST_RULES_LIST_PATH}
-          component={() => <HostRulesList config={this.state.config}/>}
+          component={() => <HostRulesList config={this.state.config!}/>}
         />
 
         <Redirect

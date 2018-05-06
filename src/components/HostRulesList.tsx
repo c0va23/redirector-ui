@@ -20,9 +20,7 @@ export default class HostRulesList extends React.Component<HostRulesListProps, H
     super(props)
     this.configApi = new ConfigApi(props.config)
     this.fetchHostRulesList()
-    this.state = {
-      hostRulesList: null
-    }
+    this.state = {}
   }
 
   render() {

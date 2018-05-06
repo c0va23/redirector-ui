@@ -6,6 +6,8 @@
     "target": "es6",
     "jsx": "react",
     "sourceMap": true,
+    "strictFunctionTypes": true,
+    "strictNullChecks": true,
     "allowJs": true
   },
   "include": [
