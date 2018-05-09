@@ -1,4 +1,5 @@
 import * as React from "react"
+import * as moment from "moment"
 
 import { Rule, Target } from "../../gen/api-client"
 
@@ -13,7 +14,6 @@ interface Props {
 export default class RuleForm extends React.Component<Props, {}> {
   constructor(props: Props) {
     super(props)
-    this.state = Object.assign({}, props.rule)
   }
 
   render() {
@@ -39,7 +39,7 @@ export default class RuleForm extends React.Component<Props, {}> {
 
       <label htmlFor="activeTo">Active to:</label>
       <input
-        name="activeFrom"
+        name="activeTo"
         value={this.formatDate(this.props.rule.activeTo)}
         onChange={this.onDateTimeChange.bind(this)}
         type="datetime-local"
@@ -77,9 +77,9 @@ export default class RuleForm extends React.Component<Props, {}> {
     })
   }
 
-  private formatDate(date?: Date): string | undefined {
-    if(!date) return
-    return date.toJSON()
+  private formatDate(date?: Date): string {
+    if(!date) return ''
+    return moment(date).format("YYYY-MM-DDTHH:mm")
   }
 
   private updateTarget(target: Target) {
