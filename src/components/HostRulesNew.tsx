@@ -35,12 +35,12 @@ export default class HostRulesNew extends React.Component<Props, HostRules> {
     return <HostRulesForm
       config={this.props.config}
       hostRules={this.state}
-      onSave={this.onSave.bind(this)}
+      onSave={this.onSave}
       onUpdateHostRules={this.setState.bind(this)}
     />
   }
 
-  private onSave() {
+  private onSave = () => {
     this.configApi
       .replaceHostRules(this.state)
       .then(console.log)

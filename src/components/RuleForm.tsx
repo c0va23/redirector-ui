@@ -22,7 +22,7 @@ export default class RuleForm extends React.Component<Props, {}> {
       <input
         name="sourcePath"
         value={this.props.rule.sourcePath}
-        onChange={this.onInputChange.bind(this)}
+        onChange={this.onInputChange}
       />
 
       <br />
@@ -31,7 +31,7 @@ export default class RuleForm extends React.Component<Props, {}> {
       <input
         name="activeFrom"
         value={this.formatDate(this.props.rule.activeFrom)}
-        onChange={this.onDateTimeChange.bind(this)}
+        onChange={this.onDateTimeChange}
         type="datetime-local"
       />
 
@@ -41,22 +41,22 @@ export default class RuleForm extends React.Component<Props, {}> {
       <input
         name="activeTo"
         value={this.formatDate(this.props.rule.activeTo)}
-        onChange={this.onDateTimeChange.bind(this)}
+        onChange={this.onDateTimeChange}
         type="datetime-local"
       />
 
       <TargetForm
         target={this.props.rule.target}
-        onUpdateTarget={this.updateTarget.bind(this)}
+        onUpdateTarget={this.updateTarget}
       />
 
-      <button onClick={this.props.onRemoveRule.bind(this)}>
+      <button onClick={this.props.onRemoveRule}>
         Remove
       </button>
     </fieldset>
   }
 
-  private onInputChange(event: React.ChangeEvent<HTMLInputElement>) {
+  private onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault()
     const name = event.target.name
     const value = event.target.value
@@ -66,7 +66,7 @@ export default class RuleForm extends React.Component<Props, {}> {
     })
   }
 
-  private onDateTimeChange(event: React.ChangeEvent<HTMLInputElement>) {
+  private onDateTimeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault()
     const name = event.target.name
     const value = event.target.value

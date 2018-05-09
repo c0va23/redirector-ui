@@ -28,12 +28,12 @@ export default class HostRulesForm extends React.Component<Props, {}> {
   }
 
   render() {
-    return <form onSubmit={this.onSubmit.bind(this)}>
+    return <form onSubmit={this.onSubmit}>
       <label htmlFor="host">Host</label>
       <input
         name="host"
         value={this.props.hostRules.host}
-        onChange={this.onInputChange.bind(this)}
+        onChange={this.onInputChange}
       />
 
       <br />
@@ -41,7 +41,7 @@ export default class HostRulesForm extends React.Component<Props, {}> {
       <h3>Default Target</h3>
       <TargetForm
         target={this.props.hostRules.defaultTarget}
-        onUpdateTarget={this.updateTarget.bind(this)}
+        onUpdateTarget={this.updateTarget}
       />
 
       <fieldset>
@@ -65,7 +65,7 @@ export default class HostRulesForm extends React.Component<Props, {}> {
     </form>
   }
 
-  private onInputChange(event: React.ChangeEvent<HTMLInputElement>) {
+  private onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault()
     const name = event.target.name
     const value = event.target.value
@@ -75,12 +75,12 @@ export default class HostRulesForm extends React.Component<Props, {}> {
     })
   }
 
-  private onSubmit(event: React.FormEvent<HTMLFormElement>) {
+  private onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     this.props.onSave()
   }
 
-  private updateTarget(target: Target) {
+  private updateTarget = (target: Target) => {
     this.props.onUpdateHostRules({
       ...this.props.hostRules,
       defaultTarget: target,

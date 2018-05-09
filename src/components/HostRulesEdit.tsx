@@ -51,8 +51,8 @@ export default class HostRulesEdit extends React.Component<Props, HostRules> {
     return <HostRulesForm
       config={this.props.config}
       hostRules={this.state}
-      onSave={this.onSave.bind(this)}
-      onUpdateHostRules={this.updateHostRules.bind(this)}
+      onSave={this.onSave}
+      onUpdateHostRules={this.updateHostRules}
     />
   }
 
@@ -70,14 +70,14 @@ export default class HostRulesEdit extends React.Component<Props, HostRules> {
     this.setState({...hostRules})
   }
 
-  private onSave() {
+  private onSave = () => {
     this.configApi
       .replaceHostRules(this.state)
       .then(console.log)
       .catch(console.error)
   }
 
-  private updateHostRules(hostRules: HostRules) {
+  private updateHostRules = (hostRules: HostRules) => {
     this.setState(hostRules)
   }
 }
