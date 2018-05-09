@@ -8,7 +8,7 @@ import {
   HostRules,
   Target,
   Rule,
-} from "../../gen/api-client/index"
+} from "../../gen/api-client"
 
 import TargetForm from "./TargetForm"
 import RuleForm from "./RuleForm"

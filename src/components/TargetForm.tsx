@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { Target } from "../../gen/api-client/index"
+import { Target } from "../../gen/api-client"
 
 interface Props {
   target: Target,

@@ -1,6 +1,6 @@
 import * as React from "react"
 
-import { Rule, Target } from "../../gen/api-client/index"
+import { Rule, Target } from "../../gen/api-client"
 
 import TargetForm from "./TargetForm"
 

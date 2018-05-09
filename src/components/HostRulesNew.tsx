@@ -1,12 +1,12 @@
 import * as React from "react"
 import {
   match as Match,
-} from "react-router/index";
+} from "react-router";
 
 import {
   HostRules,
   ConfigApi,
-} from "../../gen/api-client/api";
+} from "../../gen/api-client";
 
 import Config from "../Config";
 import HostRulesForm from "./HostRulesForm"

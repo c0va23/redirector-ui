@@ -7,7 +7,7 @@ import {
 import {
   HostRules,
   ConfigApi,
-} from "../../gen/api-client/api";
+} from "../../gen/api-client";
 
 import Config from "../Config";
 import HostRulesForm from "./HostRulesForm"

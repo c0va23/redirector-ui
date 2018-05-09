@@ -6,7 +6,7 @@ import {
 import {
   ConfigApi,
   HostRules,
-} from "../../gen/api-client/index"
+} from "../../gen/api-client"
 
 import Config from "../Config"
 
