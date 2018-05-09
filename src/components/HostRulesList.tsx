@@ -1,8 +1,10 @@
 import * as React from "react"
+
 import {
   ConfigApi,
   HostRules,
 } from "../../gen/api-client/index"
+
 import Config from "../Config"
 
 interface HostRulesListProps {
@@ -48,16 +50,18 @@ export default class HostRulesList extends React.Component<HostRulesListProps, H
         <thead>
           <tr>
             <th>Source</th>
-            <th>Target</th>
+            <th>Target (Code)</th>
+            <th>Target (Path)</th>
             <th>Active from</th>
             <th>Active to</th>
           </tr>
         </thead>
         <tbody>
-          {hostRules.rules.map(rule =>
-            <tr key={rule.sourcePath}>
+          {hostRules.rules.map((rule, index) =>
+            <tr key={index}>
               <td>{rule.sourcePath}</td>
-              <td>{rule.target}</td>
+              <td>{rule.target.httpCode}</td>
+              <td>{rule.target.path}</td>
               <td>{rule.activeFrom}</td>
               <td>{rule.activeTo}</td>
             </tr>
