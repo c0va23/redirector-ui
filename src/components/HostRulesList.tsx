@@ -1,4 +1,7 @@
 import * as React from "react"
+import {
+  Link,
+} from "react-router-dom"
 
 import {
   ConfigApi,
@@ -27,6 +30,9 @@ export default class HostRulesList extends React.Component<HostRulesListProps, H
 
   render() {
     return <div>
+      <Link to={`/host_rules_list/new`}>
+        New
+      </Link>
       {this.state.hostRulesList &&
         this.state.hostRulesList.map(this.renderHostRules)}
     </div>
@@ -46,6 +52,9 @@ export default class HostRulesList extends React.Component<HostRulesListProps, H
   private renderHostRules(hostRules: HostRules): JSX.Element {
     return <section key={hostRules.host}>
       <h2>{hostRules.host}</h2>
+      <Link to={`/host_rules_list/${hostRules.host}/edit`}>
+        Edit
+      </Link>
       <table>
         <thead>
           <tr>

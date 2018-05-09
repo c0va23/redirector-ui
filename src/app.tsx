@@ -4,11 +4,14 @@ import {
   Route,
   Redirect,
   Switch,
+  match as Match,
 } from "react-router-dom"
 
 import Config from "./Config"
 import LoginForm from "./components/LoginForm"
 import HostRulesList from "./components/HostRulesList"
+import HostRulesEdit from "./components/HostRulesEdit"
+import HostRulesNew from "./components/HostRulesNew"
 
 interface AppState {
   config?: Config,
@@ -16,6 +19,8 @@ interface AppState {
 
 const LOGIN_PATH = "/login"
 const HOST_RULES_LIST_PATH = '/host_rules_list'
+const HOST_RULES_EDIT_PATH = HOST_RULES_LIST_PATH + '/:host/edit'
+const HOST_RULES_NEW_PATH = HOST_RULES_LIST_PATH + '/new'
 
 export class App extends React.Component<any, AppState> {
 
@@ -50,6 +55,16 @@ export class App extends React.Component<any, AppState> {
     return <HashRouter>
       <Switch>
         <Route
+          path={HOST_RULES_EDIT_PATH}
+          component={this.renderHostRulesForm.bind(this)}
+        />
+
+        <Route
+          path={HOST_RULES_NEW_PATH}
+          component={() => <HostRulesNew config={this.state.config!} />}
+        />
+
+        <Route
           path={HOST_RULES_LIST_PATH}
           component={() => <HostRulesList config={this.state.config!}/>}
         />
@@ -75,5 +90,12 @@ export class App extends React.Component<any, AppState> {
         />
       </Switch>
     </HashRouter>
+  }
+
+  private renderHostRulesForm({match}: {match: Match<{host: string}>}): JSX.Element {
+    return <HostRulesEdit
+      config={this.state.config!}
+      match={match}
+    />
   }
 }
