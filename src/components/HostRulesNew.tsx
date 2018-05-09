@@ -1,7 +1,8 @@
 import * as React from "react"
 import {
   match as Match,
-} from "react-router";
+  Link,
+} from "react-router-dom";
 
 import {
   HostRules,
@@ -32,12 +33,17 @@ export default class HostRulesNew extends React.Component<Props, HostRules> {
   }
 
   render() {
-    return <HostRulesForm
-      config={this.props.config}
-      hostRules={this.state}
-      onSave={this.onSave}
-      onUpdateHostRules={this.setState.bind(this)}
-    />
+    return <div>
+      <Link to="/host_rules_list">
+        List
+      </Link>
+      <HostRulesForm
+        config={this.props.config}
+        hostRules={this.state}
+        onSave={this.onSave}
+        onUpdateHostRules={this.setState.bind(this)}
+      />
+    </div>
   }
 
   private onSave = () => {
