@@ -1,4 +1,5 @@
 import * as React from "react"
+import * as MaterialUI from "material-ui"
 
 import { Target } from "../../gen/api-client"
 
@@ -13,28 +14,26 @@ export default class TargetForm extends React.Component<Props, {}> {
   }
 
   render() {
-    return <fieldset>
-      <label htmlFor="httpCode">
-        HTTP code
-      </label>
-      <input
+    return <MaterialUI.FormGroup>
+      <MaterialUI.TextField
         name="httpCode"
+        label="HTTP Code"
         value={this.props.target.httpCode}
         onChange={this.onNumberChange.bind(this)}
         type="number"
+        fullWidth
       />
 
       <br />
 
-      <label htmlFor="path">
-        Path
-      </label>
-      <input
+      <MaterialUI.TextField
         name="path"
+        label="Path"
         value={this.props.target.path}
         onChange={this.onTextChange.bind(this)}
+        fullWidth
       />
-    </fieldset>
+    </MaterialUI.FormGroup>
   }
 
   private onNumberChange(event: React.ChangeEvent<HTMLInputElement>) {

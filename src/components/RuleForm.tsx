@@ -1,5 +1,6 @@
 import * as React from "react"
 import * as moment from "moment"
+import * as MaterialUI from "material-ui"
 
 import { Rule, Target } from "../../gen/api-client"
 
@@ -17,43 +18,52 @@ export default class RuleForm extends React.Component<Props, {}> {
   }
 
   render() {
-    return <fieldset>
-      <label htmlFor="sourcePath">Source path:</label>
-      <input
+    return <MaterialUI.FormGroup>
+      <h3>Role</h3>
+
+      <MaterialUI.TextField
         name="sourcePath"
+        label="Source path"
         value={this.props.rule.sourcePath}
         onChange={this.onInputChange}
+        fullWidth
       />
 
       <br />
 
-      <label htmlFor="activeFrom">Active from:</label>
-      <input
+      <MaterialUI.TextField
         name="activeFrom"
+        label="Active from"
         value={this.formatDate(this.props.rule.activeFrom)}
         onChange={this.onDateTimeChange}
         type="datetime-local"
+        fullWidth
+        InputLabelProps={{shrink: true}}
       />
 
       <br />
 
-      <label htmlFor="activeTo">Active to:</label>
-      <input
+      <MaterialUI.TextField
         name="activeTo"
+        label="Active to"
         value={this.formatDate(this.props.rule.activeTo)}
         onChange={this.onDateTimeChange}
         type="datetime-local"
+        fullWidth
+        InputLabelProps={{shrink: true}}
       />
+
+      <h3>Target</h3>
 
       <TargetForm
         target={this.props.rule.target}
         onUpdateTarget={this.updateTarget}
       />
 
-      <button onClick={this.props.onRemoveRule}>
+      <MaterialUI.Button onClick={this.props.onRemoveRule}>
         Remove
-      </button>
-    </fieldset>
+      </MaterialUI.Button>
+    </MaterialUI.FormGroup>
   }
 
   private onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {

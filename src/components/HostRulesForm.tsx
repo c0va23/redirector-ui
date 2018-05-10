@@ -2,6 +2,8 @@ import * as React from "react"
 import {
   match as Match,
 } from "react-router-dom"
+import * as MaterialUI from "material-ui"
+import * as MaterialUIIcons from "@material-ui/icons"
 
 import {
   ConfigApi,
@@ -29,11 +31,12 @@ export default class HostRulesForm extends React.Component<Props, {}> {
 
   render() {
     return <form onSubmit={this.onSubmit}>
-      <label htmlFor="host">Host</label>
-      <input
+      <MaterialUI.TextField
         name="host"
+        label="Host"
         value={this.props.hostRules.host}
         onChange={this.onInputChange}
+        fullWidth
       />
 
       <br />
@@ -44,7 +47,7 @@ export default class HostRulesForm extends React.Component<Props, {}> {
         onUpdateTarget={this.updateTarget}
       />
 
-      <fieldset>
+      <MaterialUI.FormControl fullWidth>
         {this.props.hostRules.rules.map((rule, index) =>
           <RuleForm
             key={index}
@@ -54,14 +57,20 @@ export default class HostRulesForm extends React.Component<Props, {}> {
           />)
         }
 
-        <button onClick={() => this.addRule()}>
+        <MaterialUI.Button onClick={() => this.addRule()}>
           Add
-        </button>
-      </fieldset>
+        </MaterialUI.Button>
+      </MaterialUI.FormControl>
 
-      <button type="submit">
+      <br />
+
+      <MaterialUI.Button
+        type="submit"
+        color="primary"
+        variant="raised"
+      >
         Save
-      </button>
+      </MaterialUI.Button>
     </form>
   }
 
