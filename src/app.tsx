@@ -36,17 +36,18 @@ export class App extends React.Component<any, AppState> {
   render() {
     return <div>
       <h1>Redirector!!!</h1>
+
       {this.routes()}
     </div>
   }
 
-  private onLogin(config: Config) {
+  private logIn = (config: Config) => {
     this.setState({config})
     this.storeConfig(config)
   }
 
   private loginForm() {
-    return <LoginForm onSave={this.onLogin.bind(this)} />
+    return <LoginForm onSave={this.logIn} />
   }
 
   private routes(): JSX.Element {
