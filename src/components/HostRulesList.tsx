@@ -52,33 +52,49 @@ export default class HostRulesList extends React.Component<HostRulesListProps, H
   }
 
   private renderHostRules(hostRules: HostRules): JSX.Element {
-    return <section key={hostRules.host}>
-      <h2>{hostRules.host}</h2>
-      <ButtonLink to={`/host_rules_list/${hostRules.host}/edit`}>
-        Edit
-      </ButtonLink>
-      <table>
-        <thead>
-          <tr>
-            <th>Source</th>
-            <th>Target (Code)</th>
-            <th>Target (Path)</th>
-            <th>Active from</th>
-            <th>Active to</th>
-          </tr>
-        </thead>
-        <tbody>
+    return <MaterialUI.Paper key={hostRules.host}>
+      <MaterialUI.Toolbar>
+        <MaterialUI.Typography variant="headline" style={{flex: 1}}>
+          {hostRules.host}
+        </MaterialUI.Typography>
+
+        <ButtonLink to={`/host_rules_list/${hostRules.host}/edit`}>
+          Edit
+        </ButtonLink>
+      </MaterialUI.Toolbar>
+
+      <MaterialUI.Table>
+        <MaterialUI.TableHead>
+          <MaterialUI.TableRow>
+            <MaterialUI.TableCell>
+              Source
+            </MaterialUI.TableCell>
+            <MaterialUI.TableCell>
+              Target (Code)
+            </MaterialUI.TableCell>
+            <MaterialUI.TableCell>
+              Target (Path)
+            </MaterialUI.TableCell>
+            <MaterialUI.TableCell>
+              Active from
+            </MaterialUI.TableCell>
+            <MaterialUI.TableCell>
+              Active to
+            </MaterialUI.TableCell>
+          </MaterialUI.TableRow>
+        </MaterialUI.TableHead>
+        <MaterialUI.TableBody>
           {hostRules.rules.map((rule, index) =>
-            <tr key={index}>
-              <td>{rule.sourcePath}</td>
-              <td>{rule.target.httpCode}</td>
-              <td>{rule.target.path}</td>
-              <td>{rule.activeFrom}</td>
-              <td>{rule.activeTo}</td>
-            </tr>
+            <MaterialUI.TableRow key={index}>
+              <MaterialUI.TableCell>{rule.sourcePath}</MaterialUI.TableCell>
+              <MaterialUI.TableCell>{rule.target.httpCode}</MaterialUI.TableCell>
+              <MaterialUI.TableCell>{rule.target.path}</MaterialUI.TableCell>
+              <MaterialUI.TableCell>{rule.activeFrom}</MaterialUI.TableCell>
+              <MaterialUI.TableCell>{rule.activeTo}</MaterialUI.TableCell>
+            </MaterialUI.TableRow>
           )}
-        </tbody>
-      </table>
-    </section>
+        </MaterialUI.TableBody>
+      </MaterialUI.Table>
+    </MaterialUI.Paper>
   }
 }
