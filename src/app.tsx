@@ -6,6 +6,7 @@ import {
   Switch,
   match as Match,
 } from "react-router-dom"
+import * as MaterialUI from "material-ui"
 
 import Config from "./Config"
 import LoginForm from "./components/LoginForm"
@@ -35,12 +36,20 @@ export class App extends React.Component<any, AppState> {
 
   render() {
     return <div>
-      <h1>Redirector!!!</h1>
+      <MaterialUI.CssBaseline />
 
-      {this.state.config &&
-        <button onClick={this.logOut}>
-          Log out
-        </button>}
+      <MaterialUI.AppBar position="sticky" color="default">
+        <MaterialUI.Toolbar>
+          <MaterialUI.Typography variant="title" style={{flex: 1}}>
+            Redirector
+          </MaterialUI.Typography>
+
+          {this.state.config &&
+            <MaterialUI.Button onClick={this.logOut}>
+              Log out
+            </MaterialUI.Button>}
+        </MaterialUI.Toolbar>
+      </MaterialUI.AppBar>
 
       {this.routes()}
     </div>
