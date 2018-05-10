@@ -22,11 +22,15 @@ const HOST_RULES_LIST_PATH = '/host_rules_list'
 const HOST_RULES_EDIT_PATH = HOST_RULES_LIST_PATH + '/:host/edit'
 const HOST_RULES_NEW_PATH = HOST_RULES_LIST_PATH + '/new'
 
+const CONFIG_KEY = "config"
+
 export class App extends React.Component<any, AppState> {
 
   constructor(props: any) {
     super(props)
-    this.state = {}
+    this.state = {
+      config: this.loadConfig(),
+    }
   }
 
   render() {
@@ -38,6 +42,7 @@ export class App extends React.Component<any, AppState> {
 
   private onLogin(config: Config) {
     this.setState({config})
+    this.storeConfig(config)
   }
 
   private loginForm() {
@@ -97,5 +102,17 @@ export class App extends React.Component<any, AppState> {
       config={this.state.config!}
       match={match}
     />
+  }
+
+  private loadConfig(): Config | undefined {
+    const configJson = sessionStorage.getItem(CONFIG_KEY)
+    if(undefined === configJson)
+      return
+    return JSON.parse(configJson!) as Config
+  }
+
+  private storeConfig(config: Config) {
+    const configJson = JSON.stringify(config)
+    sessionStorage.setItem(CONFIG_KEY, configJson)
   }
 }
