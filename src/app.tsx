@@ -37,6 +37,11 @@ export class App extends React.Component<any, AppState> {
     return <div>
       <h1>Redirector!!!</h1>
 
+      {this.state.config &&
+        <button onClick={this.logOut}>
+          Log out
+        </button>}
+
       {this.routes()}
     </div>
   }
@@ -44,6 +49,11 @@ export class App extends React.Component<any, AppState> {
   private logIn = (config: Config) => {
     this.setState({config})
     this.storeConfig(config)
+  }
+
+  private logOut = () => {
+    this.setState({config: undefined})
+    this.clearConfig()
   }
 
   private loginForm() {
@@ -115,5 +125,9 @@ export class App extends React.Component<any, AppState> {
   private storeConfig(config: Config) {
     const configJson = JSON.stringify(config)
     sessionStorage.setItem(CONFIG_KEY, configJson)
+  }
+
+  private clearConfig() {
+    sessionStorage.removeItem(CONFIG_KEY)
   }
 }
