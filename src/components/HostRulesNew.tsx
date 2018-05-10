@@ -11,6 +11,7 @@ import {
 
 import Config from "../Config";
 import HostRulesForm from "./HostRulesForm"
+import ButtonLink from "./ButtonLink"
 
 interface Props {
   config: Config,
@@ -34,9 +35,10 @@ export default class HostRulesNew extends React.Component<Props, HostRules> {
 
   render() {
     return <div>
-      <Link to="/host_rules_list">
+      <ButtonLink to="/host_rules_list">
         List
-      </Link>
+      </ButtonLink>
+
       <HostRulesForm
         config={this.props.config}
         hostRules={this.state}

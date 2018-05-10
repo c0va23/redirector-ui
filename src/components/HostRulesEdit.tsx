@@ -11,6 +11,7 @@ import {
 
 import Config from "../Config";
 import HostRulesForm from "./HostRulesForm"
+import ButtonLink from "./ButtonLink"
 
 interface MatchParams {
   host: string,
@@ -32,9 +33,10 @@ export default class HostRulesEdit extends React.Component<Props, HostRules> {
 
   render() {
     return <div>
-      <Link to="/host_rules_list">
+      <ButtonLink to="/host_rules_list">
         List
-      </Link>
+      </ButtonLink>
+
       {this.state == undefined
         ? this.renderLoading()
         : this.renderForm()}

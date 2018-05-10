@@ -2,6 +2,7 @@ import * as React from "react"
 import {
   Link,
 } from "react-router-dom"
+import * as MaterialUI from "material-ui"
 
 import {
   ConfigApi,
@@ -9,6 +10,7 @@ import {
 } from "../../gen/api-client"
 
 import Config from "../Config"
+import ButtonLink from "./ButtonLink"
 
 interface HostRulesListProps {
   config: Config,
@@ -30,9 +32,9 @@ export default class HostRulesList extends React.Component<HostRulesListProps, H
 
   render() {
     return <div>
-      <Link to={`/host_rules_list/new`}>
+      <ButtonLink to="/host_rules_list/new">
         New
-      </Link>
+      </ButtonLink>
       {this.state.hostRulesList &&
         this.state.hostRulesList.map(this.renderHostRules)}
     </div>
@@ -52,9 +54,9 @@ export default class HostRulesList extends React.Component<HostRulesListProps, H
   private renderHostRules(hostRules: HostRules): JSX.Element {
     return <section key={hostRules.host}>
       <h2>{hostRules.host}</h2>
-      <Link to={`/host_rules_list/${hostRules.host}/edit`}>
+      <ButtonLink to={`/host_rules_list/${hostRules.host}/edit`}>
         Edit
-      </Link>
+      </ButtonLink>
       <table>
         <thead>
           <tr>
