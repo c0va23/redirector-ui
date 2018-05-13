@@ -11,6 +11,7 @@ import {
 
 import Config from "../Config"
 import ButtonLink from "./ButtonLink"
+import HostRulesView from "./HostRulesView"
 
 interface HostRulesListProps {
   config: Config,
@@ -35,6 +36,7 @@ export default class HostRulesList extends React.Component<HostRulesListProps, H
       <ButtonLink to="/host_rules_list/new">
         New
       </ButtonLink>
+
       {this.state.hostRulesList &&
         this.state.hostRulesList.map(this.renderHostRules)}
     </div>
@@ -51,50 +53,10 @@ export default class HostRulesList extends React.Component<HostRulesListProps, H
     this.setState({hostRulesList})
   }
 
-  private renderHostRules(hostRules: HostRules): JSX.Element {
-    return <MaterialUI.Paper key={hostRules.host}>
-      <MaterialUI.Toolbar>
-        <MaterialUI.Typography variant="headline" style={{flex: 1}}>
-          {hostRules.host}
-        </MaterialUI.Typography>
-
-        <ButtonLink to={`/host_rules_list/${hostRules.host}/edit`}>
-          Edit
-        </ButtonLink>
-      </MaterialUI.Toolbar>
-
-      <MaterialUI.Table>
-        <MaterialUI.TableHead>
-          <MaterialUI.TableRow>
-            <MaterialUI.TableCell>
-              Source
-            </MaterialUI.TableCell>
-            <MaterialUI.TableCell>
-              Target (Code)
-            </MaterialUI.TableCell>
-            <MaterialUI.TableCell>
-              Target (Path)
-            </MaterialUI.TableCell>
-            <MaterialUI.TableCell>
-              Active from
-            </MaterialUI.TableCell>
-            <MaterialUI.TableCell>
-              Active to
-            </MaterialUI.TableCell>
-          </MaterialUI.TableRow>
-        </MaterialUI.TableHead>
-        <MaterialUI.TableBody>
-          {hostRules.rules.map((rule, index) =>
-            <MaterialUI.TableRow key={index}>
-              <MaterialUI.TableCell>{rule.sourcePath}</MaterialUI.TableCell>
-              <MaterialUI.TableCell>{rule.target.httpCode}</MaterialUI.TableCell>
-              <MaterialUI.TableCell>{rule.target.path}</MaterialUI.TableCell>
-              <MaterialUI.TableCell>{rule.activeFrom}</MaterialUI.TableCell>
-              <MaterialUI.TableCell>{rule.activeTo}</MaterialUI.TableCell>
-            </MaterialUI.TableRow>
-          )}
-        </MaterialUI.TableBody>
-      </MaterialUI.Table>
+  private renderHostRules = (hostRules: HostRules) =>
+    <MaterialUI.Paper
+      key={hostRules.host}
+    >
+      <HostRulesView hostRules={hostRules} />
     </MaterialUI.Paper>
-  }
 }
