@@ -57,6 +57,22 @@ export default class HostRulesList extends React.Component<HostRulesListProps, H
     <MaterialUI.Paper
       key={hostRules.host}
     >
-      <HostRulesView hostRules={hostRules} />
+      <HostRulesView
+        hostRules={hostRules}
+        onDelete={this.deleteHostRules}
+      />
     </MaterialUI.Paper>
+
+  private deleteHostRules = (host: string) =>
+    this.configApi
+      .deleteHostRules(host)
+      .then(() => this.removeHostRulesFromList(host))
+      .catch(console.error)
+
+  private removeHostRulesFromList = (host: string) =>
+    this.setHostRulesList(
+      this.state.hostRulesList!.filter(
+        hostRule => hostRule.host != host
+      )
+    )
 }

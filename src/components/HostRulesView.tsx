@@ -10,6 +10,7 @@ import ButtonLink from "./ButtonLink"
 
 interface Props {
   hostRules: HostRules,
+  onDelete: (host: string) => void,
 }
 
 export default class HostRulesView extends React.Component<Props> {
@@ -26,6 +27,9 @@ export default class HostRulesView extends React.Component<Props> {
         {hostRules.host}
       </MaterialUI.Typography>
 
+      <MaterialUI.Button onClick={this.onDelete}>
+        Delete
+      </MaterialUI.Button>
       <ButtonLink to={`/host_rules_list/${hostRules.host}/edit`}>
         Edit
       </ButtonLink>
@@ -64,4 +68,9 @@ export default class HostRulesView extends React.Component<Props> {
         )}
       </MaterialUI.TableBody>
     </MaterialUI.Table>
+
+  private onDelete = (event: React.MouseEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    this.props.onDelete(this.props.hostRules.host)
+  }
 }
