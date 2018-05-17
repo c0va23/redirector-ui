@@ -50,7 +50,7 @@ export default class HostRulesNew extends React.Component<Props, HostRules> {
 
   private onSave = () => {
     this.configApi
-      .replaceHostRules(this.state)
+      .createHostRules(this.state)
       .then(console.log)
       .catch(console.error)
   }

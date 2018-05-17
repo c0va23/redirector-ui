@@ -58,26 +58,17 @@ export default class HostRulesEdit extends React.Component<Props, HostRules> {
     />
   }
 
-  private fetchHostRules() {
+  private fetchHostRules = () =>
     this.configApi
-      .listHostRules()
-      .then(this.setHostRule.bind(this))
+      .getHostRule(this.props.match.params.host)
+      .then(hostRules => this.setState(hostRules))
       .catch(console.log)
-  }
 
-  private setHostRule(hostRulesList: Array<HostRules>) {
-    const hostRules = hostRulesList.find(
-      hostRules => hostRules.host == this.props.match.params.host
-    )
-    this.setState({...hostRules})
-  }
-
-  private onSave = () => {
+  private onSave = () =>
     this.configApi
-      .replaceHostRules(this.state)
-      .then(console.log)
+      .updateHostRules(this.props.match.params.host, this.state)
+      .then(hostRules => this.setState(hostRules))
       .catch(console.error)
-  }
 
   private updateHostRules = (hostRules: HostRules) => {
     this.setState(hostRules)
