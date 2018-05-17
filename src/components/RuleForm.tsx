@@ -92,10 +92,9 @@ export default class RuleForm extends React.Component<Props, {}> {
     return moment(date).format("YYYY-MM-DDTHH:mm")
   }
 
-  private updateTarget(target: Target) {
+  private updateTarget = (target: Target) =>
     this.props.onUpdateRule({
       ...this.props.rule,
       target,
     })
-  }
 }
