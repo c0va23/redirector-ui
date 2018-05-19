@@ -1,4 +1,5 @@
 import * as React from "react"
+import * as MaterialUI from "material-ui"
 
 import Config from "../Config"
 
@@ -18,30 +19,33 @@ export default class LoginForm extends React.Component<LoginFormProps, Config> {
 
   render() {
     return <form onSubmit={this.onSubmit}>
-      <input
-        placeholder="Base path"
+      <MaterialUI.TextField
+        label="Base path"
         name="basePath"
         value={this.state.basePath}
         onChange={this.onInputChange}
+        fullWidth
       />
-      <br/>
-      <input
-        placeholder="Username"
+      <MaterialUI.TextField
+        label="Username"
         name="username"
         value={this.state.username}
         onChange={this.onInputChange}
+        fullWidth
       />
-      <br/>
-      <input
-        placeholder="Password"
+      <MaterialUI.TextField
+        label="Password"
         name="password"
         value={this.state.password}
         onChange={this.onInputChange}
+        fullWidth
       />
-      <br/>
-      <button type="submit">
+      <MaterialUI.Button
+        type="submit"
+        variant="raised"
+      >
         Login
-      </button>
+      </MaterialUI.Button>
     </form>
   }
 
