@@ -1,5 +1,6 @@
 import * as React from "react"
 import * as MaterialUI from "material-ui"
+import * as Styles from "material-ui/styles"
 
 import Config from "../Config"
 
@@ -7,7 +8,15 @@ interface LoginFormProps {
   onSave: (config: Config) => void,
 }
 
-export default class LoginForm extends React.Component<LoginFormProps, Config> {
+const styles: Styles.StyleRulesCallback = (theme: MaterialUI.Theme): Styles.StyleRules => {
+  return {
+    content: {
+      padding: theme.spacing.unit * 2,
+    },
+  }
+}
+
+class LoginForm extends React.Component<LoginFormProps & Styles.WithStyles, Config> {
   constructor(props: any) {
     super(props)
     this.state = {
@@ -18,6 +27,25 @@ export default class LoginForm extends React.Component<LoginFormProps, Config> {
   }
 
   render() {
+    return <MaterialUI.Grid
+      container
+      justify="center"
+    >
+      <MaterialUI.Grid
+        item
+        xs={4}
+      >
+        <MaterialUI.Paper className={this.props.classes.content}>
+          <MaterialUI.Typography variant="subheading">
+            Log in
+          </MaterialUI.Typography>
+          {this.renderForm()}
+        </MaterialUI.Paper>
+      </MaterialUI.Grid>
+    </MaterialUI.Grid>
+  }
+
+  private renderForm(): JSX.Element {
     return <form onSubmit={this.onSubmit}>
       <MaterialUI.TextField
         label="Base path"
@@ -64,3 +92,5 @@ export default class LoginForm extends React.Component<LoginFormProps, Config> {
     this.props.onSave(this.state)
   }
 }
+
+export default MaterialUI.withStyles(styles)(LoginForm)
