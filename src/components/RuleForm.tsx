@@ -12,6 +12,8 @@ interface Props {
   onRemoveRule: () => void,
 }
 
+const downCaseCharRegex = /[a-z]/
+
 export default class RuleForm extends React.Component<Props, {}> {
   constructor(props: Props) {
     super(props)
@@ -53,6 +55,21 @@ export default class RuleForm extends React.Component<Props, {}> {
         InputLabelProps={{shrink: true}}
       />
 
+      <MaterialUI.FormControl>
+        <MaterialUI.InputLabel>Resolver</MaterialUI.InputLabel>
+
+        <MaterialUI.Select
+          name="resolver"
+          value={this.props.rule.resolver}
+          onChange={this.onSelectChange}
+          inputProps={{
+            id: "rule-resolver"
+          }}
+        >
+          {this.resolverItems()}
+        </MaterialUI.Select>
+      </MaterialUI.FormControl>
+
       <h3>Target</h3>
 
       <TargetForm
@@ -87,6 +104,16 @@ export default class RuleForm extends React.Component<Props, {}> {
     })
   }
 
+  private onSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    event.preventDefault()
+    const name = event.target.name
+    const value = event.target.value
+    this.props.onUpdateRule({
+      ...this.props.rule,
+      [name]: value,
+    })
+  }
+
   private formatDate(date?: Date): string {
     if(!date) return ''
     return moment(date).format("YYYY-MM-DDTHH:mm")
@@ -97,4 +124,14 @@ export default class RuleForm extends React.Component<Props, {}> {
       ...this.props.rule,
       target,
     })
+
+  private resolverItems = () =>
+    Object.keys(Rule.ResolverEnum)
+      .filter((resolver: string) => downCaseCharRegex.test(resolver[0]))
+      .map((resolver) =>
+        <MaterialUI.MenuItem
+          key={resolver}
+          value={resolver}
+        >{Rule.ResolverEnum[resolver as any]}</MaterialUI.MenuItem>
+      )
 }

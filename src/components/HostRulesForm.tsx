@@ -126,6 +126,7 @@ export default class HostRulesForm extends React.Component<Props, {}> {
   private addRule() {
     const newRules = this.props.hostRules.rules.concat([{
       sourcePath: "",
+      resolver: Rule.ResolverEnum.Simple,
       target: {
         httpCode: 301,
         path: "",
