@@ -52,6 +52,7 @@ export default class HostRulesForm extends React.Component<Props, {}> {
           <RuleForm
             key={index}
             rule={rule}
+            ruleIndex={index}
             onUpdateRule={(rule: Rule) => this.updateRule(index, rule)}
             onRemoveRule={() => this.removeRule(index)}
           />)
