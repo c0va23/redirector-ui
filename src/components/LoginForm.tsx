@@ -1,6 +1,6 @@
 import * as React from "react"
-import * as MaterialUI from "material-ui"
-import * as Styles from "material-ui/styles"
+import * as MaterialUI from "@material-ui/core"
+import * as Styles from "@material-ui/core/styles"
 
 import Config from "../Config"
 

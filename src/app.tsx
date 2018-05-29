@@ -6,7 +6,7 @@ import {
   Switch,
   match as Match,
 } from "react-router-dom"
-import * as MaterialUI from "material-ui"
+import * as MaterialUI from "@material-ui/core"
 
 import Config from "./Config"
 import LoginForm from "./components/LoginForm"

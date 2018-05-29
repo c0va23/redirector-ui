@@ -2,7 +2,7 @@ import * as React from "react"
 import {
   Link,
 } from "react-router-dom"
-import * as MaterialUI from "material-ui"
+import * as MaterialUI from "@material-ui/core"
 
 import {
   ConfigApi,

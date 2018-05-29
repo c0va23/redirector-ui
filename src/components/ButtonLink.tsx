@@ -4,7 +4,7 @@ import {
   LinkProps,
 } from "react-router-dom"
 import * as History from "history"
-import * as MaterialUI from "material-ui"
+import * as MaterialUI from "@material-ui/core"
 
 interface Props {
   to: History.LocationDescriptor,

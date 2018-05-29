@@ -1,6 +1,6 @@
 import * as React from "react"
 import * as moment from "moment"
-import * as MaterialUI from "material-ui"
+import * as MaterialUI from "@material-ui/core"
 
 import { Rule, Target } from "../../gen/api-client"
 
