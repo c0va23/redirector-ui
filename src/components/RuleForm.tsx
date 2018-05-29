@@ -18,7 +18,7 @@ const downCaseCharRegex = /[a-z]/
 
 const styles: Styles.StyleRulesCallback = (theme: MaterialUI.Theme): Styles.StyleRules => {
   return {
-    selectControl: {
+    formControl: {
       marginTop: theme.spacing.unit * 2,
     },
     selectInput: {
@@ -29,6 +29,8 @@ const styles: Styles.StyleRulesCallback = (theme: MaterialUI.Theme): Styles.Styl
 
 class RuleForm extends React.Component<Props & Styles.WithStyles, {}> {
   render() {
+    let classes = this.props.classes
+
     return <MaterialUI.FormGroup>
       <h3>Rule</h3>
 
@@ -37,10 +39,14 @@ class RuleForm extends React.Component<Props & Styles.WithStyles, {}> {
         label="Source path"
         value={this.props.rule.sourcePath}
         onChange={this.onInputChange}
-        fullWidth
+        className={classes.formControl}
+        required
       />
 
-      <MaterialUI.FormControl className={this.props.classes.selectControl}>
+      <MaterialUI.FormControl
+        className={classes.formControl}
+        required
+      >
         <MaterialUI.InputLabel
           htmlFor={`rule-resolver-${this.props.ruleIndex}`}
         >Resolver</MaterialUI.InputLabel>
@@ -58,8 +64,6 @@ class RuleForm extends React.Component<Props & Styles.WithStyles, {}> {
         </MaterialUI.Select>
       </MaterialUI.FormControl>
 
-      <br />
-
       <MaterialUI.TextField
         name="activeFrom"
         label="Active from"
@@ -68,9 +72,8 @@ class RuleForm extends React.Component<Props & Styles.WithStyles, {}> {
         type="datetime-local"
         fullWidth
         InputLabelProps={{shrink: true}}
+        className={classes.formControl}
       />
-
-      <br />
 
       <MaterialUI.TextField
         name="activeTo"
@@ -80,6 +83,7 @@ class RuleForm extends React.Component<Props & Styles.WithStyles, {}> {
         type="datetime-local"
         fullWidth
         InputLabelProps={{shrink: true}}
+        className={classes.formControl}
       />
 
       <h3>Target</h3>
