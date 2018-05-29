@@ -30,7 +30,7 @@ const styles: Styles.StyleRulesCallback = (theme: MaterialUI.Theme): Styles.Styl
 class RuleForm extends React.Component<Props & Styles.WithStyles, {}> {
   render() {
     return <MaterialUI.FormGroup>
-      <h3>Role</h3>
+      <h3>Rule</h3>
 
       <MaterialUI.TextField
         name="sourcePath"
