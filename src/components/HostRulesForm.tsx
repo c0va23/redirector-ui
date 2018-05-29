@@ -16,15 +16,20 @@ import TargetForm from "./TargetForm"
 import RuleForm from "./RuleForm"
 import Config from "../Config"
 
-
 interface Props {
   config: Config,
   hostRules: HostRules,
   onUpdateHostRules: (hostRules: HostRules) => void,
-  onSave: () => void,
+  onSave: (onError: (response: Response) => void) => void,
 }
 
-export default class HostRulesForm extends React.Component<Props, {}> {
+class State {
+  error?: string
+}
+
+export default class HostRulesForm extends React.Component<Props, State> {
+  state = new State()
+
   constructor(props: Props) {
     super(props)
   }
@@ -65,6 +70,19 @@ export default class HostRulesForm extends React.Component<Props, {}> {
 
       <br />
 
+      <MaterialUI.Snackbar
+        open={this.state.error != undefined}
+        message={<p>{this.state.error}</p>}
+        action={[
+          <MaterialUI.IconButton
+            key="errorMessage"
+            onClick={this.clearError}
+          >
+            <MaterialUIIcons.Close/>
+          </MaterialUI.IconButton>
+        ]}
+      />
+
       <MaterialUI.Button
         type="submit"
         color="primary"
@@ -87,8 +105,16 @@ export default class HostRulesForm extends React.Component<Props, {}> {
 
   private onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    this.props.onSave()
+    this.props.onSave(this.onError)
   }
+
+  private onError = (response: Response) =>
+    response.text().then((reason) =>
+      this.setState({error: reason})
+    )
+
+  private clearError = (event: React.MouseEvent<HTMLButtonElement>) =>
+    this.setState({error: undefined})
 
   private updateTarget = (target: Target) => {
     this.props.onUpdateHostRules({

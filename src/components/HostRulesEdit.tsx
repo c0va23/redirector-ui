@@ -64,11 +64,14 @@ export default class HostRulesEdit extends React.Component<Props, HostRules> {
       .then(hostRules => this.setState(hostRules))
       .catch(console.log)
 
-  private onSave = () =>
+  private onSave = (onError: (response: Response) => void) =>
     this.configApi
       .updateHostRules(this.props.match.params.host, this.state)
       .then(hostRules => this.setState(hostRules))
-      .catch(console.error)
+      .catch((error) => {
+        console.error(error)
+        onError(error)
+      })
 
   private updateHostRules = (hostRules: HostRules) => {
     this.setState(hostRules)
