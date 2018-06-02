@@ -1,7 +1,8 @@
 import * as React from "react"
 import {
-  match as Match,
   Link,
+  withRouter,
+  RouteComponentProps,
 } from "react-router-dom";
 
 import {
@@ -17,10 +18,10 @@ interface Props {
   config: Config,
 }
 
-export default class HostRulesNew extends React.Component<Props, HostRules> {
+class HostRulesNew extends React.Component<Props & RouteComponentProps<never>, HostRules> {
   configApi: ConfigApi
 
-  constructor(props: Props) {
+  constructor(props: Props & RouteComponentProps<never>) {
     super(props)
     this.configApi = new ConfigApi(props.config)
     this.state = {
@@ -51,9 +52,16 @@ export default class HostRulesNew extends React.Component<Props, HostRules> {
   private onSave = (onError: (response: Response) => void) =>
     this.configApi
       .createHostRules(this.state)
-      .then(console.log)
+      .then(this.redirectToEditPage)
       .catch((error) => {
         console.error(error)
         onError(error)
       })
+
+  private redirectToEditPage = (hostRules: HostRules): void =>
+      this.props
+        .history
+        .push(`/host_rules_list/${hostRules.host}/edit`)
 }
+
+export default withRouter(HostRulesNew)
