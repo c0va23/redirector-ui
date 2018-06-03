@@ -5,6 +5,8 @@ import {
   withRouter,
   RouteComponentProps,
 } from "react-router-dom";
+import * as Styles from '@material-ui/core/styles'
+import * as MaterialUI from '@material-ui/core'
 
 import {
   HostRules,
@@ -15,6 +17,13 @@ import Config from "../Config";
 import HostRulesForm from "./HostRulesForm"
 import ButtonLink from "./ButtonLink"
 
+const styles: Styles.StyleRulesCallback = (theme) => ({
+  paper: {
+    padding: theme.spacing.unit,
+    margin: theme.spacing.unit * 2,
+  },
+})
+
 interface MatchParams {
   host: string,
 }
@@ -23,10 +32,15 @@ interface Props {
   config: Config,
 }
 
-class HostRulesEdit extends React.Component<Props & RouteComponentProps<MatchParams>, HostRules> {
+class HostRulesEdit extends React.Component<
+  Props
+  & RouteComponentProps<MatchParams>
+  & Styles.WithStyles
+  , HostRules
+> {
   configApi: ConfigApi
 
-  constructor(props: Props & RouteComponentProps<MatchParams>) {
+  constructor(props: Props & RouteComponentProps<MatchParams> & Styles.WithStyles) {
     super(props)
     this.configApi = new ConfigApi(props.config)
     this.fetchHostRules()
@@ -38,9 +52,11 @@ class HostRulesEdit extends React.Component<Props & RouteComponentProps<MatchPar
         List
       </ButtonLink>
 
-      {this.state == undefined
-        ? this.renderLoading()
-        : this.renderForm()}
+      <MaterialUI.Paper className={this.props.classes.paper}>
+        {this.state == undefined
+          ? this.renderLoading()
+          : this.renderForm()}
+      </MaterialUI.Paper>
     </div>
   }
 
@@ -85,4 +101,5 @@ class HostRulesEdit extends React.Component<Props & RouteComponentProps<MatchPar
   }
 }
 
-export default withRouter(HostRulesEdit)
+const styledComponent = MaterialUI.withStyles(styles)(HostRulesEdit)
+export default withRouter(styledComponent)
