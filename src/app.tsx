@@ -81,7 +81,7 @@ export class App extends React.Component<any, AppState> {
       <Switch>
         <Route
           path={HOST_RULES_EDIT_PATH}
-          component={this.renderHostRulesForm.bind(this)}
+          component={() => <HostRulesEdit config={this.state.config!}/>}
         />
 
         <Route
@@ -115,13 +115,6 @@ export class App extends React.Component<any, AppState> {
         />
       </Switch>
     </HashRouter>
-  }
-
-  private renderHostRulesForm({match}: {match: Match<{host: string}>}): JSX.Element {
-    return <HostRulesEdit
-      config={this.state.config!}
-      match={match}
-    />
   }
 
   private loadConfig(): Config | undefined {

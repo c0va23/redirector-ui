@@ -2,6 +2,8 @@ import * as React from "react"
 import {
   match as Match,
   Link,
+  withRouter,
+  RouteComponentProps,
 } from "react-router-dom";
 
 import {
@@ -18,14 +20,13 @@ interface MatchParams {
 }
 
 interface Props {
-  match: Match<MatchParams>,
   config: Config,
 }
 
-export default class HostRulesEdit extends React.Component<Props, HostRules> {
+class HostRulesEdit extends React.Component<Props & RouteComponentProps<MatchParams>, HostRules> {
   configApi: ConfigApi
 
-  constructor(props: Props) {
+  constructor(props: Props & RouteComponentProps<MatchParams>) {
     super(props)
     this.configApi = new ConfigApi(props.config)
     this.fetchHostRules()
@@ -67,7 +68,7 @@ export default class HostRulesEdit extends React.Component<Props, HostRules> {
   private onSave = (onError: (response: Response) => void) =>
     this.configApi
       .updateHostRules(this.props.match.params.host, this.state)
-      .then(hostRules => this.setState(hostRules))
+      .then(this.onSuccessSave)
       .catch((error) => {
         console.error(error)
         onError(error)
@@ -76,4 +77,12 @@ export default class HostRulesEdit extends React.Component<Props, HostRules> {
   private updateHostRules = (hostRules: HostRules) => {
     this.setState(hostRules)
   }
+
+  private onSuccessSave = (hostRules: HostRules) => {
+    this.setState(hostRules)
+    if(this.props.match.params.host != hostRules.host)
+      this.props.history.push(`/host_rules_list/${hostRules.host}/edit`)
+  }
 }
+
+export default withRouter(HostRulesEdit)
