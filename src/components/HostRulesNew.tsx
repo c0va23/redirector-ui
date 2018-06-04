@@ -4,6 +4,8 @@ import {
   withRouter,
   RouteComponentProps,
 } from "react-router-dom";
+import * as MaterialUI from '@material-ui/core'
+import * as Styles from '@material-ui/core/styles'
 
 import {
   HostRules,
@@ -14,14 +16,29 @@ import Config from "../Config";
 import HostRulesForm from "./HostRulesForm"
 import ButtonLink from "./ButtonLink"
 
+const styles: Styles.StyleRulesCallback = (theme) => ({
+  paper: {
+    padding: theme.spacing.unit,
+    margin: theme.spacing.unit * 2,
+  },
+  backButton: {
+    margin: theme.spacing.unit * 2,
+  },
+})
+
 interface Props {
   config: Config,
 }
 
-class HostRulesNew extends React.Component<Props & RouteComponentProps<never>, HostRules> {
+class HostRulesNew extends React.Component<
+  Props
+  & RouteComponentProps<never>
+  & Styles.WithStyles
+  , HostRules
+> {
   configApi: ConfigApi
 
-  constructor(props: Props & RouteComponentProps<never>) {
+  constructor(props: Props & RouteComponentProps<never> & Styles.WithStyles) {
     super(props)
     this.configApi = new ConfigApi(props.config)
     this.state = {
@@ -36,16 +53,18 @@ class HostRulesNew extends React.Component<Props & RouteComponentProps<never>, H
 
   render() {
     return <div>
-      <ButtonLink to="/host_rules_list">
+      <ButtonLink to="/host_rules_list" className={this.props.classes.backButton}>
         List
       </ButtonLink>
 
-      <HostRulesForm
-        config={this.props.config}
-        hostRules={this.state}
-        onSave={this.onSave}
-        onUpdateHostRules={this.setState.bind(this)}
-      />
+      <MaterialUI.Paper className={this.props.classes.paper}>
+        <HostRulesForm
+          config={this.props.config}
+          hostRules={this.state}
+          onSave={this.onSave}
+          onUpdateHostRules={this.setState.bind(this)}
+        />
+      </MaterialUI.Paper>
     </div>
   }
 
@@ -64,4 +83,5 @@ class HostRulesNew extends React.Component<Props & RouteComponentProps<never>, H
         .push(`/host_rules_list/${hostRules.host}/edit`)
 }
 
-export default withRouter(HostRulesNew)
+const styledHostRulesNew = MaterialUI.withStyles(styles)(HostRulesNew)
+export default withRouter(styledHostRulesNew)
