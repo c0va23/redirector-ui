@@ -22,6 +22,9 @@ const styles: Styles.StyleRulesCallback = (theme) => ({
     padding: theme.spacing.unit,
     margin: theme.spacing.unit * 2,
   },
+  backButton: {
+    margin: theme.spacing.unit * 2,
+  },
 })
 
 interface MatchParams {
@@ -48,7 +51,7 @@ class HostRulesEdit extends React.Component<
 
   render() {
     return <div>
-      <ButtonLink to="/host_rules_list">
+      <ButtonLink to="/host_rules_list" className={this.props.classes.backButton}>
         List
       </ButtonLink>
 
