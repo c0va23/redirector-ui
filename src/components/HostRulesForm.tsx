@@ -3,6 +3,7 @@ import {
   match as Match,
 } from "react-router-dom"
 import * as MaterialUI from "@material-ui/core"
+import * as Styles from '@material-ui/core/styles'
 import * as MaterialUIIcons from "@material-ui/icons"
 
 import {
@@ -16,6 +17,15 @@ import TargetForm from "./TargetForm"
 import RuleForm from "./RuleForm"
 import Config from "../Config"
 
+const styles: Styles.StyleRulesCallback = (theme) => ({
+  actionsPanel: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    marginTop: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+  },
+})
+
 interface Props {
   config: Config,
   hostRules: HostRules,
@@ -27,12 +37,12 @@ class State {
   error?: string
 }
 
-export default class HostRulesForm extends React.Component<Props, State> {
+class HostRulesForm extends React.Component<
+  Props
+  & Styles.WithStyles
+  , State
+> {
   state = new State()
-
-  constructor(props: Props) {
-    super(props)
-  }
 
   render() {
     return <form onSubmit={this.onSubmit}>
@@ -83,13 +93,15 @@ export default class HostRulesForm extends React.Component<Props, State> {
         ]}
       />
 
-      <MaterialUI.Button
-        type="submit"
-        color="primary"
-        variant="raised"
-      >
-        Save
-      </MaterialUI.Button>
+      <div className={this.props.classes.actionsPanel}>
+        <MaterialUI.Button
+          type="submit"
+          color="primary"
+          variant="raised"
+        >
+          Save
+        </MaterialUI.Button>
+      </div>
     </form>
   }
 
@@ -166,3 +178,5 @@ export default class HostRulesForm extends React.Component<Props, State> {
     })
   }
 }
+
+export default MaterialUI.withStyles(styles)(HostRulesForm)
