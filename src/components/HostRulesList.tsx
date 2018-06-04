@@ -3,6 +3,7 @@ import {
   Link,
 } from "react-router-dom"
 import * as MaterialUI from "@material-ui/core"
+import * as Styles from '@material-ui/core/styles'
 
 import {
   ConfigApi,
@@ -13,6 +14,12 @@ import Config from "../Config"
 import ButtonLink from "./ButtonLink"
 import HostRulesView from "./HostRulesView"
 
+const styles: Styles.StyleRulesCallback = (theme) => ({
+  listItemWrapper: {
+    margin: theme.spacing.unit * 2,
+  },
+})
+
 interface HostRulesListProps {
   config: Config,
 }
@@ -21,10 +28,14 @@ interface HostRulesListState {
   hostRulesList?: Array<HostRules>,
 }
 
-export default class HostRulesList extends React.Component<HostRulesListProps, HostRulesListState> {
+class HostRulesList extends React.Component<
+  HostRulesListProps
+  & Styles.WithStyles
+  , HostRulesListState
+> {
   configApi: ConfigApi
 
-  constructor(props: HostRulesListProps) {
+  constructor(props: HostRulesListProps & Styles.WithStyles) {
     super(props)
     this.configApi = new ConfigApi(props.config)
     this.fetchHostRulesList()
@@ -56,6 +67,7 @@ export default class HostRulesList extends React.Component<HostRulesListProps, H
   private renderHostRules = (hostRules: HostRules) =>
     <MaterialUI.Paper
       key={hostRules.host}
+      className={this.props.classes.listItemWrapper}
     >
       <HostRulesView
         hostRules={hostRules}
@@ -76,3 +88,5 @@ export default class HostRulesList extends React.Component<HostRulesListProps, H
       )
     )
 }
+
+export default MaterialUI.withStyles(styles)(HostRulesList)
