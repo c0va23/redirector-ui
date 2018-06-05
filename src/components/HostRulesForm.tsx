@@ -24,16 +24,30 @@ const styles: Styles.StyleRulesCallback = (theme) => ({
     marginTop: theme.spacing.unit,
     marginRight: theme.spacing.unit,
   },
+  errorMessage: {
+    backgroundColor: theme.palette.error.light,
+  },
+  infoMessage: {
+    backgroundColor: theme.palette.primary.light,
+  },
 })
+
+type successCallback = () => void
+type errorCallback = (response: Response) => void
 
 interface Props {
   hostRules: HostRules,
   onHostRulesChanged: (hostRules: HostRules) => void,
-  onSave: (onError: (response: Response) => void) => void,
+  onSave: (onSuccess: successCallback, onError: errorCallback) => void,
+}
+
+interface Message {
+  text: string
+  className: string,
 }
 
 class State {
-  error?: string
+  message?: Message
 }
 
 class HostRulesForm extends React.Component<
@@ -80,17 +94,21 @@ class HostRulesForm extends React.Component<
       <br />
 
       <MaterialUI.Snackbar
-        open={this.state.error != undefined}
-        message={<p>{this.state.error}</p>}
-        action={[
-          <MaterialUI.IconButton
-            key="errorMessage"
-            onClick={this.clearError}
-          >
-            <MaterialUIIcons.Close/>
-          </MaterialUI.IconButton>
-        ]}
-      />
+        open={this.state.message != undefined}
+      >
+        <MaterialUI.SnackbarContent
+          message={<p>{this.state.message && this.state.message.text}</p>}
+          className={this.state.message && this.state.message.className}
+          action={
+            <MaterialUI.IconButton
+              key="errorMessage"
+              onClick={this.clearError}
+            >
+              <MaterialUIIcons.Close/>
+            </MaterialUI.IconButton>
+          }
+        />
+      </MaterialUI.Snackbar>
 
       <div className={this.props.classes.actionsPanel}>
         <MaterialUI.Button
@@ -116,16 +134,29 @@ class HostRulesForm extends React.Component<
 
   private onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    this.props.onSave(this.onError)
+    this.props.onSave(this.onSuccessSave, this.onErrorError)
   }
 
-  private onError = (response: Response) =>
+  private onSuccessSave = () =>
+    this.setState({
+      message: {
+        text: 'Success',
+        className: this.props.classes.infoMessage,
+      },
+    })
+
+  private onErrorError = (response: Response) =>
     response.text().then((reason) =>
-      this.setState({error: reason})
+      this.setState({
+        message: {
+          text: reason,
+          className: this.props.classes.errorMessage,
+        }
+      })
     )
 
   private clearError = (event: React.MouseEvent<HTMLButtonElement>) =>
-    this.setState({error: undefined})
+    this.setState({message: undefined})
 
   private updateTarget = (target: Target) => {
     this.props.onHostRulesChanged({

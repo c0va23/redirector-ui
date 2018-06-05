@@ -67,10 +67,13 @@ class HostRulesNew extends React.Component<
     </div>
   }
 
-  private onSave = (onError: (response: Response) => void) =>
+  private onSave = (onSuccess: () => void, onError: (response: Response) => void) =>
     this.configApi
       .createHostRules(this.state)
-      .then(this.redirectToEditPage)
+      .then((hostRules: HostRules) => {
+        onSuccess()
+        this.redirectToEditPage(hostRules)
+      })
       .catch((error) => {
         console.error(error)
         onError(error)

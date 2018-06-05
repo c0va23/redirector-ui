@@ -83,10 +83,13 @@ class HostRulesEdit extends React.Component<
       .then(hostRules => this.setState(hostRules))
       .catch(console.log)
 
-  private onSave = (onError: (response: Response) => void) =>
+  private onSave = (onSuccess: () => void, onError: (response: Response) => void) =>
     this.configApi
       .updateHostRules(this.props.match.params.host, this.state)
-      .then(this.onSuccessSave)
+      .then((hostRules: HostRules) => {
+        onSuccess()
+        this.onSuccessSave(hostRules)
+      })
       .catch((error) => {
         console.error(error)
         onError(error)
