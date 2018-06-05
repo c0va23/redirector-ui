@@ -71,7 +71,6 @@ class HostRulesEdit extends React.Component<
 
   private renderForm(): JSX.Element {
     return <HostRulesForm
-      config={this.props.config}
       hostRules={this.state}
       onSave={this.onSave}
       onUpdateHostRules={this.updateHostRules}

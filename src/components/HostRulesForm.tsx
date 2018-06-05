@@ -27,7 +27,6 @@ const styles: Styles.StyleRulesCallback = (theme) => ({
 })
 
 interface Props {
-  config: Config,
   hostRules: HostRules,
   onUpdateHostRules: (hostRules: HostRules) => void,
   onSave: (onError: (response: Response) => void) => void,
