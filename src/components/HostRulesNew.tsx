@@ -61,7 +61,7 @@ class HostRulesNew extends React.Component<
         <HostRulesForm
           hostRules={this.state}
           onSave={this.onSave}
-          onUpdateHostRules={this.setState.bind(this)}
+          onHostRulesChanged={this.setState.bind(this)}
         />
       </MaterialUI.Paper>
     </div>

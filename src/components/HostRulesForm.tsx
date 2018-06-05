@@ -28,7 +28,7 @@ const styles: Styles.StyleRulesCallback = (theme) => ({
 
 interface Props {
   hostRules: HostRules,
-  onUpdateHostRules: (hostRules: HostRules) => void,
+  onHostRulesChanged: (hostRules: HostRules) => void,
   onSave: (onError: (response: Response) => void) => void,
 }
 
@@ -108,7 +108,7 @@ class HostRulesForm extends React.Component<
     event.preventDefault()
     const name = event.target.name
     const value = event.target.value
-    this.props.onUpdateHostRules({
+    this.props.onHostRulesChanged({
       ...this.props.hostRules,
       [name]: value,
     })
@@ -128,7 +128,7 @@ class HostRulesForm extends React.Component<
     this.setState({error: undefined})
 
   private updateTarget = (target: Target) => {
-    this.props.onUpdateHostRules({
+    this.props.onHostRulesChanged({
       ...this.props.hostRules,
       defaultTarget: target,
     })
@@ -146,7 +146,7 @@ class HostRulesForm extends React.Component<
       rules,
     }
 
-    this.props.onUpdateHostRules(hostRules)
+    this.props.onHostRulesChanged(hostRules)
   }
 
   private removeRule(index: number) {
@@ -155,7 +155,7 @@ class HostRulesForm extends React.Component<
       ...this.props.hostRules.rules.slice(index + 1),
     ]
 
-    this.props.onUpdateHostRules({
+    this.props.onHostRulesChanged({
       ...this.props.hostRules,
       rules: newRules,
     })
@@ -171,7 +171,7 @@ class HostRulesForm extends React.Component<
       }
     }])
 
-    this.props.onUpdateHostRules({
+    this.props.onHostRulesChanged({
       ...this.props.hostRules,
       rules: newRules,
     })
