@@ -18,6 +18,9 @@ const styles: Styles.StyleRulesCallback = (theme) => ({
   listItemWrapper: {
     margin: theme.spacing.unit * 2,
   },
+  newButton: {
+    margin: theme.spacing.unit * 2,
+  },
 })
 
 interface HostRulesListProps {
@@ -44,7 +47,10 @@ class HostRulesList extends React.Component<
 
   render() {
     return <div>
-      <ButtonLink to="/host_rules_list/new">
+      <ButtonLink
+        to="/host_rules_list/new"
+        className={this.props.classes.newButton}
+      >
         New
       </ButtonLink>
 
