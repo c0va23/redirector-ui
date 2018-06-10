@@ -32,7 +32,7 @@ interface MatchParams {
 }
 
 interface Props {
-  config: Config,
+  configApi: ConfigApi
 }
 
 class HostRulesEdit extends React.Component<
@@ -41,11 +41,8 @@ class HostRulesEdit extends React.Component<
   & Styles.WithStyles
   , HostRules
 > {
-  configApi: ConfigApi
 
-  constructor(props: Props & RouteComponentProps<MatchParams> & Styles.WithStyles) {
-    super(props)
-    this.configApi = new ConfigApi(props.config)
+  componentDidMount() {
     this.fetchHostRules()
   }
 
@@ -78,13 +75,15 @@ class HostRulesEdit extends React.Component<
   }
 
   private fetchHostRules = () =>
-    this.configApi
+    this.props
+      .configApi
       .getHostRule(this.props.match.params.host)
       .then(hostRules => this.setState(hostRules))
       .catch(console.log)
 
   private onSave = (onSuccess: () => void, onError: (response: Response) => void) =>
-    this.configApi
+    this.props
+      .configApi
       .updateHostRules(this.props.match.params.host, this.state)
       .then((hostRules: HostRules) => {
         onSuccess()

@@ -27,7 +27,7 @@ const styles: Styles.StyleRulesCallback = (theme) => ({
 })
 
 interface Props {
-  config: Config,
+  configApi: ConfigApi,
 }
 
 class HostRulesNew extends React.Component<
@@ -36,19 +36,13 @@ class HostRulesNew extends React.Component<
   & Styles.WithStyles
   , HostRules
 > {
-  configApi: ConfigApi
-
-  constructor(props: Props & RouteComponentProps<never> & Styles.WithStyles) {
-    super(props)
-    this.configApi = new ConfigApi(props.config)
-    this.state = {
-      host: "",
-      defaultTarget: {
-        path: "",
-        httpCode: 301,
-      },
-      rules: [],
-    }
+   state = {
+    host: "",
+    defaultTarget: {
+      path: "",
+      httpCode: 301,
+    },
+    rules: [],
   }
 
   render() {
@@ -68,7 +62,8 @@ class HostRulesNew extends React.Component<
   }
 
   private onSave = (onSuccess: () => void, onError: (response: Response) => void) =>
-    this.configApi
+    this.props
+      .configApi
       .createHostRules(this.state)
       .then((hostRules: HostRules) => {
         onSuccess()

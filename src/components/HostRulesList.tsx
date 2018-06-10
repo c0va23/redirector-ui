@@ -24,7 +24,7 @@ const styles: Styles.StyleRulesCallback = (theme) => ({
 })
 
 interface HostRulesListProps {
-  config: Config,
+  configApi: ConfigApi
 }
 
 interface HostRulesListState {
@@ -36,13 +36,12 @@ class HostRulesList extends React.Component<
   & Styles.WithStyles
   , HostRulesListState
 > {
-  configApi: ConfigApi
+  state: HostRulesListState = {
+    hostRulesList: undefined,
+  }
 
-  constructor(props: HostRulesListProps & Styles.WithStyles) {
-    super(props)
-    this.configApi = new ConfigApi(props.config)
+  componentDidMount() {
     this.fetchHostRulesList()
-    this.state = {}
   }
 
   render() {
@@ -60,7 +59,8 @@ class HostRulesList extends React.Component<
   }
 
   private fetchHostRulesList() {
-    this.configApi
+    this.props
+      .configApi
       .listHostRules()
       .then(this.setHostRulesList.bind(this))
       .catch(console.error)
@@ -82,7 +82,9 @@ class HostRulesList extends React.Component<
     </MaterialUI.Paper>
 
   private deleteHostRules = (host: string) =>
-    this.configApi
+    this
+      .props
+      .configApi
       .deleteHostRules(host)
       .then(() => this.removeHostRulesFromList(host))
       .catch(console.error)

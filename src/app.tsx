@@ -8,6 +8,7 @@ import {
 } from "react-router-dom"
 import * as MaterialUI from "@material-ui/core"
 
+import { ConfigApi } from '../gen/api-client/index'
 import Config from "./Config"
 import LoginForm from "./components/LoginForm"
 import HostRulesList from "./components/HostRulesList"
@@ -73,26 +74,24 @@ export class App extends React.Component<any, AppState> {
     if(this.state.config == null) {
       return this.notAuthorizedRoutes()
     }
-    return this.authorizedRoutes()
+    return this.authorizedRoutes(this.state.config)
   }
 
-  private authorizedRoutes(): JSX.Element {
+  private authorizedRoutes(config: Config): JSX.Element {
+    let configApi = new ConfigApi(config)
     return <HashRouter>
       <Switch>
-        <Route
-          path={HOST_RULES_EDIT_PATH}
-          component={() => <HostRulesEdit config={this.state.config!}/>}
-        />
+        <Route path={HOST_RULES_EDIT_PATH}>
+          <HostRulesEdit {...{configApi}} />
+        </Route>
 
-        <Route
-          path={HOST_RULES_NEW_PATH}
-          component={() => <HostRulesNew config={this.state.config!} />}
-        />
+        <Route path={HOST_RULES_NEW_PATH}>
+          <HostRulesNew {...{configApi}} />
+        </Route>
 
-        <Route
-          path={HOST_RULES_LIST_PATH}
-          component={() => <HostRulesList config={this.state.config!}/>}
-        />
+        <Route path={HOST_RULES_LIST_PATH}>
+        <HostRulesList {...{configApi}} />
+        </Route>
 
         <Redirect
           exact
