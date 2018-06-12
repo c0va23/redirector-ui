@@ -14,4 +14,5 @@ module.exports = {
     "jsx",
     "json",
   ],
+  setupTestFrameworkScriptFile: '<rootDir>/specs/setup.ts',
 }
