@@ -17,13 +17,10 @@ const styles: Styles.StyleRulesCallback = (theme: MaterialUI.Theme): Styles.Styl
 }
 
 class LoginForm extends React.Component<LoginFormProps & Styles.WithStyles, Config> {
-  constructor(props: any) {
-    super(props)
-    this.state = {
-      basePath: "",
-      username: "",
-      password: "",
-    }
+  state: Config = {
+    basePath: "",
+    username: "",
+    password: "",
   }
 
   render() {
@@ -64,6 +61,7 @@ class LoginForm extends React.Component<LoginFormProps & Styles.WithStyles, Conf
       <MaterialUI.TextField
         label="Password"
         name="password"
+        type="password"
         value={this.state.password}
         onChange={this.onInputChange}
         fullWidth
