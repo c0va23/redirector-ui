@@ -1,13 +1,9 @@
 import * as React from "react"
-import {
-  match as Match,
-} from "react-router-dom"
 import * as MaterialUI from "@material-ui/core"
 import * as Styles from '@material-ui/core/styles'
 import * as MaterialUIIcons from "@material-ui/icons"
 
 import {
-  ConfigApi,
   HostRules,
   Target,
   Rule,
@@ -15,7 +11,6 @@ import {
 
 import TargetForm from "./TargetForm"
 import RuleForm from "./RuleForm"
-import Config from "../Config"
 
 const styles: Styles.StyleRulesCallback = (theme) => ({
   actionsPanel: {
@@ -86,7 +81,7 @@ class HostRulesForm extends React.Component<
           />)
         }
 
-        <MaterialUI.Button onClick={() => this.addRule()}>
+        <MaterialUI.Button name="addRule" onClick={() => this.addRule()}>
           Add
         </MaterialUI.Button>
       </MaterialUI.FormControl>
