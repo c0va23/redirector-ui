@@ -15,4 +15,5 @@ module.exports = {
     "json",
   ],
   setupTestFrameworkScriptFile: '<rootDir>/specs/setup.ts',
+  collectCoverage: true,
 }
