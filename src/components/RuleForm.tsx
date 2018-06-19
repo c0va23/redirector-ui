@@ -1,11 +1,11 @@
-import * as React from "react"
-import * as moment from "moment"
-import * as MaterialUI from "@material-ui/core"
-import * as Styles from "@material-ui/core/styles"
+import * as React from 'react'
+import * as moment from 'moment'
+import * as MaterialUI from '@material-ui/core'
+import * as Styles from '@material-ui/core/styles'
 
-import { Rule, Target } from "../../gen/api-client"
+import { Rule, Target } from '../../gen/api-client'
 
-import TargetForm from "./TargetForm"
+import TargetForm from './TargetForm'
 
 interface Props {
   rule: Rule,
@@ -19,24 +19,24 @@ const downCaseCharRegex = /[a-z]/
 const styles: Styles.StyleRulesCallback = (theme: MaterialUI.Theme): Styles.StyleRules => {
   return {
     formControl: {
-      marginTop: theme.spacing.unit * 2,
+      marginTop: theme.spacing.unit * 2
     },
     selectInput: {
-      marginTop: theme.spacing.unit,
-    },
+      marginTop: theme.spacing.unit
+    }
   }
 }
 
 class RuleForm extends React.Component<Props & Styles.WithStyles, {}> {
-  render() {
+  render () {
     let classes = this.props.classes
 
     return <MaterialUI.FormGroup>
       <h3>Rule</h3>
 
       <MaterialUI.TextField
-        name="sourcePath"
-        label="Source path"
+        name='sourcePath'
+        label='Source path'
         value={this.props.rule.sourcePath}
         onChange={this.onInputChange}
         className={classes.formControl}
@@ -52,7 +52,7 @@ class RuleForm extends React.Component<Props & Styles.WithStyles, {}> {
         >Resolver</MaterialUI.InputLabel>
 
         <MaterialUI.Select
-          name="resolver"
+          name='resolver'
           value={this.props.rule.resolver}
           onChange={this.onSelectChange}
           inputProps={{
@@ -65,24 +65,24 @@ class RuleForm extends React.Component<Props & Styles.WithStyles, {}> {
       </MaterialUI.FormControl>
 
       <MaterialUI.TextField
-        name="activeFrom"
-        label="Active from"
+        name='activeFrom'
+        label='Active from'
         value={this.formatDate(this.props.rule.activeFrom)}
         onChange={this.onDateTimeChange}
-        type="datetime-local"
+        type='datetime-local'
         fullWidth
-        InputLabelProps={{shrink: true}}
+        InputLabelProps={{ shrink: true }}
         className={classes.formControl}
       />
 
       <MaterialUI.TextField
-        name="activeTo"
-        label="Active to"
+        name='activeTo'
+        label='Active to'
         value={this.formatDate(this.props.rule.activeTo)}
         onChange={this.onDateTimeChange}
-        type="datetime-local"
+        type='datetime-local'
         fullWidth
-        InputLabelProps={{shrink: true}}
+        InputLabelProps={{ shrink: true }}
         className={classes.formControl}
       />
 
@@ -105,7 +105,7 @@ class RuleForm extends React.Component<Props & Styles.WithStyles, {}> {
     const value = event.target.value
     this.props.onUpdateRule({
       ...this.props.rule,
-      [name]: value,
+      [name]: value
     })
   }
 
@@ -113,10 +113,10 @@ class RuleForm extends React.Component<Props & Styles.WithStyles, {}> {
     event.preventDefault()
     const name = event.target.name
     const value = event.target.value
-    const dateTime = "" != value ? new Date(value) : null
+    const dateTime = '' !== value ? new Date(value) : null
     this.props.onUpdateRule({
       ...this.props.rule,
-      [name]: dateTime,
+      [name]: dateTime
     })
   }
 
@@ -126,19 +126,19 @@ class RuleForm extends React.Component<Props & Styles.WithStyles, {}> {
     const value = event.target.value
     this.props.onUpdateRule({
       ...this.props.rule,
-      [name]: value,
+      [name]: value
     })
   }
 
-  private formatDate(date?: Date): string {
-    if(!date) return ''
-    return moment(date).format("YYYY-MM-DDTHH:mm")
+  private formatDate (date?: Date): string {
+    if (!date) return ''
+    return moment(date).format('YYYY-MM-DDTHH:mm')
   }
 
   private updateTarget = (target: Target) =>
     this.props.onUpdateRule({
       ...this.props.rule,
-      target,
+      target
     })
 
   private resolverItems = () =>

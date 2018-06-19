@@ -1,18 +1,15 @@
-import * as React from "react"
+import * as React from 'react'
 import {
   Link,
-  LinkProps,
-} from "react-router-dom"
-import * as History from "history"
-import * as MaterialUI from "@material-ui/core"
-import { ButtonProps } from "@material-ui/core/Button";
+  LinkProps
+} from 'react-router-dom'
+import * as MaterialUI from '@material-ui/core'
+import { ButtonProps } from '@material-ui/core/Button'
 
-interface Props {
-  to: History.LocationDescriptor,
-}
+type Props = LinkProps & ButtonProps
 
-export default class ButtonLink extends React.Component<LinkProps & ButtonProps> {
-  render() {
+export default class ButtonLink extends React.Component<Props> {
+  render () {
     return <MaterialUI.Button component={Link} {...this.props as any}>
       {this.props.children}
     </MaterialUI.Button>

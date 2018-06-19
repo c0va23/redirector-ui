@@ -1,26 +1,22 @@
-import * as React from "react"
-import {
-  Link,
-} from "react-router-dom"
-import * as MaterialUI from "@material-ui/core"
+import * as React from 'react'
+import * as MaterialUI from '@material-ui/core'
 import * as Styles from '@material-ui/core/styles'
 
 import {
   ConfigApi,
-  HostRules,
-} from "../../gen/api-client"
+  HostRules
+} from '../../gen/api-client'
 
-import Config from "../Config"
-import ButtonLink from "./ButtonLink"
-import HostRulesView from "./HostRulesView"
+import ButtonLink from './ButtonLink'
+import HostRulesView from './HostRulesView'
 
 const styles: Styles.StyleRulesCallback = (theme) => ({
   listItemWrapper: {
-    margin: theme.spacing.unit * 2,
+    margin: theme.spacing.unit * 2
   },
   newButton: {
-    margin: theme.spacing.unit * 2,
-  },
+    margin: theme.spacing.unit * 2
+  }
 })
 
 interface HostRulesListProps {
@@ -37,17 +33,17 @@ class HostRulesList extends React.Component<
   , HostRulesListState
 > {
   state: HostRulesListState = {
-    hostRulesList: undefined,
+    hostRulesList: undefined
   }
 
-  componentDidMount() {
+  componentDidMount () {
     this.fetchHostRulesList()
   }
 
-  render() {
+  render () {
     return <div>
       <ButtonLink
-        to="/host_rules_list/new"
+        to='/host_rules_list/new'
         className={this.props.classes.newButton}
       >
         New
@@ -58,7 +54,7 @@ class HostRulesList extends React.Component<
     </div>
   }
 
-  private fetchHostRulesList() {
+  private fetchHostRulesList () {
     this.props
       .configApi
       .listHostRules()
@@ -66,8 +62,8 @@ class HostRulesList extends React.Component<
       .catch(console.error)
   }
 
-  private setHostRulesList(hostRulesList: Array<HostRules>) {
-    this.setState({hostRulesList})
+  private setHostRulesList (hostRulesList: Array<HostRules>) {
+    this.setState({ hostRulesList })
   }
 
   private renderHostRules = (hostRules: HostRules) =>
@@ -92,7 +88,7 @@ class HostRulesList extends React.Component<
   private removeHostRulesFromList = (host: string) =>
     this.setHostRulesList(
       this.state.hostRulesList!.filter(
-        hostRule => hostRule.host != host
+        hostRule => hostRule.host !== host
       )
     )
 }

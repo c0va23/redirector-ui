@@ -1,30 +1,30 @@
-import * as React from "react"
-import * as MaterialUI from "@material-ui/core"
+import * as React from 'react'
+import * as MaterialUI from '@material-ui/core'
 import * as Styles from '@material-ui/core/styles'
-import * as MaterialUIIcons from "@material-ui/icons"
+import * as MaterialUIIcons from '@material-ui/icons'
 
 import {
   HostRules,
   Target,
-  Rule,
-} from "../../gen/api-client"
+  Rule
+} from '../../gen/api-client'
 
-import TargetForm from "./TargetForm"
-import RuleForm from "./RuleForm"
+import TargetForm from './TargetForm'
+import RuleForm from './RuleForm'
 
 const styles: Styles.StyleRulesCallback = (theme) => ({
   actionsPanel: {
     display: 'flex',
     justifyContent: 'flex-end',
     marginTop: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing.unit
   },
   errorMessage: {
-    backgroundColor: theme.palette.error.light,
+    backgroundColor: theme.palette.error.light
   },
   infoMessage: {
-    backgroundColor: theme.palette.primary.light,
-  },
+    backgroundColor: theme.palette.primary.light
+  }
 })
 
 type successCallback = () => void
@@ -52,11 +52,11 @@ class HostRulesForm extends React.Component<
 > {
   state = new State()
 
-  render() {
+  render () {
     return <form onSubmit={this.onSubmit}>
       <MaterialUI.TextField
-        name="host"
-        label="Host"
+        name='host'
+        label='Host'
         value={this.props.hostRules.host}
         onChange={this.onInputChange}
         fullWidth
@@ -81,7 +81,7 @@ class HostRulesForm extends React.Component<
           />)
         }
 
-        <MaterialUI.Button name="addRule" onClick={() => this.addRule()}>
+        <MaterialUI.Button name='addRule' onClick={() => this.addRule()}>
           Add
         </MaterialUI.Button>
       </MaterialUI.FormControl>
@@ -89,15 +89,15 @@ class HostRulesForm extends React.Component<
       <br />
 
       <MaterialUI.Snackbar
-        open={this.state.message != undefined}
+        open={this.state.message !== undefined}
       >
         <MaterialUI.SnackbarContent
           message={<p>{this.state.message && this.state.message.text}</p>}
           className={this.state.message && this.state.message.className}
           action={
             <MaterialUI.IconButton
-              key="errorMessage"
-              onClick={this.clearError}
+              key='errorMessage'
+              onClick={() => this.clearError()}
             >
               <MaterialUIIcons.Close/>
             </MaterialUI.IconButton>
@@ -107,9 +107,9 @@ class HostRulesForm extends React.Component<
 
       <div className={this.props.classes.actionsPanel}>
         <MaterialUI.Button
-          type="submit"
-          color="primary"
-          variant="raised"
+          type='submit'
+          color='primary'
+          variant='raised'
         >
           Save
         </MaterialUI.Button>
@@ -123,7 +123,7 @@ class HostRulesForm extends React.Component<
     const value = event.target.value
     this.props.onHostRulesChanged({
       ...this.props.hostRules,
-      [name]: value,
+      [name]: value
     })
   }
 
@@ -136,8 +136,8 @@ class HostRulesForm extends React.Component<
     this.setState({
       message: {
         text: 'Success',
-        className: this.props.classes.infoMessage,
-      },
+        className: this.props.classes.infoMessage
+      }
     })
 
   private onErrorError = (response: Response) =>
@@ -145,61 +145,60 @@ class HostRulesForm extends React.Component<
       this.setState({
         message: {
           text: reason,
-          className: this.props.classes.errorMessage,
+          className: this.props.classes.errorMessage
         }
       })
     )
 
-  private clearError = (event: React.MouseEvent<HTMLButtonElement>) =>
-    this.setState({message: undefined})
+  private clearError = () => this.setState({ message: undefined })
 
   private updateTarget = (target: Target) => {
     this.props.onHostRulesChanged({
       ...this.props.hostRules,
-      defaultTarget: target,
+      defaultTarget: target
     })
   }
 
-  private updateRule(index: number, rule: Rule) {
+  private updateRule (index: number, rule: Rule) {
     const rules = [
       ...this.props.hostRules.rules.slice(0, index),
       rule,
-      ...this.props.hostRules.rules.slice(index + 1),
+      ...this.props.hostRules.rules.slice(index + 1)
     ]
 
     const hostRules: HostRules = {
       ...this.props.hostRules,
-      rules,
+      rules
     }
 
     this.props.onHostRulesChanged(hostRules)
   }
 
-  private removeRule(index: number) {
+  private removeRule (index: number) {
     const newRules = [
       ...this.props.hostRules.rules.slice(0, index),
-      ...this.props.hostRules.rules.slice(index + 1),
+      ...this.props.hostRules.rules.slice(index + 1)
     ]
 
     this.props.onHostRulesChanged({
       ...this.props.hostRules,
-      rules: newRules,
+      rules: newRules
     })
   }
 
-  private addRule() {
+  private addRule () {
     const newRules = this.props.hostRules.rules.concat([{
-      sourcePath: "",
+      sourcePath: '',
       resolver: Rule.ResolverEnum.Simple,
       target: {
         httpCode: 301,
-        path: "",
+        path: ''
       }
     }])
 
     this.props.onHostRulesChanged({
       ...this.props.hostRules,
-      rules: newRules,
+      rules: newRules
     })
   }
 }

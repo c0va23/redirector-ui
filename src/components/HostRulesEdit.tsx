@@ -1,30 +1,27 @@
-import * as React from "react"
+import * as React from 'react'
 import {
-  match as Match,
-  Link,
   withRouter,
-  RouteComponentProps,
-} from "react-router-dom";
+  RouteComponentProps
+} from 'react-router-dom'
 import * as Styles from '@material-ui/core/styles'
 import * as MaterialUI from '@material-ui/core'
 
 import {
   HostRules,
-  ConfigApi,
-} from "../../gen/api-client";
+  ConfigApi
+} from '../../gen/api-client'
 
-import Config from "../Config";
-import HostRulesForm from "./HostRulesForm"
-import ButtonLink from "./ButtonLink"
+import HostRulesForm from './HostRulesForm'
+import ButtonLink from './ButtonLink'
 
 const styles: Styles.StyleRulesCallback = (theme) => ({
   paper: {
     padding: theme.spacing.unit,
-    margin: theme.spacing.unit * 2,
+    margin: theme.spacing.unit * 2
   },
   backButton: {
-    margin: theme.spacing.unit * 2,
-  },
+    margin: theme.spacing.unit * 2
+  }
 })
 
 interface MatchParams {
@@ -35,73 +32,82 @@ interface Props {
   configApi: ConfigApi
 }
 
+interface State {
+  hostRules?: HostRules,
+}
+
 class HostRulesEdit extends React.Component<
   Props
   & RouteComponentProps<MatchParams>
   & Styles.WithStyles
-  , HostRules
+  , State
 > {
+  state: State = {
+    hostRules: undefined
+  }
 
-  componentDidMount() {
+  componentDidMount () {
     this.fetchHostRules()
   }
 
-  render() {
+  render () {
     return <div>
-      <ButtonLink to="/host_rules_list" className={this.props.classes.backButton}>
+      <ButtonLink to='/host_rules_list' className={this.props.classes.backButton}>
         List
       </ButtonLink>
 
       <MaterialUI.Paper className={this.props.classes.paper}>
-        {this.state == undefined
+        {this.state.hostRules === undefined
           ? this.renderLoading()
-          : this.renderForm()}
+          : this.renderForm(this.state.hostRules)}
       </MaterialUI.Paper>
     </div>
   }
 
-  private renderLoading(): JSX.Element {
+  private renderLoading (): JSX.Element {
     return <div>
       Loading...
     </div>
   }
 
-  private renderForm(): JSX.Element {
+  private renderForm (hostRule: HostRules): JSX.Element {
     return <HostRulesForm
-      hostRules={this.state}
+      hostRules={hostRule}
       onSave={this.onSave}
       onHostRulesChanged={this.updateHostRules}
     />
   }
 
-  private fetchHostRules = () =>
+  private fetchHostRules = () => {
     this.props
       .configApi
       .getHostRule(this.props.match.params.host)
-      .then(hostRules => this.setState(hostRules))
+      .then(hostRules => this.setState({ hostRules }))
       .catch(console.log)
+  }
 
   private onSave = (onSuccess: () => void, onError: (response: Response) => void) =>
     this.props
       .configApi
-      .updateHostRules(this.props.match.params.host, this.state)
+      .updateHostRules(this.props.match.params.host, this.state.hostRules!)
       .then((hostRules: HostRules) => {
         onSuccess()
         this.onSuccessSave(hostRules)
       })
-      .catch((error) => {
+      .catch((error: any) => {
         console.error(error)
         onError(error)
       })
 
   private updateHostRules = (hostRules: HostRules) => {
-    this.setState(hostRules)
+    this.setState({ hostRules })
   }
 
   private onSuccessSave = (hostRules: HostRules) => {
-    this.setState(hostRules)
-    if(this.props.match.params.host != hostRules.host)
+    this.setState({ hostRules })
+    if (this.props.match.params.host !== hostRules.host) {
       this.props.history.push(`/host_rules_list/${hostRules.host}/edit`)
+    }
   }
 }
 

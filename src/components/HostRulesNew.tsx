@@ -1,29 +1,27 @@
-import * as React from "react"
+import * as React from 'react'
 import {
-  Link,
   withRouter,
-  RouteComponentProps,
-} from "react-router-dom";
+  RouteComponentProps
+} from 'react-router-dom'
 import * as MaterialUI from '@material-ui/core'
 import * as Styles from '@material-ui/core/styles'
 
 import {
   HostRules,
-  ConfigApi,
-} from "../../gen/api-client";
+  ConfigApi
+} from '../../gen/api-client'
 
-import Config from "../Config";
-import HostRulesForm from "./HostRulesForm"
-import ButtonLink from "./ButtonLink"
+import HostRulesForm from './HostRulesForm'
+import ButtonLink from './ButtonLink'
 
 const styles: Styles.StyleRulesCallback = (theme) => ({
   paper: {
     padding: theme.spacing.unit,
-    margin: theme.spacing.unit * 2,
+    margin: theme.spacing.unit * 2
   },
   backButton: {
-    margin: theme.spacing.unit * 2,
-  },
+    margin: theme.spacing.unit * 2
+  }
 })
 
 interface Props {
@@ -36,18 +34,18 @@ class HostRulesNew extends React.Component<
   & Styles.WithStyles
   , HostRules
 > {
-   state = {
-    host: "",
+  state = {
+    host: '',
     defaultTarget: {
-      path: "",
-      httpCode: 301,
+      path: '',
+      httpCode: 301
     },
-    rules: [],
+    rules: []
   }
 
-  render() {
+  render () {
     return <div>
-      <ButtonLink to="/host_rules_list" className={this.props.classes.backButton}>
+      <ButtonLink to='/host_rules_list' className={this.props.classes.backButton}>
         List
       </ButtonLink>
 

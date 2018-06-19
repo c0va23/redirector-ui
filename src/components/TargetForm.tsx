@@ -1,7 +1,7 @@
-import * as React from "react"
-import * as MaterialUI from "@material-ui/core"
+import * as React from 'react'
+import * as MaterialUI from '@material-ui/core'
 
-import { Target } from "../../gen/api-client"
+import { Target } from '../../gen/api-client'
 
 interface Props {
   target: Target,
@@ -9,26 +9,26 @@ interface Props {
 }
 
 export default class TargetForm extends React.Component<Props, {}> {
-  constructor(props: Props) {
+  constructor (props: Props) {
     super(props)
   }
 
-  render() {
+  render () {
     return <MaterialUI.FormGroup>
       <MaterialUI.TextField
-        name="httpCode"
-        label="HTTP Code"
+        name='httpCode'
+        label='HTTP Code'
         value={this.props.target.httpCode}
         onChange={this.onNumberChange.bind(this)}
-        type="number"
+        type='number'
         fullWidth
       />
 
       <br />
 
       <MaterialUI.TextField
-        name="path"
-        label="Path"
+        name='path'
+        label='Path'
         value={this.props.target.path}
         onChange={this.onTextChange.bind(this)}
         fullWidth
@@ -36,23 +36,23 @@ export default class TargetForm extends React.Component<Props, {}> {
     </MaterialUI.FormGroup>
   }
 
-  private onNumberChange(event: React.ChangeEvent<HTMLInputElement>) {
+  private onNumberChange (event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault()
     const name = event.target.name
     const value = Number.parseFloat(event.target.value)
     this.props.onUpdateTarget({
       ...this.props.target,
-      [name]: value,
+      [name]: value
     })
   }
 
-  private onTextChange(event: React.ChangeEvent<HTMLInputElement>) {
+  private onTextChange (event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault()
     const name = event.target.name
     const value = event.target.value
     this.props.onUpdateTarget({
       ...this.props.target,
-      [name]: value,
+      [name]: value
     })
   }
 }

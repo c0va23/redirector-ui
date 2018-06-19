@@ -1,47 +1,46 @@
-import * as React from "react"
+import * as React from 'react'
 import {
   HashRouter,
   Route,
   Redirect,
-  Switch,
-  match as Match,
-} from "react-router-dom"
-import * as MaterialUI from "@material-ui/core"
+  Switch
+} from 'react-router-dom'
+import * as MaterialUI from '@material-ui/core'
 
 import { ConfigApi } from '../gen/api-client/index'
-import Config from "./Config"
-import LoginForm from "./components/LoginForm"
-import HostRulesList from "./components/HostRulesList"
-import HostRulesEdit from "./components/HostRulesEdit"
-import HostRulesNew from "./components/HostRulesNew"
+import Config from './Config'
+import LoginForm from './components/LoginForm'
+import HostRulesList from './components/HostRulesList'
+import HostRulesEdit from './components/HostRulesEdit'
+import HostRulesNew from './components/HostRulesNew'
 
 interface AppState {
   config?: Config,
 }
 
-const LOGIN_PATH = "/login"
+const LOGIN_PATH = '/login'
 const HOST_RULES_LIST_PATH = '/host_rules_list'
 const HOST_RULES_EDIT_PATH = HOST_RULES_LIST_PATH + '/:host/edit'
 const HOST_RULES_NEW_PATH = HOST_RULES_LIST_PATH + '/new'
 
-const CONFIG_KEY = "config"
+const CONFIG_KEY = 'config'
 
 export class App extends React.Component<any, AppState> {
 
-  constructor(props: any) {
+  constructor (props: any) {
     super(props)
     this.state = {
-      config: this.loadConfig(),
+      config: this.loadConfig()
     }
   }
 
-  render() {
+  render () {
     return <div>
       <MaterialUI.CssBaseline />
 
-      <MaterialUI.AppBar position="sticky" color="default">
+      <MaterialUI.AppBar position='sticky' color='default'>
         <MaterialUI.Toolbar>
-          <MaterialUI.Typography variant="title" style={{flex: 1}}>
+          <MaterialUI.Typography variant='title' style={{ flex: 1 }}>
             Redirector
           </MaterialUI.Typography>
 
@@ -57,40 +56,40 @@ export class App extends React.Component<any, AppState> {
   }
 
   private logIn = (config: Config) => {
-    this.setState({config})
+    this.setState({ config })
     this.storeConfig(config)
   }
 
   private logOut = () => {
-    this.setState({config: undefined})
+    this.setState({ config: undefined })
     this.clearConfig()
   }
 
-  private loginForm() {
+  private loginForm () {
     return <LoginForm onSave={this.logIn} />
   }
 
-  private routes(): JSX.Element {
-    if(this.state.config == null) {
+  private routes (): JSX.Element {
+    if (undefined === this.state.config) {
       return this.notAuthorizedRoutes()
     }
     return this.authorizedRoutes(this.state.config)
   }
 
-  private authorizedRoutes(config: Config): JSX.Element {
+  private authorizedRoutes (config: Config): JSX.Element {
     let configApi = new ConfigApi(config)
     return <HashRouter>
       <Switch>
         <Route path={HOST_RULES_EDIT_PATH}>
-          <HostRulesEdit {...{configApi}} />
+          <HostRulesEdit {...{ configApi }} />
         </Route>
 
         <Route path={HOST_RULES_NEW_PATH}>
-          <HostRulesNew {...{configApi}} />
+          <HostRulesNew {...{ configApi }} />
         </Route>
 
         <Route path={HOST_RULES_LIST_PATH}>
-        <HostRulesList {...{configApi}} />
+        <HostRulesList {...{ configApi }} />
         </Route>
 
         <Redirect
@@ -101,7 +100,7 @@ export class App extends React.Component<any, AppState> {
     </HashRouter>
   }
 
-  private notAuthorizedRoutes(): JSX.Element {
+  private notAuthorizedRoutes (): JSX.Element {
     return <HashRouter>
       <Switch>
         <Route
@@ -116,19 +115,18 @@ export class App extends React.Component<any, AppState> {
     </HashRouter>
   }
 
-  private loadConfig(): Config | undefined {
+  private loadConfig (): Config | undefined {
     const configJson = sessionStorage.getItem(CONFIG_KEY)
-    if(undefined === configJson)
-      return
-    return JSON.parse(configJson!) as Config
+    if (null === configJson) return undefined
+    return JSON.parse(configJson)
   }
 
-  private storeConfig(config: Config) {
+  private storeConfig (config: Config) {
     const configJson = JSON.stringify(config)
     sessionStorage.setItem(CONFIG_KEY, configJson)
   }
 
-  private clearConfig() {
+  private clearConfig () {
     sessionStorage.removeItem(CONFIG_KEY)
   }
 }

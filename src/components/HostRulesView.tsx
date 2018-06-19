@@ -1,12 +1,12 @@
-import * as React from "react"
-import * as MaterialUI from "@material-ui/core"
+import * as React from 'react'
+import * as MaterialUI from '@material-ui/core'
 
 import {
   HostRules,
-  Rule,
-} from "../../gen/api-client"
+  Rule
+} from '../../gen/api-client'
 
-import ButtonLink from "./ButtonLink"
+import ButtonLink from './ButtonLink'
 
 interface Props {
   hostRules: HostRules,
@@ -14,7 +14,7 @@ interface Props {
 }
 
 export default class HostRulesView extends React.Component<Props> {
-  render() {
+  render () {
     return <div>
       {this.renderHostRules(this.props.hostRules)}
       {this.renderRules(this.props.hostRules.rules)}
@@ -23,7 +23,7 @@ export default class HostRulesView extends React.Component<Props> {
 
   private renderHostRules = (hostRules: HostRules) =>
     <MaterialUI.Toolbar>
-      <MaterialUI.Typography variant="headline" style={{flex: 1}}>
+      <MaterialUI.Typography variant='headline' style={{ flex: 1 }}>
         {hostRules.host}
       </MaterialUI.Typography>
 
