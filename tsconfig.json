@@ -9,6 +9,8 @@
     "strictFunctionTypes": true,
     "strictNullChecks": true,
     "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
     "allowJs": true
   },
   "include": [
