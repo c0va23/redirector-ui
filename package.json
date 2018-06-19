@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --coverage",
-    "lint": "jslint --project .",
+    "lint": "tslint --project .",
     "dev-server": "NODE_ENV=development webpack-serve --config webpack.config.js --hot",
     "build": "webpack --config webpack.config.js"
   },
