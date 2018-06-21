@@ -16,18 +16,16 @@ interface Props {
 
 const downCaseCharRegex = /[a-z]/
 
-const styles: Styles.StyleRulesCallback = (theme: MaterialUI.Theme): Styles.StyleRules => {
-  return {
-    formControl: {
-      marginTop: theme.spacing.unit * 2
-    },
-    selectInput: {
-      marginTop: theme.spacing.unit
-    }
-  }
-}
+const styles: Styles.StyleRulesCallback = (theme) => ({
+  formControl: {
+    marginTop: theme.spacing.unit * 2,
+  },
+  selectInput: {
+    marginTop: theme.spacing.unit,
+  },
+})
 
-class RuleForm extends React.Component<Props & Styles.WithStyles, {}> {
+class RuleForm extends React.Component<Props & Styles.WithStyles> {
   render () {
     let classes = this.props.classes
 
@@ -56,7 +54,7 @@ class RuleForm extends React.Component<Props & Styles.WithStyles, {}> {
           value={this.props.rule.resolver}
           onChange={this.onSelectChange}
           inputProps={{
-            id: `rule-resolver-${this.props.ruleIndex}`
+            id: `rule-resolver-${this.props.ruleIndex}`,
           }}
           className={this.props.classes.selectInput}
         >
@@ -105,7 +103,7 @@ class RuleForm extends React.Component<Props & Styles.WithStyles, {}> {
     const value = event.target.value
     this.props.onUpdateRule({
       ...this.props.rule,
-      [name]: value
+      [name]: value,
     })
   }
 
@@ -116,7 +114,7 @@ class RuleForm extends React.Component<Props & Styles.WithStyles, {}> {
     const dateTime = '' !== value ? new Date(value) : null
     this.props.onUpdateRule({
       ...this.props.rule,
-      [name]: dateTime
+      [name]: dateTime,
     })
   }
 
@@ -126,7 +124,7 @@ class RuleForm extends React.Component<Props & Styles.WithStyles, {}> {
     const value = event.target.value
     this.props.onUpdateRule({
       ...this.props.rule,
-      [name]: value
+      [name]: value,
     })
   }
 
@@ -138,7 +136,7 @@ class RuleForm extends React.Component<Props & Styles.WithStyles, {}> {
   private updateTarget = (target: Target) =>
     this.props.onUpdateRule({
       ...this.props.rule,
-      target
+      target,
     })
 
   private resolverItems = () =>
@@ -148,8 +146,7 @@ class RuleForm extends React.Component<Props & Styles.WithStyles, {}> {
         <MaterialUI.MenuItem
           key={resolver}
           value={resolver}
-        >{Rule.ResolverEnum[resolver as any]}</MaterialUI.MenuItem>
-      )
+        >{Rule.ResolverEnum[resolver as any]}</MaterialUI.MenuItem>)
 }
 
 export default MaterialUI.withStyles(styles)(RuleForm)

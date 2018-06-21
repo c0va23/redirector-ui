@@ -6,7 +6,7 @@ import * as MaterialUIIcons from '@material-ui/icons'
 import {
   HostRules,
   Target,
-  Rule
+  Rule,
 } from '../../gen/api-client'
 
 import TargetForm from './TargetForm'
@@ -17,14 +17,14 @@ const styles: Styles.StyleRulesCallback = (theme) => ({
     display: 'flex',
     justifyContent: 'flex-end',
     marginTop: theme.spacing.unit,
-    marginRight: theme.spacing.unit
+    marginRight: theme.spacing.unit,
   },
   errorMessage: {
-    backgroundColor: theme.palette.error.light
+    backgroundColor: theme.palette.error.light,
   },
   infoMessage: {
-    backgroundColor: theme.palette.primary.light
-  }
+    backgroundColor: theme.palette.primary.light,
+  },
 })
 
 type successCallback = () => void
@@ -123,7 +123,7 @@ class HostRulesForm extends React.Component<
     const value = event.target.value
     this.props.onHostRulesChanged({
       ...this.props.hostRules,
-      [name]: value
+      [name]: value,
     })
   }
 
@@ -136,18 +136,18 @@ class HostRulesForm extends React.Component<
     this.setState({
       message: {
         text: 'Success',
-        className: this.props.classes.infoMessage
-      }
+        className: this.props.classes.infoMessage,
+      },
     })
 
   private onErrorError = (response: Response) =>
-    response.text().then((reason) =>
+    response.text().then(reason =>
       this.setState({
         message: {
           text: reason,
-          className: this.props.classes.errorMessage
-        }
-      })
+          className: this.props.classes.errorMessage,
+        },
+      }),
     )
 
   private clearError = () => this.setState({ message: undefined })
@@ -155,7 +155,7 @@ class HostRulesForm extends React.Component<
   private updateTarget = (target: Target) => {
     this.props.onHostRulesChanged({
       ...this.props.hostRules,
-      defaultTarget: target
+      defaultTarget: target,
     })
   }
 
@@ -163,12 +163,12 @@ class HostRulesForm extends React.Component<
     const rules = [
       ...this.props.hostRules.rules.slice(0, index),
       rule,
-      ...this.props.hostRules.rules.slice(index + 1)
+      ...this.props.hostRules.rules.slice(index + 1),
     ]
 
     const hostRules: HostRules = {
       ...this.props.hostRules,
-      rules
+      rules,
     }
 
     this.props.onHostRulesChanged(hostRules)
@@ -177,12 +177,12 @@ class HostRulesForm extends React.Component<
   private removeRule (index: number) {
     const newRules = [
       ...this.props.hostRules.rules.slice(0, index),
-      ...this.props.hostRules.rules.slice(index + 1)
+      ...this.props.hostRules.rules.slice(index + 1),
     ]
 
     this.props.onHostRulesChanged({
       ...this.props.hostRules,
-      rules: newRules
+      rules: newRules,
     })
   }
 
@@ -192,13 +192,13 @@ class HostRulesForm extends React.Component<
       resolver: Rule.ResolverEnum.Simple,
       target: {
         httpCode: 301,
-        path: ''
-      }
+        path: '',
+      },
     }])
 
     this.props.onHostRulesChanged({
       ...this.props.hostRules,
-      rules: newRules
+      rules: newRules,
     })
   }
 }

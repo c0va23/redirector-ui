@@ -3,7 +3,7 @@ import {
   HashRouter,
   Route,
   Redirect,
-  Switch
+  Switch,
 } from 'react-router-dom'
 import * as MaterialUI from '@material-ui/core'
 
@@ -14,8 +14,8 @@ import HostRulesList from './components/HostRulesList'
 import HostRulesEdit from './components/HostRulesEdit'
 import HostRulesNew from './components/HostRulesNew'
 
-interface AppState {
-  config?: Config,
+class AppState {
+  config?: Config
 }
 
 const LOGIN_PATH = '/login'
@@ -26,12 +26,10 @@ const HOST_RULES_NEW_PATH = HOST_RULES_LIST_PATH + '/new'
 const CONFIG_KEY = 'config'
 
 export class App extends React.Component<any, AppState> {
+  state = new AppState()
 
-  constructor (props: any) {
-    super(props)
-    this.state = {
-      config: this.loadConfig()
-    }
+  componentDidMount () {
+    this.setState({ config: this.loadConfig() })
   }
 
   render () {

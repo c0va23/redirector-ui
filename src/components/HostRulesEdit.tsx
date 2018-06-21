@@ -1,14 +1,14 @@
 import * as React from 'react'
 import {
   withRouter,
-  RouteComponentProps
+  RouteComponentProps,
 } from 'react-router-dom'
 import * as Styles from '@material-ui/core/styles'
 import * as MaterialUI from '@material-ui/core'
 
 import {
   HostRules,
-  ConfigApi
+  ConfigApi,
 } from '../../gen/api-client'
 
 import HostRulesForm from './HostRulesForm'
@@ -17,23 +17,23 @@ import ButtonLink from './ButtonLink'
 const styles: Styles.StyleRulesCallback = (theme) => ({
   paper: {
     padding: theme.spacing.unit,
-    margin: theme.spacing.unit * 2
+    margin: theme.spacing.unit * 2,
   },
   backButton: {
-    margin: theme.spacing.unit * 2
-  }
+    margin: theme.spacing.unit * 2,
+  },
 })
 
 interface MatchParams {
-  host: string,
+  host: string
 }
 
 interface Props {
   configApi: ConfigApi
 }
 
-interface State {
-  hostRules?: HostRules,
+class State {
+  hostRules?: HostRules
 }
 
 class HostRulesEdit extends React.Component<
@@ -42,9 +42,7 @@ class HostRulesEdit extends React.Component<
   & Styles.WithStyles
   , State
 > {
-  state: State = {
-    hostRules: undefined
-  }
+  state = new State()
 
   componentDidMount () {
     this.fetchHostRules()

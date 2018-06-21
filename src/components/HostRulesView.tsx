@@ -3,7 +3,7 @@ import * as MaterialUI from '@material-ui/core'
 
 import {
   HostRules,
-  Rule
+  Rule,
 } from '../../gen/api-client'
 
 import ButtonLink from './ButtonLink'
@@ -64,8 +64,7 @@ export default class HostRulesView extends React.Component<Props> {
             <MaterialUI.TableCell>{rule.target.path}</MaterialUI.TableCell>
             <MaterialUI.TableCell>{rule.activeFrom}</MaterialUI.TableCell>
             <MaterialUI.TableCell>{rule.activeTo}</MaterialUI.TableCell>
-          </MaterialUI.TableRow>
-        )}
+          </MaterialUI.TableRow>)}
       </MaterialUI.TableBody>
     </MaterialUI.Table>
 

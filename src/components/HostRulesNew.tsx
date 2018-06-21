@@ -1,14 +1,14 @@
 import * as React from 'react'
 import {
   withRouter,
-  RouteComponentProps
+  RouteComponentProps,
 } from 'react-router-dom'
 import * as MaterialUI from '@material-ui/core'
 import * as Styles from '@material-ui/core/styles'
 
 import {
   HostRules,
-  ConfigApi
+  ConfigApi,
 } from '../../gen/api-client'
 
 import HostRulesForm from './HostRulesForm'
@@ -17,11 +17,11 @@ import ButtonLink from './ButtonLink'
 const styles: Styles.StyleRulesCallback = (theme) => ({
   paper: {
     padding: theme.spacing.unit,
-    margin: theme.spacing.unit * 2
+    margin: theme.spacing.unit * 2,
   },
   backButton: {
-    margin: theme.spacing.unit * 2
-  }
+    margin: theme.spacing.unit * 2,
+  },
 })
 
 interface Props {
@@ -38,9 +38,9 @@ class HostRulesNew extends React.Component<
     host: '',
     defaultTarget: {
       path: '',
-      httpCode: 301
+      httpCode: 301,
     },
-    rules: []
+    rules: [],
   }
 
   render () {

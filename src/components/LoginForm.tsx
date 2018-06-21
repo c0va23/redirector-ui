@@ -8,19 +8,17 @@ interface LoginFormProps {
   onSave: (config: Config) => void,
 }
 
-const styles: Styles.StyleRulesCallback = (theme: MaterialUI.Theme): Styles.StyleRules => {
-  return {
-    content: {
-      padding: theme.spacing.unit * 2
-    }
-  }
-}
+const styles: Styles.StyleRulesCallback = (theme) => ({
+  content: {
+    padding: theme.spacing.unit * 2,
+  },
+})
 
 class LoginForm extends React.Component<LoginFormProps & Styles.WithStyles, Config> {
   state: Config = {
     basePath: '',
     username: '',
-    password: ''
+    password: '',
   }
 
   render () {
@@ -81,7 +79,7 @@ class LoginForm extends React.Component<LoginFormProps & Styles.WithStyles, Conf
     const value = event.target.value
     this.setState({
       ...this.state,
-      [name]: value
+      [name]: value,
     })
   }
 

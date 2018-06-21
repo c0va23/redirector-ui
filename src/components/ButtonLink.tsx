@@ -1,7 +1,7 @@
 import * as React from 'react'
 import {
   Link,
-  LinkProps
+  LinkProps,
 } from 'react-router-dom'
 import * as MaterialUI from '@material-ui/core'
 import { ButtonProps } from '@material-ui/core/Button'

@@ -4,7 +4,7 @@ import * as Styles from '@material-ui/core/styles'
 
 import {
   ConfigApi,
-  HostRules
+  HostRules,
 } from '../../gen/api-client'
 
 import ButtonLink from './ButtonLink'
@@ -12,19 +12,19 @@ import HostRulesView from './HostRulesView'
 
 const styles: Styles.StyleRulesCallback = (theme) => ({
   listItemWrapper: {
-    margin: theme.spacing.unit * 2
+    margin: theme.spacing.unit * 2,
   },
   newButton: {
-    margin: theme.spacing.unit * 2
-  }
+    margin: theme.spacing.unit * 2,
+  },
 })
 
 interface HostRulesListProps {
   configApi: ConfigApi
 }
 
-interface HostRulesListState {
-  hostRulesList?: Array<HostRules>,
+class HostRulesListState {
+  hostRulesList?: Array<HostRules>
 }
 
 class HostRulesList extends React.Component<
@@ -32,9 +32,7 @@ class HostRulesList extends React.Component<
   & Styles.WithStyles
   , HostRulesListState
 > {
-  state: HostRulesListState = {
-    hostRulesList: undefined
-  }
+  state = new HostRulesListState()
 
   componentDidMount () {
     this.fetchHostRulesList()
@@ -87,9 +85,8 @@ class HostRulesList extends React.Component<
 
   private removeHostRulesFromList = (host: string) =>
     this.setHostRulesList(
-      this.state.hostRulesList!.filter(
-        hostRule => hostRule.host !== host
-      )
+      this.state.hostRulesList!
+        .filter(hostRule => hostRule.host !== host),
     )
 }
 

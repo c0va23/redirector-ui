@@ -8,11 +8,7 @@ interface Props {
   onUpdateTarget: (target: Target) => void,
 }
 
-export default class TargetForm extends React.Component<Props, {}> {
-  constructor (props: Props) {
-    super(props)
-  }
-
+export default class TargetForm extends React.Component<Props> {
   render () {
     return <MaterialUI.FormGroup>
       <MaterialUI.TextField
@@ -42,7 +38,7 @@ export default class TargetForm extends React.Component<Props, {}> {
     const value = Number.parseFloat(event.target.value)
     this.props.onUpdateTarget({
       ...this.props.target,
-      [name]: value
+      [name]: value,
     })
   }
 
@@ -52,7 +48,7 @@ export default class TargetForm extends React.Component<Props, {}> {
     const value = event.target.value
     this.props.onUpdateTarget({
       ...this.props.target,
-      [name]: value
+      [name]: value,
     })
   }
 }
