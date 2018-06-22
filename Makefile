@@ -1,7 +1,7 @@
 gen/:
 	mkdir gen
 
-gen/api-client/: gen/
+gen/redirector-client/: gen/
 	docker run \
 		--rm \
 		-it \
@@ -12,4 +12,7 @@ gen/api-client/: gen/
 		generate \
 		-i api.yml \
 		-l typescript-fetch \
-		-o gen/api-client/
+		-D withInterfaces=true,npmName=redirector-client,supportsES6=true \
+		-o gen/redirector-client/
+
+	cd gen/redirector-client && npm install && npm run build
