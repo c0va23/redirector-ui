@@ -7,7 +7,7 @@ import {
   HostRules,
   Target,
   Rule,
-} from '../../gen/api-client'
+} from 'redirector-client'
 
 import TargetForm from './TargetForm'
 import RuleForm from './RuleForm'

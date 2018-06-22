@@ -5,7 +5,7 @@ import * as Styles from '@material-ui/core/styles'
 import {
   ConfigApi,
   HostRules,
-} from '../../gen/api-client'
+} from 'redirector-client'
 
 import ButtonLink from './ButtonLink'
 import HostRulesView from './HostRulesView'

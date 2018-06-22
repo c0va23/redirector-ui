@@ -9,7 +9,7 @@ import * as Styles from '@material-ui/core/styles'
 import {
   HostRules,
   ConfigApi,
-} from '../../gen/api-client'
+} from 'redirector-client'
 
 import HostRulesForm from './HostRulesForm'
 import ButtonLink from './ButtonLink'

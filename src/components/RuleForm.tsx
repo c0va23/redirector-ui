@@ -3,7 +3,7 @@ import * as moment from 'moment'
 import * as MaterialUI from '@material-ui/core'
 import * as Styles from '@material-ui/core/styles'
 
-import { Rule, Target } from '../../gen/api-client'
+import { Rule, Target } from 'redirector-client'
 
 import TargetForm from './TargetForm'
 

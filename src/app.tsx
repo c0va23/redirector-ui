@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom'
 import * as MaterialUI from '@material-ui/core'
 
-import { ConfigApi } from '../gen/api-client/index'
+import { ConfigApi } from 'redirector-client'
 import Config from './Config'
 import LoginForm from './components/LoginForm'
 import HostRulesList from './components/HostRulesList'

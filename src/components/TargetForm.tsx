@@ -1,7 +1,7 @@
 import * as React from 'react'
 import * as MaterialUI from '@material-ui/core'
 
-import { Target } from '../../gen/api-client'
+import { Target } from 'redirector-client'
 
 interface Props {
   target: Target,

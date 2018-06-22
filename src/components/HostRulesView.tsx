@@ -4,7 +4,7 @@ import * as MaterialUI from '@material-ui/core'
 import {
   HostRules,
   Rule,
-} from '../../gen/api-client'
+} from 'redirector-client'
 
 import ButtonLink from './ButtonLink'
 
