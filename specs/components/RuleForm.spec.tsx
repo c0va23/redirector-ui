@@ -15,7 +15,7 @@ import {
 import {
   Rule,
   Target,
-} from '../../gen/api-client'
+} from 'redirector-client'
 import RuleForm from '../../src/components/RuleForm'
 import TargetForm from '../../src/components/TargetForm'
 
@@ -26,9 +26,8 @@ import {
 import { randomPath } from '../factories/PathFactory'
 import { randomDate } from '../factories/DateFactory'
 
-function formatInputDateTimeLocale(dateTime: Date): string {
-  return moment(dateTime).format("YYYY-MM-DDTHH:mm")
-}
+const formatInputDateTimeLocale = (dateTime: Date): string =>
+  moment(dateTime).format('YYYY-MM-DDTHH:mm')
 
 describe('RuleForm', () => {
   let rule: Rule
@@ -55,7 +54,7 @@ describe('RuleForm', () => {
     const fieldName = 'sourcePath'
 
     beforeEach(() => {
-      sourcePathField = ruleForm.find(TextField).filter({name: fieldName})
+      sourcePathField = ruleForm.find(TextField).filter({ name: fieldName })
     })
 
     it('have label', () => {
@@ -73,15 +72,12 @@ describe('RuleForm', () => {
         newSourcePath = randomPath()
         sourcePathField
           .find('input')
-          .simulate(
-            'change',
-            {
-              target: {
-                name: fieldName,
-                value: newSourcePath,
-              }
-            }
-          )
+          .simulate('change', {
+            target: {
+              name: fieldName,
+              value: newSourcePath,
+            },
+          })
       })
 
       it('call update rule callback', () => {
@@ -116,15 +112,12 @@ describe('RuleForm', () => {
         newDate = randomDate()
         activeFromField
           .find('input')
-          .simulate(
-            'change',
-            {
-              target: {
-                name: fieldName,
-                value: formatInputDateTimeLocale(newDate),
-              },
+          .simulate('change', {
+            target: {
+              name: fieldName,
+              value: formatInputDateTimeLocale(newDate),
             },
-          )
+          })
       })
 
       it('call update rule callback', () => {
@@ -141,7 +134,7 @@ describe('RuleForm', () => {
           rule: {
             ...rule,
             activeFrom: null,
-          }
+          },
         })
         activeFromField = ruleForm.find(TextField).filter({ name: fieldName })
       })
@@ -175,15 +168,12 @@ describe('RuleForm', () => {
         newDate = randomDate()
         activeToField
           .find('input')
-          .simulate(
-            'change',
-            {
-              target: {
-                name: fieldName,
-                value: formatInputDateTimeLocale(newDate),
-              },
+          .simulate('change', {
+            target: {
+              name: fieldName,
+              value: formatInputDateTimeLocale(newDate),
             },
-          )
+          })
       })
 
       it('call update rule callback', () => {
@@ -198,18 +188,15 @@ describe('RuleForm', () => {
       beforeEach(() => {
         activeToField
           .find('input')
-          .simulate(
-            'change',
-            {
-              target: {
-                name: fieldName,
-                value: '',
-              },
+          .simulate('change', {
+            target: {
+              name: fieldName,
+              value: '',
             },
-          )
+          })
       })
 
-      it('call upate rule callback with null activeTo', () => {
+      it('call update rule callback with null activeTo', () => {
         expect(updateRuleCb).toBeCalledWith({
           ...rule,
           activeTo: null,
@@ -240,15 +227,17 @@ describe('RuleForm', () => {
     describe('on change', () => {
       let newResolver: Rule.ResolverEnum
 
+      type OnChange = (event: {
+        preventDefault: () => void,
+        target: {
+          name: string,
+          value: Rule.ResolverEnum,
+        },
+      }) => void
+
       beforeEach(() => {
         newResolver = randomResolver()
-        let onChange = resolverSelect.prop('onChange') as (event: {
-          preventDefault: () => void,
-          target: {
-            name: string,
-            value: Rule.ResolverEnum,
-          },
-        }) => void
+        let onChange: OnChange = resolverSelect.prop('onChange')
 
         onChange({
           preventDefault: jest.fn(),
@@ -282,8 +271,10 @@ describe('RuleForm', () => {
     describe('on update target', () => {
       let newTarget: Target
 
+      type OnUpdateTarget = (Target) => void
+
       beforeEach(() => {
-        let onUpdateTarget = targetForm.prop('onUpdateTarget') as (Target) => void
+        let onUpdateTarget: OnUpdateTarget = targetForm.prop('onUpdateTarget')
         onUpdateTarget(newTarget)
       })
 

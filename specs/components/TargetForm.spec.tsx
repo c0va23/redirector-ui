@@ -2,7 +2,7 @@ import * as React from 'react'
 import TargetForm from '../../src/components/TargetForm'
 
 import { mount, ReactWrapper } from 'enzyme'
-import { Target } from '../../gen/api-client'
+import { Target } from 'redirector-client'
 import { randomTarget, randomHttpCode } from '../factories/TargetFactory'
 import { randomPath } from '../factories/PathFactory'
 
@@ -45,15 +45,12 @@ describe('TargetForm', () => {
       beforeEach(() => {
         newHttpCode = randomHttpCode()
         httpCodeField.find('input')
-          .simulate(
-            'change',
-            {
-              target: {
-                name: 'httpCode',
-                value: newHttpCode,
-              },
+          .simulate('change', {
+            target: {
+              name: 'httpCode',
+              value: newHttpCode,
             },
-          )
+          })
       })
 
       it('call update target callback', () => {
@@ -87,15 +84,12 @@ describe('TargetForm', () => {
         newPath = randomPath()
         pathField
           .find('input')
-          .simulate(
-            'change',
-            {
-              target: {
-                name: 'path',
-                value: newPath,
-              },
+          .simulate('change', {
+            target: {
+              name: 'path',
+              value: newPath,
             },
-          )
+          })
       })
 
       it('call update target callback', () => {

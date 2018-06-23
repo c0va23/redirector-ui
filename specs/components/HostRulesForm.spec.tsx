@@ -4,7 +4,7 @@ import HostRulesForm from '../../src/components/HostRulesForm'
 import TargetForm from '../../src/components/TargetForm'
 import RuleForm from '../../src/components/RuleForm'
 
-import { HostRules, Target } from '../../gen/api-client/index'
+import { HostRules } from 'redirector-client'
 
 import * as Faker from 'faker'
 import * as TargetFactory from '../factories/TargetFactory'
@@ -55,18 +55,18 @@ describe('HostRulesForm', () => {
     describe('on change', () => {
       let newHost: string
 
+      type OnChangeFn = (event: {
+        preventDefault: () => void,
+        target: {
+          name: string,
+          value: string,
+        },
+      }) => void
+
       beforeEach(() => {
         newHost = Faker.internet.domainName()
 
-        let onChange = hostField.prop('onChange') as (
-          event: {
-            preventDefault: () => void,
-            target: {
-              name: string,
-              value: string,
-            },
-          }
-        ) => void
+        let onChange: OnChangeFn = hostField.prop('onChange')
 
         onChange({
           preventDefault: jest.fn(),
@@ -89,6 +89,8 @@ describe('HostRulesForm', () => {
   describe('target form', () => {
     let targetForm: ReactWrapper
 
+    type OnUpdateTargetFn = (Target) => void
+
     beforeEach(() => {
       targetForm = hostRulesForm.find(TargetForm).first()
     })
@@ -99,7 +101,7 @@ describe('HostRulesForm', () => {
 
     it('update target on TargetForm.onChange', () => {
       let target = TargetFactory.randomTarget()
-      let onUpdateTarget = targetForm.prop('onUpdateTarget') as (Target) => void
+      let onUpdateTarget: OnUpdateTargetFn = targetForm.prop('onUpdateTarget')
       onUpdateTarget(target)
 
       expect(hostRulesChangedCb).toBeCalledWith({
@@ -136,7 +138,7 @@ describe('HostRulesForm', () => {
               RuleFactory.newRule(),
               RuleFactory.newRule(),
             ],
-          }
+          },
         })
       })
 
@@ -212,7 +214,7 @@ describe('HostRulesForm', () => {
     describe('on error callback', () => {
       let errorMessage = 'error message'
       let responseBuilder = () => ({
-        text: jest.fn().mockResolvedValue(errorMessage)
+        text: jest.fn().mockResolvedValue(errorMessage),
       })
 
       beforeEach(() => {

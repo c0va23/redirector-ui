@@ -1,11 +1,11 @@
-import { HostRules } from "../../gen/api-client";
-import { newTarget, randomTarget } from "./TargetFactory";
+import { HostRules } from 'redirector-client'
+import { newTarget, randomTarget } from './TargetFactory'
 
 import * as Faker from 'faker'
-import { randomRule } from "./RuleFactory";
-import { randomArray } from "./ArrayFactory";
+import { randomRule } from './RuleFactory'
+import { randomArray } from './ArrayFactory'
 
-export function newHostRules(): HostRules {
+export function newHostRules (): HostRules {
   return {
     host: '',
     defaultTarget: newTarget(),
@@ -13,10 +13,10 @@ export function newHostRules(): HostRules {
   }
 }
 
-export function randomHostRules(): HostRules {
+export function randomHostRules (): HostRules {
   return {
     host: Faker.internet.domainName(),
     defaultTarget: randomTarget(),
-    rules: randomArray(randomRule, 1, 5)
+    rules: randomArray(randomRule, 1, 5),
   }
 }

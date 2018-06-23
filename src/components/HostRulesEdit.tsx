@@ -71,7 +71,7 @@ class HostRulesEdit extends React.Component<
   private renderForm (hostRule: HostRules): JSX.Element {
     return <HostRulesForm
       hostRules={hostRule}
-      onSave={this.onSave}
+      onSave={this.onSave(hostRule)}
       onHostRulesChanged={this.updateHostRules}
     />
   }
@@ -84,18 +84,17 @@ class HostRulesEdit extends React.Component<
       .catch(console.log)
   }
 
-  private onSave = (onSuccess: () => void, onError: (response: Response) => void) =>
-    this.props
-      .configApi
-      .updateHostRules(this.props.match.params.host, this.state.hostRules!)
-      .then((hostRules: HostRules) => {
-        onSuccess()
-        this.onSuccessSave(hostRules)
-      })
-      .catch((error: any) => {
-        console.error(error)
-        onError(error)
-      })
+  private onSave = (hostRules: HostRules) =>
+    (onSuccess: () => void, onError: (response: Response) => void) =>
+      this.props
+        .configApi
+        .updateHostRules(this.props.match.params.host, hostRules)
+        .then(this.onSuccessSave)
+        .then(onSuccess)
+        .catch((error: any) => {
+          console.error(error)
+          onError(error)
+        })
 
   private updateHostRules = (hostRules: HostRules) => {
     this.setState({ hostRules })
