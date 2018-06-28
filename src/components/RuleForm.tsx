@@ -7,11 +7,14 @@ import { Rule, Target } from 'redirector-client'
 
 import TargetForm from './TargetForm'
 
+export type OnUpdateRule = (rule: Rule) => void
+export type OnRemoveRule = () => void
+
 interface Props {
   rule: Rule,
   ruleIndex: Number,
-  onUpdateRule: (rule: Rule) => void,
-  onRemoveRule: () => void,
+  onUpdateRule: OnUpdateRule,
+  onRemoveRule: OnRemoveRule,
 }
 
 const downCaseCharRegex = /[a-z]/

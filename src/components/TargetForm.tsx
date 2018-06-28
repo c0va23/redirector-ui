@@ -3,12 +3,14 @@ import * as MaterialUI from '@material-ui/core'
 
 import { Target } from 'redirector-client'
 
-interface Props {
+export type OnUpdateTarget = (target: Target) => void
+
+export interface TargetFormProps {
   target: Target,
-  onUpdateTarget: (target: Target) => void,
+  onUpdateTarget: OnUpdateTarget,
 }
 
-export default class TargetForm extends React.Component<Props> {
+export default class TargetForm extends React.Component<TargetFormProps> {
   render () {
     return <MaterialUI.FormGroup>
       <MaterialUI.TextField

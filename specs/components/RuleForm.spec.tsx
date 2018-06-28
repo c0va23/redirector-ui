@@ -17,7 +17,10 @@ import {
   Target,
 } from 'redirector-client'
 import RuleForm from '../../src/components/RuleForm'
-import TargetForm from '../../src/components/TargetForm'
+import TargetForm, {
+  OnUpdateTarget,
+  TargetFormProps,
+} from '../../src/components/TargetForm'
 
 import {
   randomRule,
@@ -25,6 +28,7 @@ import {
 } from '../factories/RuleFactory'
 import { randomPath } from '../factories/PathFactory'
 import { randomDate } from '../factories/DateFactory'
+import { InputProps } from '@material-ui/core/Input'
 
 const formatInputDateTimeLocale = (dateTime: Date): string =>
   moment(dateTime).format('YYYY-MM-DDTHH:mm')
@@ -102,7 +106,8 @@ describe('RuleForm', () => {
     })
 
     it('have value', () => {
-      expect(activeFromField.prop('value')).toEqual(formatInputDateTimeLocale(rule.activeFrom))
+      let formattedValue = formatInputDateTimeLocale(rule.activeFrom as Date)
+      expect(activeFromField.prop('value')).toEqual(formattedValue)
     })
 
     describe('update event', () => {
@@ -158,7 +163,8 @@ describe('RuleForm', () => {
     })
 
     it('have value', () => {
-      expect(activeToField.prop('value')).toEqual(formatInputDateTimeLocale(rule.activeTo))
+      let formattedValue = formatInputDateTimeLocale(rule.activeTo as Date)
+      expect(activeToField.prop('value')).toEqual(formattedValue)
     })
 
     describe('change event', () => {
@@ -218,8 +224,9 @@ describe('RuleForm', () => {
     })
 
     it('have label', () => {
+      let inputProps: InputProps = resolverSelect.prop('inputProps')
       let inputLabel = ruleForm.find(InputLabel).filter({
-        htmlFor: resolverSelect.prop('inputProps')['id'],
+        htmlFor: inputProps['id'],
       })
       expect(inputLabel.text()).toEqual(expect.stringContaining('Resolver'))
     })
@@ -258,10 +265,10 @@ describe('RuleForm', () => {
   })
 
   describe('target fields', () => {
-    let targetForm: ReactWrapper
+    let targetForm: ReactWrapper<TargetFormProps, any>
 
     beforeEach(() => {
-      targetForm = ruleForm.find(TargetForm)
+      targetForm = ruleForm.find(TargetForm).first()
     })
 
     it('have value', () => {
@@ -270,8 +277,6 @@ describe('RuleForm', () => {
 
     describe('on update target', () => {
       let newTarget: Target
-
-      type OnUpdateTarget = (Target) => void
 
       beforeEach(() => {
         let onUpdateTarget: OnUpdateTarget = targetForm.prop('onUpdateTarget')

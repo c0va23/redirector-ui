@@ -1,8 +1,18 @@
 import * as React from 'react'
+import {
+  TextField,
+  Button,
+  Snackbar,
+} from '@material-ui/core'
 
 import HostRulesForm from '../../src/components/HostRulesForm'
-import TargetForm from '../../src/components/TargetForm'
-import RuleForm from '../../src/components/RuleForm'
+import TargetForm, {
+  TargetFormProps,
+  OnUpdateTarget,
+} from '../../src/components/TargetForm'
+import RuleForm, {
+  OnUpdateRule,
+} from '../../src/components/RuleForm'
 
 import { HostRules } from 'redirector-client'
 
@@ -41,7 +51,10 @@ describe('HostRulesForm', () => {
     let hostField: ReactWrapper
 
     beforeEach(() => {
-      hostField = hostRulesForm.find('TextField[name="host"]').first()
+      hostField = hostRulesForm
+        .find(TextField)
+        .filter({ name: 'host' })
+        .first()
     })
 
     it('host field have label', () => {
@@ -87,9 +100,7 @@ describe('HostRulesForm', () => {
   })
 
   describe('target form', () => {
-    let targetForm: ReactWrapper
-
-    type OnUpdateTargetFn = (Target) => void
+    let targetForm: ReactWrapper<TargetFormProps, any>
 
     beforeEach(() => {
       targetForm = hostRulesForm.find(TargetForm).first()
@@ -101,7 +112,7 @@ describe('HostRulesForm', () => {
 
     it('update target on TargetForm.onChange', () => {
       let target = TargetFactory.randomTarget()
-      let onUpdateTarget: OnUpdateTargetFn = targetForm.prop('onUpdateTarget')
+      let onUpdateTarget: OnUpdateTarget = targetForm.prop('onUpdateTarget')
       onUpdateTarget(target)
 
       expect(hostRulesChangedCb).toBeCalledWith({
@@ -116,7 +127,8 @@ describe('HostRulesForm', () => {
 
     beforeEach(() => {
       addRuleButton = hostRulesForm
-        .find('Button[name="addRule"]')
+        .find(Button)
+        .filter({ name : 'addRule' })
         .first()
     })
 
@@ -159,7 +171,7 @@ describe('HostRulesForm', () => {
         let newRule = RuleFactory.randomRule()
 
         let ruleForm = hostRulesForm.find(RuleForm).at(1)
-        let onUpdateRule = ruleForm.prop('onUpdateRule') as (Rule) => void
+        let onUpdateRule: OnUpdateRule = ruleForm.prop('onUpdateRule')
         onUpdateRule(newRule)
 
         expect(hostRulesChangedCb).toBeCalledWith({
@@ -189,7 +201,8 @@ describe('HostRulesForm', () => {
   describe('click Save button', () => {
     beforeEach(() => {
       hostRulesForm
-        .find('Button[type="submit"]')
+        .find(Button)
+        .filter({ type: 'submit' })
         .first()
         .simulate('submit')
     })
@@ -201,8 +214,8 @@ describe('HostRulesForm', () => {
     describe('on success callback', () => {
       let snackbar: ReactWrapper
       beforeEach(() => {
-        snackbar = hostRulesForm.find('Snackbar')
-        let [ onSuccess, _onError ] = saveCb.mock.calls[0]
+        snackbar = hostRulesForm.find(Snackbar)
+        let [ onSuccess ] = saveCb.mock.calls[0]
         onSuccess()
       })
 
@@ -218,12 +231,12 @@ describe('HostRulesForm', () => {
       })
 
       beforeEach(() => {
-        let [_onSuccess, onError ] = saveCb.mock.calls[0]
+        let [ , onError ] = saveCb.mock.calls[0]
         onError(responseBuilder())
       })
 
       it('show error message', () => {
-        expect(hostRulesForm.find('Snackbar').text())
+        expect(hostRulesForm.find(Snackbar).text())
           .toEqual(expect.stringContaining(errorMessage))
       })
     })
