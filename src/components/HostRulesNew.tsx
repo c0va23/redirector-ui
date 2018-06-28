@@ -8,10 +8,13 @@ import * as Styles from '@material-ui/core/styles'
 
 import {
   HostRules,
-  ConfigApi,
+  ConfigApiInterface,
 } from 'redirector-client'
 
-import HostRulesForm from './HostRulesForm'
+import HostRulesForm, {
+  SuccessSaveCb,
+  ErrorSaveCb,
+} from './HostRulesForm'
 import ButtonLink from './ButtonLink'
 
 const styles: Styles.StyleRulesCallback = (theme) => ({
@@ -25,7 +28,7 @@ const styles: Styles.StyleRulesCallback = (theme) => ({
 })
 
 interface Props {
-  configApi: ConfigApi,
+  configApi: ConfigApiInterface,
 }
 
 class HostRulesNew extends React.Component<
@@ -59,14 +62,15 @@ class HostRulesNew extends React.Component<
     </div>
   }
 
-  private onSave = (onSuccess: () => void, onError: (response: Response) => void) =>
+  private onSave = (
+    onSuccess: SuccessSaveCb,
+    onError: ErrorSaveCb,
+  ) =>
     this.props
       .configApi
       .createHostRules(this.state)
-      .then((hostRules: HostRules) => {
-        onSuccess()
-        this.redirectToEditPage(hostRules)
-      })
+      .then(this.redirectToEditPage)
+      .then(onSuccess)
       .catch((error) => {
         console.error(error)
         onError(error)

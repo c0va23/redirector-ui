@@ -27,13 +27,20 @@ const styles: Styles.StyleRulesCallback = (theme) => ({
   },
 })
 
-type successCallback = () => void
-type errorCallback = (response: Response) => void
+export type OnChange = (hostRules: HostRules) => void
+
+export type SuccessSaveCb = () => void
+export type ErrorSaveCb = (response: Response) => void
+
+export type OnSave = (
+  onSuccess: SuccessSaveCb,
+  onError: ErrorSaveCb,
+) => void
 
 interface Props {
   hostRules: HostRules,
-  onHostRulesChanged: (hostRules: HostRules) => void,
-  onSave: (onSuccess: successCallback, onError: errorCallback) => void,
+  onHostRulesChanged: OnChange,
+  onSave: OnSave,
 }
 
 interface Message {
