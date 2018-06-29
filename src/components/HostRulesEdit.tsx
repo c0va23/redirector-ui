@@ -8,7 +8,7 @@ import * as MaterialUI from '@material-ui/core'
 
 import {
   HostRules,
-  ConfigApi,
+  ConfigApiInterface,
 } from 'redirector-client'
 
 import HostRulesForm from './HostRulesForm'
@@ -28,8 +28,8 @@ interface MatchParams {
   host: string
 }
 
-interface Props {
-  configApi: ConfigApi
+export interface HostRulesEditProps {
+  configApi: ConfigApiInterface
 }
 
 class State {
@@ -37,7 +37,7 @@ class State {
 }
 
 class HostRulesEdit extends React.Component<
-  Props
+  HostRulesEditProps
   & RouteComponentProps<MatchParams>
   & Styles.WithStyles
   , State
@@ -50,7 +50,10 @@ class HostRulesEdit extends React.Component<
 
   render () {
     return <div>
-      <ButtonLink to='/host_rules_list' className={this.props.classes.backButton}>
+      <ButtonLink
+        to='/host_rules_list'
+        className={this.props.classes.backButton}
+      >
         List
       </ButtonLink>
 
@@ -76,13 +79,12 @@ class HostRulesEdit extends React.Component<
     />
   }
 
-  private fetchHostRules = () => {
+  private fetchHostRules = () =>
     this.props
       .configApi
       .getHostRule(this.props.match.params.host)
       .then(hostRules => this.setState({ hostRules }))
-      .catch(console.log)
-  }
+      .catch(console.error)
 
   private onSave = (hostRules: HostRules) =>
     (onSuccess: () => void, onError: (response: Response) => void) =>
@@ -91,7 +93,7 @@ class HostRulesEdit extends React.Component<
         .updateHostRules(this.props.match.params.host, hostRules)
         .then(this.onSuccessSave)
         .then(onSuccess)
-        .catch((error: any) => {
+        .catch((error: Response) => {
           console.error(error)
           onError(error)
         })
