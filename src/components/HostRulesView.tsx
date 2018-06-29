@@ -8,12 +8,14 @@ import {
 
 import ButtonLink from './ButtonLink'
 
-interface Props {
+export type OnDeleteHostRules = (host: string) => void
+
+export interface HostRulesViewProps {
   hostRules: HostRules,
-  onDelete: (host: string) => void,
+  onDelete: OnDeleteHostRules,
 }
 
-export default class HostRulesView extends React.Component<Props> {
+export default class HostRulesView extends React.Component<HostRulesViewProps> {
   render () {
     return <div>
       {this.renderHostRules(this.props.hostRules)}
@@ -27,7 +29,7 @@ export default class HostRulesView extends React.Component<Props> {
         {hostRules.host}
       </MaterialUI.Typography>
 
-      <MaterialUI.Button onClick={this.onDelete}>
+      <MaterialUI.Button name='delete' onClick={this.onDelete}>
         Delete
       </MaterialUI.Button>
       <ButtonLink to={`/host_rules_list/${hostRules.host}/edit`}>
@@ -62,8 +64,12 @@ export default class HostRulesView extends React.Component<Props> {
             <MaterialUI.TableCell>{rule.sourcePath}</MaterialUI.TableCell>
             <MaterialUI.TableCell>{rule.target.httpCode}</MaterialUI.TableCell>
             <MaterialUI.TableCell>{rule.target.path}</MaterialUI.TableCell>
-            <MaterialUI.TableCell>{rule.activeFrom}</MaterialUI.TableCell>
-            <MaterialUI.TableCell>{rule.activeTo}</MaterialUI.TableCell>
+            <MaterialUI.TableCell>
+              {rule.activeFrom && rule.activeFrom.toISOString()}
+            </MaterialUI.TableCell>
+            <MaterialUI.TableCell>
+              {rule.activeTo && rule.activeTo.toISOString()}
+            </MaterialUI.TableCell>
           </MaterialUI.TableRow>)}
       </MaterialUI.TableBody>
     </MaterialUI.Table>
