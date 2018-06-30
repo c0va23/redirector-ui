@@ -3,12 +3,14 @@ import * as MaterialUI from '@material-ui/core'
 import * as Styles from '@material-ui/core/styles'
 
 import {
-  ConfigApi,
   HostRules,
+  ConfigApiInterface,
 } from 'redirector-client'
 
 import ButtonLink from './ButtonLink'
 import HostRulesView from './HostRulesView'
+import ErrorView from './ErrorView'
+import Loader from './Loader'
 
 const styles: Styles.StyleRulesCallback = (theme) => ({
   listItemWrapper: {
@@ -20,11 +22,12 @@ const styles: Styles.StyleRulesCallback = (theme) => ({
 })
 
 interface HostRulesListProps {
-  configApi: ConfigApi
+  configApi: ConfigApiInterface
 }
 
 class HostRulesListState {
   hostRulesList?: Array<HostRules>
+  errorResponse?: Response
 }
 
 class HostRulesList extends React.Component<
@@ -39,16 +42,28 @@ class HostRulesList extends React.Component<
   }
 
   render () {
+    if (this.state.errorResponse !== undefined) {
+      return <ErrorView response={this.state.errorResponse} />
+    }
+
+    if (this.state.hostRulesList !== undefined) {
+      return this.renderList(this.state.hostRulesList)
+    }
+
+    return <Loader label='List loading' />
+  }
+
+  private renderList (hostRulesList: Array<HostRules>) {
     return <div>
       <ButtonLink
         to='/host_rules_list/new'
         className={this.props.classes.newButton}
+        name='new'
       >
         New
       </ButtonLink>
 
-      {this.state.hostRulesList &&
-        this.state.hostRulesList.map(this.renderHostRules)}
+      {hostRulesList.map(this.renderHostRules)}
     </div>
   }
 
@@ -56,12 +71,16 @@ class HostRulesList extends React.Component<
     this.props
       .configApi
       .listHostRules()
-      .then(this.setHostRulesList.bind(this))
-      .catch(console.error)
+      .then(this.setHostRulesList)
+      .catch(this.setError)
   }
 
-  private setHostRulesList (hostRulesList: Array<HostRules>) {
+  private setHostRulesList = (hostRulesList: Array<HostRules>) =>
     this.setState({ hostRulesList })
+
+  private setError = (errorResponse: Response) => {
+    console.error(errorResponse)
+    this.setState({ errorResponse })
   }
 
   private renderHostRules = (hostRules: HostRules) =>
