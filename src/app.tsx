@@ -6,6 +6,7 @@ import {
   Switch,
 } from 'react-router-dom'
 import * as MaterialUI from '@material-ui/core'
+import * as Styles from '@material-ui/core/styles'
 
 import { ConfigApi } from 'redirector-client'
 import Config from './Config'
@@ -25,7 +26,16 @@ const HOST_RULES_NEW_PATH = HOST_RULES_LIST_PATH + '/new'
 
 const CONFIG_KEY = 'config'
 
-export class App extends React.Component<any, AppState> {
+const styles: Styles.StyleRulesCallback =
+  (_theme) => ({
+    wrapper: {
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+    },
+  })
+
+class App extends React.Component<Styles.WithStyles, AppState> {
   state = new AppState()
 
   componentDidMount () {
@@ -33,7 +43,7 @@ export class App extends React.Component<any, AppState> {
   }
 
   render () {
-    return <div>
+    return <div className={this.props.classes.wrapper}>
       <MaterialUI.CssBaseline />
 
       <MaterialUI.AppBar position='sticky' color='default'>
@@ -128,3 +138,5 @@ export class App extends React.Component<any, AppState> {
     sessionStorage.removeItem(CONFIG_KEY)
   }
 }
+
+export default MaterialUI.withStyles(styles)(App)
