@@ -17,7 +17,7 @@ import ButtonLink from './ButtonLink'
 import ErrorView from './ErrorView'
 import Loader from './Loader'
 
-const logger = log.getLogger(module.id)
+const logger = log.getLogger('HostRulesEdit')
 
 const styles: Styles.StyleRulesCallback = (theme) => ({
   paper: {

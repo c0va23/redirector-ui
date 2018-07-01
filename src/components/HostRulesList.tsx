@@ -13,7 +13,7 @@ import HostRulesView from './HostRulesView'
 import ErrorView from './ErrorView'
 import Loader from './Loader'
 
-const logger = log.getLogger(module.id)
+const logger = log.getLogger('HostRulesList')
 
 const styles: Styles.StyleRulesCallback = (theme) => ({
   listItemWrapper: {

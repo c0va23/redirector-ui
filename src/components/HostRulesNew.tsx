@@ -18,7 +18,7 @@ import HostRulesForm, {
 } from './HostRulesForm'
 import ButtonLink from './ButtonLink'
 
-const logger = log.getLogger(module.id)
+const logger = log.getLogger('HostRulesNew')
 
 const styles: Styles.StyleRulesCallback = (theme) => ({
   paper: {

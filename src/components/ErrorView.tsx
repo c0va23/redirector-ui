@@ -6,7 +6,7 @@ import withStyles, {
 import { Typography, Grid } from '@material-ui/core'
 import * as log from 'loglevel'
 
-const logger = log.getLogger(module.id)
+const logger = log.getLogger('ErrorView')
 
 const styles: StyleRulesCallback = (theme) => ({
   container: {
