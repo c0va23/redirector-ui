@@ -3,10 +3,10 @@ import { MemoryRouter, Route } from 'react-router'
 import { History } from 'history'
 
 import ButtonLink from '../../src/components/ButtonLink'
+import ErrorView from '../../src/components/ErrorView'
+import Loader from '../../src/components/Loader'
 import { HostRules } from 'redirector-client'
-import HostRulesEdit, {
-  HostRulesEditProps,
-} from '../../src/components/HostRulesEdit'
+import HostRulesEdit from '../../src/components/HostRulesEdit'
 import HostRulesForm, {
   OnChange,
   OnSave,
@@ -18,25 +18,28 @@ import { ReactWrapper, mount } from 'enzyme'
 
 import { ConfigApiMock } from '../mocks/ConfigApiMock'
 import { randomHostRules } from '../factories/HostRulesFactory'
+import { randomResponse } from '../factories/ResponseFactory'
 
 describe('HostRulesEdit', () => {
   let configApiMock: ConfigApiMock
   let hostRules: HostRules
   let hostRulesEditWrapper: ReactWrapper
-  let hostRulesEdit: ReactWrapper<HostRulesEditProps, any>
+
+  let hostRulesEdit = () => hostRulesEditWrapper.find(HostRulesEdit).first()
 
   let hostRulesForm = () => hostRulesEditWrapper
     .update()
     .find(HostRulesForm)
     .first()
 
-  let updateWrapper = (wrapper: ReactWrapper) => {
-    hostRulesEditWrapper = wrapper.update()
-    hostRulesEdit = hostRulesEditWrapper.find(HostRulesEdit).first()
-  }
+  let waitLoading = () =>
+    configApiMock
+      .getHostRule()
+      .then(() => hostRulesEditWrapper = hostRulesEditWrapper.update())
+      .catch(() => hostRulesEditWrapper = hostRulesEditWrapper.update())
 
-  let buildHostRulesEdit = () => {
-    let wrapper = mount(<MemoryRouter
+  let buildHostRulesEdit = () =>
+    hostRulesEditWrapper = mount(<MemoryRouter
       initialEntries={[`/host_rules_list/${hostRules.host}/edit`]}
       initialIndex={0}
     >
@@ -47,14 +50,22 @@ describe('HostRulesEdit', () => {
       </Route>
     </MemoryRouter>)
 
-    return configApiMock.getHostRule()
-      .then(() => updateWrapper(wrapper))
-      .catch(() => updateWrapper(wrapper))
-  }
-
   beforeEach(() => {
     configApiMock = new ConfigApiMock()
     hostRules = randomHostRules()
+  })
+
+  describe('loader', () => {
+    beforeEach(() => {
+      configApiMock.getHostRuleMock.mockResolvedValue(hostRules)
+
+      buildHostRulesEdit()
+    })
+
+    it('render loader', () => {
+      let loader = hostRulesEditWrapper.find(Loader).first()
+      expect(loader.prop('label')).toEqual('Host rules loading...')
+    })
   })
 
   describe('list link', () => {
@@ -63,7 +74,9 @@ describe('HostRulesEdit', () => {
     beforeEach(() => {
       configApiMock.getHostRuleMock.mockResolvedValue(hostRules)
 
-      return buildHostRulesEdit()
+      buildHostRulesEdit()
+
+      return waitLoading()
     })
 
     it('have link to list', () => {
@@ -75,21 +88,20 @@ describe('HostRulesEdit', () => {
     })
   })
 
-  describe('when host rules not found', () => {
+  describe('when get host rules error', () => {
     let errorResponse: Response
 
     beforeEach(() => {
-      errorResponse = new Response(undefined, {
-        status: 404,
-        statusText: 'Not Found',
-      })
+      errorResponse = randomResponse()
       configApiMock.getHostRuleMock.mockRejectedValue(errorResponse)
 
-      return buildHostRulesEdit()
+      buildHostRulesEdit()
+
+      return waitLoading()
     })
 
     it('render HostRulesEdit', () => {
-      expect(hostRulesEdit).toHaveLength(1)
+      expect(hostRulesEdit()).toHaveLength(1)
     })
 
     it('call fetch called', () => {
@@ -100,8 +112,9 @@ describe('HostRulesEdit', () => {
       expect(hostRulesForm()).toHaveLength(0)
     })
 
-    it('render text "Loading"', () => {
-      expect(hostRulesEdit.text()).toMatch(/Loading/)
+    it('render text error view', () => {
+      let errorView = hostRulesEdit().find(ErrorView).first()
+      expect(errorView.prop('response')).toEqual(errorResponse)
     })
   })
 
@@ -109,7 +122,9 @@ describe('HostRulesEdit', () => {
     beforeEach(() => {
       configApiMock.getHostRuleMock.mockResolvedValue(hostRules)
 
-      return buildHostRulesEdit()
+      buildHostRulesEdit()
+
+      return waitLoading()
     })
 
     it('call fetch called', () => {

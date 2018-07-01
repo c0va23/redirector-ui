@@ -13,6 +13,8 @@ import {
 
 import HostRulesForm from './HostRulesForm'
 import ButtonLink from './ButtonLink'
+import ErrorView from './ErrorView'
+import Loader from './Loader'
 
 const styles: Styles.StyleRulesCallback = (theme) => ({
   paper: {
@@ -34,6 +36,7 @@ export interface HostRulesEditProps {
 
 class State {
   hostRules?: HostRules
+  errorResponse?: Response
 }
 
 class HostRulesEdit extends React.Component<
@@ -49,6 +52,18 @@ class HostRulesEdit extends React.Component<
   }
 
   render () {
+    if (undefined !== this.state.errorResponse) {
+      return <ErrorView response={this.state.errorResponse} />
+    }
+
+    if (undefined !== this.state.hostRules) {
+      return this.renderForm(this.state.hostRules)
+    }
+
+    return <Loader label='Host rules loading...' />
+  }
+
+  private renderForm (hostRule: HostRules): JSX.Element {
     return <div>
       <ButtonLink
         to='/host_rules_list'
@@ -58,25 +73,13 @@ class HostRulesEdit extends React.Component<
       </ButtonLink>
 
       <MaterialUI.Paper className={this.props.classes.paper}>
-        {this.state.hostRules === undefined
-          ? this.renderLoading()
-          : this.renderForm(this.state.hostRules)}
+        <HostRulesForm
+          hostRules={hostRule}
+          onSave={this.onSave(hostRule)}
+          onHostRulesChanged={this.updateHostRules}
+        />
       </MaterialUI.Paper>
     </div>
-  }
-
-  private renderLoading (): JSX.Element {
-    return <div>
-      Loading...
-    </div>
-  }
-
-  private renderForm (hostRule: HostRules): JSX.Element {
-    return <HostRulesForm
-      hostRules={hostRule}
-      onSave={this.onSave(hostRule)}
-      onHostRulesChanged={this.updateHostRules}
-    />
   }
 
   private fetchHostRules = () =>
@@ -84,7 +87,7 @@ class HostRulesEdit extends React.Component<
       .configApi
       .getHostRule(this.props.match.params.host)
       .then(hostRules => this.setState({ hostRules }))
-      .catch(console.error)
+      .catch(errorResponse => this.setState({ errorResponse }))
 
   private onSave = (hostRules: HostRules) =>
     (onSuccess: () => void, onError: (response: Response) => void) =>
