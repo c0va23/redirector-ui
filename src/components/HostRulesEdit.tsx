@@ -5,6 +5,7 @@ import {
 } from 'react-router-dom'
 import * as Styles from '@material-ui/core/styles'
 import * as MaterialUI from '@material-ui/core'
+import * as log from 'loglevel'
 
 import {
   HostRules,
@@ -15,6 +16,8 @@ import HostRulesForm from './HostRulesForm'
 import ButtonLink from './ButtonLink'
 import ErrorView from './ErrorView'
 import Loader from './Loader'
+
+const logger = log.getLogger(module.id)
 
 const styles: Styles.StyleRulesCallback = (theme) => ({
   paper: {
@@ -97,7 +100,7 @@ class HostRulesEdit extends React.Component<
         .then(this.onSuccessSave)
         .then(onSuccess)
         .catch((error: Response) => {
-          console.error(error)
+          logger.error(error)
           onError(error)
         })
 

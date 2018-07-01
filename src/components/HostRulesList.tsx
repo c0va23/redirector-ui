@@ -1,6 +1,7 @@
 import * as React from 'react'
 import * as MaterialUI from '@material-ui/core'
 import * as Styles from '@material-ui/core/styles'
+import * as log from 'loglevel'
 
 import {
   HostRules,
@@ -11,6 +12,8 @@ import ButtonLink from './ButtonLink'
 import HostRulesView from './HostRulesView'
 import ErrorView from './ErrorView'
 import Loader from './Loader'
+
+const logger = log.getLogger(module.id)
 
 const styles: Styles.StyleRulesCallback = (theme) => ({
   listItemWrapper: {
@@ -79,7 +82,7 @@ class HostRulesList extends React.Component<
     this.setState({ hostRulesList })
 
   private setError = (errorResponse: Response) => {
-    console.error(errorResponse)
+    logger.error(errorResponse)
     this.setState({ errorResponse })
   }
 
@@ -100,7 +103,7 @@ class HostRulesList extends React.Component<
       .configApi
       .deleteHostRules(host)
       .then(() => this.removeHostRulesFromList(host))
-      .catch(console.error)
+      .catch(logger.error)
 
   private removeHostRulesFromList = (host: string) =>
     this.setHostRulesList(

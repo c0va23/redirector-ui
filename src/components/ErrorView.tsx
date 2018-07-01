@@ -4,6 +4,9 @@ import withStyles, {
   WithStyles,
 } from '@material-ui/core/styles/withStyles'
 import { Typography, Grid } from '@material-ui/core'
+import * as log from 'loglevel'
+
+const logger = log.getLogger(module.id)
 
 const styles: StyleRulesCallback = (theme) => ({
   container: {
@@ -62,8 +65,10 @@ class ErrorView extends React.PureComponent<ErrorViewProps & WithStyles, State> 
   componentDidMount () {
     this.props.response.text()
       .then(bodyText => this.setState({ bodyText }))
-      .catch((error: Error) =>
-        this.setState({ bodyText: `${error.name}\n${error.message}` }))
+      .catch((error: Error) => {
+        logger.error(error)
+        this.setState({ bodyText: `${error.name}\n${error.message}` })
+      })
   }
 }
 
