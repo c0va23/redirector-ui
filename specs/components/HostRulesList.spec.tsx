@@ -50,14 +50,12 @@ describe('HostRulesList', () => {
         statusText: 'Unauthorized',
       })
 
-      let callback = () => Promise.reject(errorResponse)
-      let promise = Promise.reject().catch(callback)
-      configApiMock.listHostRulesMock.mockImplementation(() => promise)
+      configApiMock.listHostRulesMock.mockRejectedValue(errorResponse)
 
       renderHostRulesList()
 
-      return promise
-        .catch(() => hostRulesListWrapper = hostRulesListWrapper.update())
+      return new Promise(setImmediate)
+        .then(() => hostRulesListWrapper = hostRulesListWrapper.update())
     })
 
     it('render ErrorView', () => {
