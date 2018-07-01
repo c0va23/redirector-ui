@@ -4,6 +4,7 @@ import * as MaterialUI from '@material-ui/core'
 import {
   HostRules,
   Rule,
+  Target,
 } from 'redirector-client'
 
 import ButtonLink from './ButtonLink'
@@ -19,7 +20,8 @@ export default class HostRulesView extends React.Component<HostRulesViewProps> {
   render () {
     return <div>
       {this.renderHostRules(this.props.hostRules)}
-      {this.renderRules(this.props.hostRules.rules)}
+      {this.renderRules(this.props.hostRules.rules,
+                        this.props.hostRules.defaultTarget)}
     </div>
   }
 
@@ -37,7 +39,7 @@ export default class HostRulesView extends React.Component<HostRulesViewProps> {
       </ButtonLink>
     </MaterialUI.Toolbar>
 
-  private renderRules = (rules: Array<Rule>) =>
+  private renderRules = (rules: Array<Rule>, defaultTarget: Target) =>
     <MaterialUI.Table>
       <MaterialUI.TableHead>
         <MaterialUI.TableRow>
@@ -71,6 +73,13 @@ export default class HostRulesView extends React.Component<HostRulesViewProps> {
               {rule.activeTo && rule.activeTo.toISOString()}
             </MaterialUI.TableCell>
           </MaterialUI.TableRow>)}
+        <MaterialUI.TableRow title='Default target'>
+          <MaterialUI.TableCell>*</MaterialUI.TableCell>
+          <MaterialUI.TableCell>{defaultTarget.httpCode}</MaterialUI.TableCell>
+          <MaterialUI.TableCell>{defaultTarget.path}</MaterialUI.TableCell>
+          <MaterialUI.TableCell />
+          <MaterialUI.TableCell />
+        </MaterialUI.TableRow>
       </MaterialUI.TableBody>
     </MaterialUI.Table>
 

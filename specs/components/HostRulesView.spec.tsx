@@ -42,11 +42,27 @@ describe('HostRulesView', () => {
         .toEqual(expect.stringContaining(hostRules.host))
     })
 
+    it('have default target on last table row', () => {
+      let cells = hostRulesView
+        .find(TableBody)
+        .find(TableRow)
+        .last()
+        .find(TableCell)
+        .slice(1,3)
+        .map(cell => cell.text())
+
+      expect(cells).toEqual([
+        hostRules.defaultTarget.httpCode.toString(),
+        hostRules.defaultTarget.path,
+      ])
+    })
+
     it('have all rules', () => {
       let cells = hostRulesView
         .find(TableBody)
         .find(TableRow)
         .map(row => row.find(TableCell).map(cell => cell.text()))
+        .slice(0, -1)
 
       let values = hostRules.rules.map(rule => [
         rule.sourcePath,
