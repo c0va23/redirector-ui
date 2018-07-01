@@ -3,6 +3,7 @@ import {
   TextField,
   Button,
   Snackbar,
+  IconButton,
 } from '@material-ui/core'
 
 import HostRulesForm from '../../src/components/HostRulesForm'
@@ -214,30 +215,59 @@ describe('HostRulesForm', () => {
     describe('on success callback', () => {
       let snackbar: ReactWrapper
       beforeEach(() => {
-        snackbar = hostRulesForm.find(Snackbar)
         let [ onSuccess ] = saveCb.mock.calls[0]
         onSuccess()
+        snackbar = hostRulesForm.update().find(Snackbar).first()
       })
 
       it('show success message', () => {
         expect(snackbar.first().text()).toMatch(/Success/)
       })
+
+      it('open snackbar', () => {
+        expect(snackbar.prop('open')).toBeTruthy()
+      })
     })
 
     describe('on error callback', () => {
       let errorMessage = 'error message'
-      let responseBuilder = () => ({
-        text: jest.fn().mockResolvedValue(errorMessage),
-      })
+      let snackbar: ReactWrapper
 
       beforeEach(() => {
         let [ , onError ] = saveCb.mock.calls[0]
-        onError(responseBuilder())
+        let response = { text: jest.fn().mockResolvedValue(errorMessage) }
+        onError(response)
+
+        return response.text().then(() => {
+          snackbar = hostRulesForm
+            .update()
+            .find(Snackbar)
+            .first()
+        })
       })
 
       it('show error message', () => {
-        expect(hostRulesForm.find(Snackbar).text())
-          .toEqual(expect.stringContaining(errorMessage))
+        expect(snackbar.text()).toEqual(expect.stringContaining(errorMessage))
+      })
+
+      it('open snackbar', () => {
+        expect(snackbar.prop('open')).toBeTruthy()
+      })
+
+      describe('close snackbar', () => {
+        beforeEach(() => {
+          snackbar
+            .find(IconButton)
+            .first()
+            .simulate('click')
+          snackbar = hostRulesForm
+            .find(Snackbar)
+            .first()
+        })
+
+        it('close snackbar', () => {
+          expect(snackbar.prop('open')).toBeFalsy()
+        })
       })
     })
   })
