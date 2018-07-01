@@ -1,3 +1,4 @@
+# Generate code from thrift-files
 FROM swaggerapi/swagger-codegen-cli AS thrift
 
 ADD api.yml /app/
@@ -10,6 +11,7 @@ RUN java -jar /opt/swagger-codegen-cli/swagger-codegen-cli.jar \
     -o /app/gen/redirector-client/
 
 
+# Build static files
 FROM node:10-alpine AS builder
 
 WORKDIR /app
@@ -26,6 +28,8 @@ RUN cd gen/redirector-client && npm install && npm run build
 ADD . /app/
 RUN npm run build
 
+
+# Build nginx-server image
 FROM nginx:1.14-alpine
 
 COPY --from=builder /app/dist/* /app/
