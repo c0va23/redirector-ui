@@ -16,16 +16,15 @@ FROM node:10-alpine AS builder
 
 WORKDIR /app
 
-ADD package.json  /app/
-ADD package-lock.json /app/
-
-RUN npm install
-
 # Build redirect-client
 COPY --from=thrift /app/gen /app/gen
 RUN cd gen/redirector-client && npm install && npm run build
 
-ADD . /app/
+ADD package-lock.json package.json /app/
+RUN npm ci
+
+ADD webpack.config.js tsconfig.json /app/
+ADD src/ /app/src/
 RUN npm run build
 
 
