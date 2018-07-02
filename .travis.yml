@@ -3,6 +3,18 @@ language: node_js
 node_js:
 - '10.5'
 
+sudo: required
+services:
+- docker
+
+cache:
+  directories:
+  - '$HOME/.npm'
+
+before_install:
+- make gen/redirector-client/
+- npm ci
+
 script:
 - npm run lint
 - npm run test
