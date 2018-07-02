@@ -12,8 +12,7 @@ cache:
   - '$HOME/.npm'
 
 before_install:
-- make gen/redirector-client/
-- npm ci
+- make swagger-gen
 
 script:
 - npm run lint
