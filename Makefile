@@ -1,7 +1,5 @@
-gen/:
+swagger-gen:
 	mkdir gen
-
-gen/redirector-client/: gen/
 	docker run \
 		--rm \
 		-it \

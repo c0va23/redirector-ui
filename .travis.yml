@@ -1,0 +1,19 @@
+language: node_js
+
+node_js:
+- '10.5'
+
+sudo: required
+services:
+- docker
+
+cache:
+  directories:
+  - '$HOME/.npm'
+
+before_install:
+- make swagger-gen
+
+script:
+- npm run lint
+- npm run test
