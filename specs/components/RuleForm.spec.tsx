@@ -1,11 +1,13 @@
 import * as React from 'react'
-import * as moment from 'moment'
+
 import {
-  TextField,
-  Select,
-  InputLabel,
   Button,
+  InputLabel,
+  Select,
+  TextField,
 } from '@material-ui/core'
+import { InputProps } from '@material-ui/core/Input'
+import * as moment from 'moment'
 
 import {
   ReactWrapper,
@@ -16,19 +18,19 @@ import {
   Rule,
   Target,
 } from 'redirector-client'
+
 import RuleForm from '../../src/components/RuleForm'
 import TargetForm, {
   OnUpdateTarget,
   TargetFormProps,
 } from '../../src/components/TargetForm'
 
-import {
-  randomRule,
-  randomResolver,
-} from '../factories/RuleFactory'
-import { randomPath } from '../factories/PathFactory'
 import { randomDate } from '../factories/DateFactory'
-import { InputProps } from '@material-ui/core/Input'
+import { randomPath } from '../factories/PathFactory'
+import {
+  randomResolver,
+  randomRule,
+} from '../factories/RuleFactory'
 
 const formatInputDateTimeLocale = (dateTime: Date): string =>
   moment(dateTime).format('YYYY-MM-DDTHH:mm')
@@ -39,6 +41,16 @@ describe('RuleForm', () => {
   let updateRuleCb: (rule: Rule) => void
   let removeRuleCb: () => void
   let ruleForm: ReactWrapper
+
+  const fireChangeInput = (field: ReactWrapper, name: string, value: string) =>
+    field
+      .find('input')
+      .simulate('change', {
+        target: {
+          name: name,
+          value: value,
+        },
+      })
 
   beforeEach(() => {
     rule = randomRule()
@@ -74,14 +86,7 @@ describe('RuleForm', () => {
 
       beforeEach(() => {
         newSourcePath = randomPath()
-        sourcePathField
-          .find('input')
-          .simulate('change', {
-            target: {
-              name: fieldName,
-              value: newSourcePath,
-            },
-          })
+        fireChangeInput(sourcePathField, fieldName, newSourcePath)
       })
 
       it('call update rule callback', () => {
@@ -93,123 +98,70 @@ describe('RuleForm', () => {
     })
   })
 
-  describe('field active from', () => {
-    let activeFromField: ReactWrapper
-    const fieldName = 'activeFrom'
-
-    beforeEach(() => {
-      activeFromField = ruleForm.find(TextField).filter({ name: fieldName }).first()
-    })
-
-    it('have label', () => {
-      expect(activeFromField.prop('label')).toEqual('Active from')
-    })
-
-    it('have value', () => {
-      let formattedValue = formatInputDateTimeLocale(rule.activeFrom as Date)
-      expect(activeFromField.prop('value')).toEqual(formattedValue)
-    })
-
-    describe('update event', () => {
-      let newDate: Date
+  const describeNullableDate = (fieldName: 'activeTo' | 'activeFrom', label: string) => {
+    describe(`field ${fieldName}`, () => {
+      let field: ReactWrapper
 
       beforeEach(() => {
-        newDate = randomDate()
-        activeFromField
-          .find('input')
-          .simulate('change', {
-            target: {
-              name: fieldName,
-              value: formatInputDateTimeLocale(newDate),
-            },
-          })
+        field = ruleForm.find(TextField).filter({ name: fieldName }).first()
       })
 
-      it('call update rule callback', () => {
-        expect(updateRuleCb).toBeCalledWith({
-          ...rule,
-          activeFrom: newDate,
+      it('have label', () => {
+        expect(field.prop('label')).toEqual(label)
+      })
+
+      it('have value', () => {
+        let formattedValue = formatInputDateTimeLocale(rule[fieldName] as Date)
+        expect(field.prop('value')).toEqual(formattedValue)
+      })
+
+      describe('update event', () => {
+        let newDate: Date
+
+        beforeEach(() => {
+          newDate = randomDate()
+          fireChangeInput(field, fieldName, formatInputDateTimeLocale(newDate))
         })
-      })
-    })
 
-    describe('when active from null', () => {
-      beforeEach(() => {
-        ruleForm.setProps({
-          rule: {
+        it('call update rule callback', () => {
+          expect(updateRuleCb).toBeCalledWith({
             ...rule,
-            activeFrom: null,
-          },
+            [fieldName]: newDate,
+          })
         })
-        activeFromField = ruleForm.find(TextField).filter({ name: fieldName })
       })
 
-      it('have empty string value', () => {
-        expect(activeFromField.prop('value')).toEqual('')
-      })
-    })
-  })
-
-  describe('field active to', () => {
-    let activeToField: ReactWrapper
-    const fieldName = 'activeTo'
-
-    beforeEach(() => {
-      activeToField = ruleForm.find(TextField).filter({ name: fieldName })
-    })
-
-    it('have label', () => {
-      expect(activeToField.prop('label')).toEqual('Active to')
-    })
-
-    it('have value', () => {
-      let formattedValue = formatInputDateTimeLocale(rule.activeTo as Date)
-      expect(activeToField.prop('value')).toEqual(formattedValue)
-    })
-
-    describe('change event', () => {
-      let newDate: Date
-
-      beforeEach(() => {
-        newDate = randomDate()
-        activeToField
-          .find('input')
-          .simulate('change', {
-            target: {
-              name: fieldName,
-              value: formatInputDateTimeLocale(newDate),
+      describe('when active from null', () => {
+        beforeEach(() => {
+          ruleForm.setProps({
+            rule: {
+              ...rule,
+              [fieldName]: null,
             },
           })
-      })
+          field = ruleForm.find(TextField).filter({ name: fieldName })
+        })
 
-      it('call update rule callback', () => {
-        expect(updateRuleCb).toBeCalledWith({
-          ...rule,
-          activeTo: newDate,
+        it('have empty string value', () => {
+          expect(field.prop('value')).toEqual('')
         })
       })
-    })
 
-    describe('change to empty string', () => {
-      beforeEach(() => {
-        activeToField
-          .find('input')
-          .simulate('change', {
-            target: {
-              name: fieldName,
-              value: '',
-            },
+      describe('change to empty string', () => {
+        beforeEach(() => fireChangeInput(field, fieldName, ''))
+
+        it('call update rule callback with null activeTo', () => {
+          expect(updateRuleCb).toBeCalledWith({
+            ...rule,
+            [fieldName]: null,
           })
-      })
-
-      it('call update rule callback with null activeTo', () => {
-        expect(updateRuleCb).toBeCalledWith({
-          ...rule,
-          activeTo: null,
         })
       })
     })
-  })
+  }
+
+  describeNullableDate('activeFrom', 'Active from')
+  describeNullableDate('activeTo', 'Active to')
 
   describe('resolver selector', () => {
     let resolverSelect: ReactWrapper
@@ -267,9 +219,7 @@ describe('RuleForm', () => {
   describe('target fields', () => {
     let targetForm: ReactWrapper<TargetFormProps, any>
 
-    beforeEach(() => {
-      targetForm = ruleForm.find(TargetForm).first()
-    })
+    beforeEach(() => targetForm = ruleForm.find(TargetForm).first())
 
     it('have value', () => {
       expect(targetForm.prop('target')).toEqual(rule.target)
@@ -295,9 +245,7 @@ describe('RuleForm', () => {
   describe('Remove button', () => {
     let removeButton: ReactWrapper
 
-    beforeEach(() => {
-      removeButton = ruleForm.find(Button)
-    })
+    beforeEach(() => removeButton = ruleForm.find(Button))
 
     it('have text', () => {
       expect(removeButton.text()).toEqual('Remove')

@@ -5,6 +5,19 @@
     ],
     "jsRules": {},
     "rules": {
+      "max-line-length": [true, 100],
+      "max-file-line-count": [true, 300],
+      "no-console": [true],
+      "no-debugger": true,
+      "no-implicit-dependencies": [true, "dev"],
+      "ordered-imports": [
+        true,
+        {
+          "import-sources-order": "lowercase-last",
+          "grouped-imports": true,
+          "named-imports-order": "lowercase-last"
+        }
+      ],
       "trailing-comma": [
         true, {
           "multiline": "always",

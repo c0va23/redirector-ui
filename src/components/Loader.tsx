@@ -2,11 +2,11 @@ import * as React from 'react'
 
 import {
   CircularProgress,
-  withStyles,
-  StyleRulesCallback,
-  WithStyles,
   Grid,
+  StyleRulesCallback,
   Typography,
+  WithStyles,
+  withStyles,
 } from '@material-ui/core'
 
 interface LoaderProps {

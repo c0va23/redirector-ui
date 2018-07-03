@@ -1,7 +1,8 @@
 import { Rule } from 'redirector-client'
-import { randomTarget } from './TargetFactory'
-import { randomPath } from './PathFactory'
+
 import { randomDate } from './DateFactory'
+import { randomPath } from './PathFactory'
+import { randomTarget } from './TargetFactory'
 
 export function newRule (): Rule {
   return {

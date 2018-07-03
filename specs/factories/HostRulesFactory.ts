@@ -1,9 +1,10 @@
-import { HostRules } from 'redirector-client'
-import { newTarget, randomTarget } from './TargetFactory'
-
 import * as Faker from 'faker'
-import { randomRule } from './RuleFactory'
+
+import { HostRules } from 'redirector-client'
+
 import { randomArray } from './ArrayFactory'
+import { randomRule } from './RuleFactory'
+import { newTarget, randomTarget } from './TargetFactory'
 
 export function newHostRules (): HostRules {
   return {

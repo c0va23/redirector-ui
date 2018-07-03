@@ -1,8 +1,9 @@
 import * as React from 'react'
-import ErrorView from '../../src/components/ErrorView'
 
 import { ReactWrapper, mount } from 'enzyme'
 import { lorem } from 'faker'
+
+import ErrorView from '../../src/components/ErrorView'
 
 describe('ErrorView', () => {
   let bodyText: string

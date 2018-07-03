@@ -1,16 +1,17 @@
 import * as React from 'react'
+
 import * as MaterialUI from '@material-ui/core'
 import * as Styles from '@material-ui/core/styles'
 import * as MaterialUIIcons from '@material-ui/icons'
 
 import {
   HostRules,
-  Target,
   Rule,
+  Target,
 } from 'redirector-client'
 
-import TargetForm from './TargetForm'
 import RuleForm from './RuleForm'
+import TargetForm from './TargetForm'
 
 const styles: Styles.StyleRulesCallback = (theme) => ({
   actionsPanel: {

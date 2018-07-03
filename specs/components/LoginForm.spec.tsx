@@ -1,9 +1,12 @@
 import * as React from 'react'
 
+import {
+  ReactWrapper,
+  mount,
+} from 'enzyme'
+
 import Config from '../../src/Config'
 import LoginForm from '../../src/components/LoginForm'
-
-import { mount, ReactWrapper } from 'enzyme'
 
 describe('LoginForm', () => {
   let onSave: (config: Config) => void

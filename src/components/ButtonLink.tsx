@@ -1,10 +1,11 @@
 import * as React from 'react'
+
+import * as MaterialUI from '@material-ui/core'
+import { ButtonProps } from '@material-ui/core/Button'
 import {
   Link,
   LinkProps,
 } from 'react-router-dom'
-import * as MaterialUI from '@material-ui/core'
-import { ButtonProps } from '@material-ui/core/Button'
 
 type Props = LinkProps & ButtonProps
 
