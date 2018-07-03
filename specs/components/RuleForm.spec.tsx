@@ -1,11 +1,13 @@
 import * as React from 'react'
-import * as moment from 'moment'
+
 import {
-  TextField,
-  Select,
-  InputLabel,
   Button,
+  InputLabel,
+  Select,
+  TextField,
 } from '@material-ui/core'
+import { InputProps } from '@material-ui/core/Input'
+import * as moment from 'moment'
 
 import {
   ReactWrapper,
@@ -16,19 +18,19 @@ import {
   Rule,
   Target,
 } from 'redirector-client'
+
 import RuleForm from '../../src/components/RuleForm'
 import TargetForm, {
   OnUpdateTarget,
   TargetFormProps,
 } from '../../src/components/TargetForm'
 
-import {
-  randomRule,
-  randomResolver,
-} from '../factories/RuleFactory'
-import { randomPath } from '../factories/PathFactory'
 import { randomDate } from '../factories/DateFactory'
-import { InputProps } from '@material-ui/core/Input'
+import { randomPath } from '../factories/PathFactory'
+import {
+  randomResolver,
+  randomRule,
+} from '../factories/RuleFactory'
 
 const formatInputDateTimeLocale = (dateTime: Date): string =>
   moment(dateTime).format('YYYY-MM-DDTHH:mm')

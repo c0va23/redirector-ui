@@ -1,9 +1,9 @@
 import * as React from 'react'
 import * as ReactRouterDom from 'react-router-dom'
 
-import ButtonLink from '../../src/components/ButtonLink'
-
 import { mount } from 'enzyme'
+
+import ButtonLink from '../../src/components/ButtonLink'
 
 describe('ButtonLink', () => {
   describe('button with link and text', () => {

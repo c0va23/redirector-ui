@@ -1,19 +1,25 @@
 import * as React from 'react'
+
 import {
-  TableCell,
-  TableBody,
-  TableRow,
   Button,
+  TableBody,
+  TableCell,
+  TableRow,
 } from '@material-ui/core'
 import { MemoryRouter, Route } from 'react-router-dom'
 
-import HostRulesView, {
-  OnDeleteHostRules,
-  HostRulesViewProps,
-} from '../../src/components/HostRulesView'
+import {
+  ReactWrapper,
+  mount,
+} from 'enzyme'
+
 import { HostRules } from 'redirector-client'
 
-import { mount, ReactWrapper } from 'enzyme'
+import HostRulesView, {
+  HostRulesViewProps,
+  OnDeleteHostRules,
+} from '../../src/components/HostRulesView'
+
 import { randomHostRules } from '../factories/HostRulesFactory'
 
 describe('HostRulesView', () => {

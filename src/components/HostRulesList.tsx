@@ -1,16 +1,17 @@
 import * as React from 'react'
+
 import * as MaterialUI from '@material-ui/core'
 import * as Styles from '@material-ui/core/styles'
 import * as log from 'loglevel'
 
 import {
-  HostRules,
   ConfigApiInterface,
+  HostRules,
 } from 'redirector-client'
 
 import ButtonLink from './ButtonLink'
-import HostRulesView from './HostRulesView'
 import ErrorView from './ErrorView'
+import HostRulesView from './HostRulesView'
 import Loader from './Loader'
 
 const logger = log.getLogger('HostRulesList')

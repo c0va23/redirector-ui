@@ -1,19 +1,29 @@
 import * as React from 'react'
 
-import HostRulesNew from '../../src/components/HostRulesNew'
-import { mount, ReactWrapper } from 'enzyme'
+import { History } from 'history'
+import { MemoryRouter } from 'react-router-dom'
+
+import {
+  ReactWrapper,
+  mount,
+} from 'enzyme'
+
 import { HostRules } from 'redirector-client'
-import { ConfigApiMock } from '../mocks/ConfigApiMock'
+
+import ButtonLink from '../../src/components/ButtonLink'
 import HostRulesForm, {
+  ErrorSaveCb,
   OnChange,
   OnSave,
   SuccessSaveCb,
-  ErrorSaveCb,
 } from '../../src/components/HostRulesForm'
-import { newHostRules, randomHostRules } from '../factories/HostRulesFactory'
-import { MemoryRouter } from 'react-router-dom'
-import { History } from 'history'
-import ButtonLink from '../../src/components/ButtonLink'
+import HostRulesNew from '../../src/components/HostRulesNew'
+
+import {
+  newHostRules,
+  randomHostRules,
+} from '../factories/HostRulesFactory'
+import { ConfigApiMock } from '../mocks/ConfigApiMock'
 
 describe('HostRulesNew', () => {
   let configApi: ConfigApiMock

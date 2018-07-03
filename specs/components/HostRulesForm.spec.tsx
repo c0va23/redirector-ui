@@ -1,31 +1,32 @@
 import * as React from 'react'
+
 import {
-  TextField,
   Button,
-  Snackbar,
   IconButton,
+  Snackbar,
+  TextField,
 } from '@material-ui/core'
 
-import HostRulesForm from '../../src/components/HostRulesForm'
-import TargetForm, {
-  TargetFormProps,
-  OnUpdateTarget,
-} from '../../src/components/TargetForm'
-import RuleForm, {
-  OnUpdateRule,
-} from '../../src/components/RuleForm'
+import {
+  ReactWrapper,
+  mount,
+} from 'enzyme'
+import * as Faker from 'faker'
 
 import { HostRules } from 'redirector-client'
 
-import * as Faker from 'faker'
-import * as TargetFactory from '../factories/TargetFactory'
-import * as RuleFactory from '../factories/RuleFactory'
-import * as HostRulesFactory from '../factories/HostRulesFactory'
+import HostRulesForm from '../../src/components/HostRulesForm'
+import RuleForm, {
+  OnUpdateRule,
+} from '../../src/components/RuleForm'
+import TargetForm, {
+  OnUpdateTarget,
+  TargetFormProps,
+} from '../../src/components/TargetForm'
 
-import {
-  mount,
-  ReactWrapper,
-} from 'enzyme'
+import * as HostRulesFactory from '../factories/HostRulesFactory'
+import * as RuleFactory from '../factories/RuleFactory'
+import * as TargetFactory from '../factories/TargetFactory'
 
 describe('HostRulesForm', () => {
   let hostRules: HostRules

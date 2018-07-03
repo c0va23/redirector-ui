@@ -1,10 +1,14 @@
 import * as React from 'react'
+
+import {
+  ReactWrapper,
+  mount,
+} from 'enzyme'
+import { lorem } from 'faker'
+
 import { CircularProgress } from '@material-ui/core'
 
 import Loader from '../../src/components/Loader'
-
-import { lorem } from 'faker'
-import { ReactWrapper, mount } from 'enzyme'
 
 describe('Loader', () => {
   let label: string

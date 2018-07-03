@@ -1,24 +1,26 @@
 import * as React from 'react'
-import { MemoryRouter, Route } from 'react-router-dom'
-import { History } from 'history'
 
-import ButtonLink from '../../src/components/ButtonLink'
-import ErrorView from '../../src/components/ErrorView'
-import Loader from '../../src/components/Loader'
-import { HostRules } from 'redirector-client'
-import HostRulesEdit from '../../src/components/HostRulesEdit'
-import HostRulesForm, {
-  OnChange,
-  OnSave,
-  SuccessSaveCb,
-  ErrorSaveCb,
-} from '../../src/components/HostRulesForm'
+import { History } from 'history'
+import { MemoryRouter, Route } from 'react-router-dom'
 
 import { ReactWrapper, mount } from 'enzyme'
 
-import { ConfigApiMock } from '../mocks/ConfigApiMock'
+import { HostRules } from 'redirector-client'
+
+import ButtonLink from '../../src/components/ButtonLink'
+import ErrorView from '../../src/components/ErrorView'
+import HostRulesEdit from '../../src/components/HostRulesEdit'
+import HostRulesForm, {
+  ErrorSaveCb,
+  OnChange,
+  OnSave,
+  SuccessSaveCb,
+} from '../../src/components/HostRulesForm'
+import Loader from '../../src/components/Loader'
+
 import { randomHostRules } from '../factories/HostRulesFactory'
 import { randomResponse } from '../factories/ResponseFactory'
+import { ConfigApiMock } from '../mocks/ConfigApiMock'
 
 describe('HostRulesEdit', () => {
   let configApiMock: ConfigApiMock

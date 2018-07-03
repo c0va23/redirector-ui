@@ -1,19 +1,21 @@
 import * as React from 'react'
-import {
-  HashRouter,
-  Route,
-  Redirect,
-  Switch,
-} from 'react-router-dom'
+
 import * as MaterialUI from '@material-ui/core'
 import * as Styles from '@material-ui/core/styles'
+import {
+  HashRouter,
+  Redirect,
+  Route,
+  Switch,
+} from 'react-router-dom'
 
 import { ConfigApi } from 'redirector-client'
+
 import Config from './Config'
-import LoginForm from './components/LoginForm'
-import HostRulesList from './components/HostRulesList'
 import HostRulesEdit from './components/HostRulesEdit'
+import HostRulesList from './components/HostRulesList'
 import HostRulesNew from './components/HostRulesNew'
+import LoginForm from './components/LoginForm'
 
 class AppState {
   config?: Config

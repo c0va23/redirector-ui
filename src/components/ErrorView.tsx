@@ -1,9 +1,13 @@
 import * as React from 'react'
+
+import {
+  Grid,
+  Typography,
+} from '@material-ui/core'
 import withStyles, {
   StyleRulesCallback,
   WithStyles,
 } from '@material-ui/core/styles/withStyles'
-import { Typography, Grid } from '@material-ui/core'
 import * as log from 'loglevel'
 
 const logger = log.getLogger('ErrorView')

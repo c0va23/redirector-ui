@@ -10,6 +10,14 @@
       "no-console": [true],
       "no-debugger": true,
       "no-implicit-dependencies": [true, "dev"],
+      "ordered-imports": [
+        true,
+        {
+          "import-sources-order": "lowercase-last",
+          "grouped-imports": true,
+          "named-imports-order": "lowercase-last"
+        }
+      ],
       "trailing-comma": [
         true, {
           "multiline": "always",

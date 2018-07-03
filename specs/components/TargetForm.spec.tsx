@@ -1,10 +1,19 @@
 import * as React from 'react'
+
+import {
+  ReactWrapper,
+  mount,
+} from 'enzyme'
+
+import { Target } from 'redirector-client'
+
 import TargetForm from '../../src/components/TargetForm'
 
-import { mount, ReactWrapper } from 'enzyme'
-import { Target } from 'redirector-client'
-import { randomTarget, randomHttpCode } from '../factories/TargetFactory'
 import { randomPath } from '../factories/PathFactory'
+import {
+  randomHttpCode,
+  randomTarget,
+} from '../factories/TargetFactory'
 
 describe('TargetForm', () => {
   let target: Target

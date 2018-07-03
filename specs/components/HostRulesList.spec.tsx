@@ -2,17 +2,21 @@ import * as React from 'react'
 import { MemoryRouter } from 'react-router-dom'
 
 import { HostRules } from 'redirector-client'
-import HostRulesList from '../../src/components/HostRulesList'
-import Loader from '../../src/components/Loader'
-import ErrorView from '../../src/components/ErrorView'
-import HostRulesView, { OnDeleteHostRules } from '../../src/components/HostRulesView'
-import ButtonLink from '../../src/components/ButtonLink'
 
-import { ConfigApiMock } from '../mocks/ConfigApiMock'
-import { randomHostRules } from '../factories/HostRulesFactory'
 import { ReactWrapper, mount } from 'enzyme'
+
+import ButtonLink from '../../src/components/ButtonLink'
+import ErrorView from '../../src/components/ErrorView'
+import HostRulesList from '../../src/components/HostRulesList'
+import HostRulesView, {
+  OnDeleteHostRules,
+} from '../../src/components/HostRulesView'
+import Loader from '../../src/components/Loader'
+
 import { randomArray } from '../factories/ArrayFactory'
+import { randomHostRules } from '../factories/HostRulesFactory'
 import { randomResponse } from '../factories/ResponseFactory'
+import { ConfigApiMock } from '../mocks/ConfigApiMock'
 
 describe('HostRulesList', () => {
   let configApiMock: ConfigApiMock
