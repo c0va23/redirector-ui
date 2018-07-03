@@ -7,6 +7,8 @@
     "rules": {
       "max-line-length": [true, 100],
       "max-file-line-count": [true, 300],
+      "no-console": [true],
+      "no-debugger": true,
       "trailing-comma": [
         true, {
           "multiline": "always",
