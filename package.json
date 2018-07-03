@@ -7,7 +7,7 @@
     "test": "jest --coverage",
     "lint": "tslint --project .",
     "dev-server": "NODE_ENV=development webpack-serve --config webpack.config.js --hot",
-    "build": "webpack --config webpack.config.js"
+    "build": "ANALYZER_MODE=server webpack --config webpack.config.js"
   },
   "repository": {
     "type": "git",
@@ -52,6 +52,7 @@
     "typescript": "2.8.3",
     "webpack": "^4.10.0",
     "webpack-cli": "^2.0.14",
+    "webpack-bundle-analyzer": "^2.13.1",
     "webpack-serve": "1.0.2"
   },
   "author": "c0va23@gmail.com",
