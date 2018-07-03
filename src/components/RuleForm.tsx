@@ -12,11 +12,12 @@ import withStyles, {
   WithStyles,
 } from '@material-ui/core/styles/withStyles'
 
-import * as moment from 'moment'
-
 import { Rule, Target } from 'redirector-client'
 
+import formatInputTime from '../utils/formatInputTime'
+
 import TargetForm from './TargetForm'
+
 export type OnUpdateRule = (rule: Rule) => void
 export type OnRemoveRule = () => void
 
@@ -143,7 +144,7 @@ class RuleForm extends React.Component<Props & WithStyles> {
 
   private formatDate (date?: Date): string {
     if (!date) return ''
-    return moment(date).format('YYYY-MM-DDTHH:mm')
+    return formatInputTime(date)
   }
 
   private updateTarget = (target: Target) =>

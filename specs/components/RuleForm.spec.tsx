@@ -7,7 +7,6 @@ import {
   TextField,
 } from '@material-ui/core'
 import { InputProps } from '@material-ui/core/Input'
-import * as moment from 'moment'
 
 import {
   ReactWrapper,
@@ -24,6 +23,7 @@ import TargetForm, {
   OnUpdateTarget,
   TargetFormProps,
 } from '../../src/components/TargetForm'
+import formatInputTime from '../../src/utils/formatInputTime'
 
 import { randomDate } from '../factories/DateFactory'
 import { randomPath } from '../factories/PathFactory'
@@ -31,9 +31,6 @@ import {
   randomResolver,
   randomRule,
 } from '../factories/RuleFactory'
-
-const formatInputDateTimeLocale = (dateTime: Date): string =>
-  moment(dateTime).format('YYYY-MM-DDTHH:mm')
 
 describe('RuleForm', () => {
   let rule: Rule
@@ -111,7 +108,7 @@ describe('RuleForm', () => {
       })
 
       it('have value', () => {
-        let formattedValue = formatInputDateTimeLocale(rule[fieldName] as Date)
+        let formattedValue = formatInputTime(rule[fieldName] as Date)
         expect(field.prop('value')).toEqual(formattedValue)
       })
 
@@ -120,7 +117,7 @@ describe('RuleForm', () => {
 
         beforeEach(() => {
           newDate = randomDate()
-          fireChangeInput(field, fieldName, formatInputDateTimeLocale(newDate))
+          fireChangeInput(field, fieldName, formatInputTime(newDate))
         })
 
         it('call update rule callback', () => {
