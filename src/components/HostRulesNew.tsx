@@ -1,7 +1,7 @@
 import * as React from 'react'
 
-import * as MaterialUI from '@material-ui/core'
-import * as Styles from '@material-ui/core/styles'
+import Paper from '@material-ui/core/Paper'
+import { StyleRulesCallback, WithStyles, withStyles } from '@material-ui/core/styles'
 import * as log from 'loglevel'
 import {
   RouteComponentProps,
@@ -21,7 +21,7 @@ import HostRulesForm, {
 
 const logger = log.getLogger('HostRulesNew')
 
-const styles: Styles.StyleRulesCallback = (theme) => ({
+const styles: StyleRulesCallback = (theme) => ({
   paper: {
     padding: theme.spacing.unit,
     margin: theme.spacing.unit * 2,
@@ -38,7 +38,7 @@ interface Props {
 class HostRulesNew extends React.Component<
   Props
   & RouteComponentProps<never>
-  & Styles.WithStyles
+  & WithStyles
   , HostRules
 > {
   state = {
@@ -56,13 +56,13 @@ class HostRulesNew extends React.Component<
         List
       </ButtonLink>
 
-      <MaterialUI.Paper className={this.props.classes.paper}>
+      <Paper className={this.props.classes.paper}>
         <HostRulesForm
           hostRules={this.state}
           onSave={this.onSave}
           onHostRulesChanged={this.setState.bind(this)}
         />
-      </MaterialUI.Paper>
+      </Paper>
     </div>
   }
 
@@ -86,5 +86,5 @@ class HostRulesNew extends React.Component<
         .push(`/host_rules_list/${hostRules.host}/edit`)
 }
 
-const styledHostRulesNew = MaterialUI.withStyles(styles)(HostRulesNew)
+const styledHostRulesNew = withStyles(styles)(HostRulesNew)
 export default withRouter(styledHostRulesNew)

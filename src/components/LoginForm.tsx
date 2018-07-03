@@ -1,7 +1,14 @@
 import * as React from 'react'
 
-import * as MaterialUI from '@material-ui/core'
-import * as Styles from '@material-ui/core/styles'
+import Button from '@material-ui/core/Button'
+import Grid from '@material-ui/core/Grid'
+import Paper from '@material-ui/core/Paper'
+import TextField from '@material-ui/core/TextField'
+import Typography from '@material-ui/core/Typography'
+import withStyles, {
+  StyleRulesCallback,
+  WithStyles,
+} from '@material-ui/core/styles/withStyles'
 
 import Config from '../Config'
 
@@ -9,13 +16,17 @@ interface LoginFormProps {
   onSave: (config: Config) => void,
 }
 
-const styles: Styles.StyleRulesCallback = (theme) => ({
+const styles: StyleRulesCallback = (theme) => ({
   content: {
     padding: theme.spacing.unit * 2,
   },
 })
 
-class LoginForm extends React.Component<LoginFormProps & Styles.WithStyles, Config> {
+class LoginForm extends React.Component<
+  LoginFormProps
+  & WithStyles,
+  Config
+> {
   state: Config = {
     basePath: '',
     username: '',
@@ -23,41 +34,41 @@ class LoginForm extends React.Component<LoginFormProps & Styles.WithStyles, Conf
   }
 
   render () {
-    return <MaterialUI.Grid
+    return <Grid
       container
       justify='center'
     >
-      <MaterialUI.Grid
+      <Grid
         item
         xs={4}
       >
-        <MaterialUI.Paper className={this.props.classes.content}>
-          <MaterialUI.Typography variant='subheading'>
+        <Paper className={this.props.classes.content}>
+          <Typography variant='subheading'>
             Log in
-          </MaterialUI.Typography>
+          </Typography>
           {this.renderForm()}
-        </MaterialUI.Paper>
-      </MaterialUI.Grid>
-    </MaterialUI.Grid>
+        </Paper>
+      </Grid>
+    </Grid>
   }
 
   private renderForm (): JSX.Element {
     return <form onSubmit={this.onSubmit}>
-      <MaterialUI.TextField
+      <TextField
         label='Base path'
         name='basePath'
         value={this.state.basePath}
         onChange={this.onInputChange}
         fullWidth
       />
-      <MaterialUI.TextField
+      <TextField
         label='Username'
         name='username'
         value={this.state.username}
         onChange={this.onInputChange}
         fullWidth
       />
-      <MaterialUI.TextField
+      <TextField
         label='Password'
         name='password'
         type='password'
@@ -65,12 +76,12 @@ class LoginForm extends React.Component<LoginFormProps & Styles.WithStyles, Conf
         onChange={this.onInputChange}
         fullWidth
       />
-      <MaterialUI.Button
+      <Button
         type='submit'
         variant='raised'
       >
         Login
-      </MaterialUI.Button>
+      </Button>
     </form>
   }
 
@@ -90,4 +101,4 @@ class LoginForm extends React.Component<LoginFormProps & Styles.WithStyles, Conf
   }
 }
 
-export default MaterialUI.withStyles(styles)(LoginForm)
+export default withStyles(styles)(LoginForm)

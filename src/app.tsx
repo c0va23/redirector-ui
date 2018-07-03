@@ -1,7 +1,14 @@
 import * as React from 'react'
 
-import * as MaterialUI from '@material-ui/core'
-import * as Styles from '@material-ui/core/styles'
+import AppBar from '@material-ui/core/AppBar'
+import Button from '@material-ui/core/Button'
+import CssBaseline from '@material-ui/core/CssBaseline'
+import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
+import withStyles, {
+  StyleRulesCallback,
+  WithStyles,
+} from '@material-ui/core/styles/withStyles'
 import {
   HashRouter,
   Redirect,
@@ -28,7 +35,7 @@ const HOST_RULES_NEW_PATH = HOST_RULES_LIST_PATH + '/new'
 
 const CONFIG_KEY = 'config'
 
-const styles: Styles.StyleRulesCallback =
+const styles: StyleRulesCallback =
   (_theme) => ({
     wrapper: {
       height: '100%',
@@ -37,7 +44,7 @@ const styles: Styles.StyleRulesCallback =
     },
   })
 
-class App extends React.Component<Styles.WithStyles, AppState> {
+class App extends React.Component<WithStyles, AppState> {
   state = new AppState()
 
   componentDidMount () {
@@ -46,20 +53,20 @@ class App extends React.Component<Styles.WithStyles, AppState> {
 
   render () {
     return <div className={this.props.classes.wrapper}>
-      <MaterialUI.CssBaseline />
+      <CssBaseline />
 
-      <MaterialUI.AppBar position='sticky' color='default'>
-        <MaterialUI.Toolbar>
-          <MaterialUI.Typography variant='title' style={{ flex: 1 }}>
+      <AppBar position='sticky' color='default'>
+        <Toolbar>
+          <Typography variant='title' style={{ flex: 1 }}>
             Redirector
-          </MaterialUI.Typography>
+          </Typography>
 
           {this.state.config &&
-            <MaterialUI.Button onClick={this.logOut}>
+            <Button onClick={this.logOut}>
               Log out
-            </MaterialUI.Button>}
-        </MaterialUI.Toolbar>
-      </MaterialUI.AppBar>
+            </Button>}
+        </Toolbar>
+      </AppBar>
 
       {this.routes()}
     </div>
@@ -141,4 +148,4 @@ class App extends React.Component<Styles.WithStyles, AppState> {
   }
 }
 
-export default MaterialUI.withStyles(styles)(App)
+export default withStyles(styles)(App)

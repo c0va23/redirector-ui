@@ -1,13 +1,12 @@
 import * as React from 'react'
 
-import {
-  CircularProgress,
-  Grid,
+import CircularProgress from '@material-ui/core/CircularProgress'
+import Grid from '@material-ui/core/Grid'
+import Typography from '@material-ui/core/Typography'
+import withStyles, {
   StyleRulesCallback,
-  Typography,
   WithStyles,
-  withStyles,
-} from '@material-ui/core'
+} from '@material-ui/core/styles/withStyles'
 
 interface LoaderProps {
   label: string
