@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { MemoryRouter, Route } from 'react-router'
+import { MemoryRouter, Route } from 'react-router-dom'
 import { History } from 'history'
 
 import ButtonLink from '../../src/components/ButtonLink'

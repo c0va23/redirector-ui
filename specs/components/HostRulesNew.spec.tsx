@@ -11,7 +11,7 @@ import HostRulesForm, {
   ErrorSaveCb,
 } from '../../src/components/HostRulesForm'
 import { newHostRules, randomHostRules } from '../factories/HostRulesFactory'
-import { MemoryRouter } from 'react-router'
+import { MemoryRouter } from 'react-router-dom'
 import { History } from 'history'
 import ButtonLink from '../../src/components/ButtonLink'
 

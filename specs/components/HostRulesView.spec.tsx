@@ -5,7 +5,7 @@ import {
   TableRow,
   Button,
 } from '@material-ui/core'
-import { MemoryRouter, Route } from 'react-router'
+import { MemoryRouter, Route } from 'react-router-dom'
 
 import HostRulesView, {
   OnDeleteHostRules,

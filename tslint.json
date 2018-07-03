@@ -9,6 +9,7 @@
       "max-file-line-count": [true, 300],
       "no-console": [true],
       "no-debugger": true,
+      "no-implicit-dependencies": [true, "dev"],
       "trailing-comma": [
         true, {
           "multiline": "always",
