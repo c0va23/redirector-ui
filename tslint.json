@@ -5,6 +5,8 @@
     ],
     "jsRules": {},
     "rules": {
+      "max-line-length": [true, 100],
+      "max-file-line-count": [true, 300],
       "trailing-comma": [
         true, {
           "multiline": "always",
