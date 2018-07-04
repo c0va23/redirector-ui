@@ -17,6 +17,9 @@ interface LoginFormProps {
 }
 
 const styles: StyleRulesCallback = (theme) => ({
+  wrapper: {
+    flexGrow: 1,
+  },
   content: {
     padding: theme.spacing.unit * 2,
   },
@@ -37,10 +40,13 @@ class LoginForm extends React.Component<
     return <Grid
       container
       justify='center'
+      alignItems='center'
+      className={this.props.classes.wrapper}
     >
       <Grid
         item
-        xs={4}
+        md={4}
+        xs={12}
       >
         <Paper className={this.props.classes.content}>
           <Typography variant='subheading'>
