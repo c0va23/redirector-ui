@@ -1,7 +1,10 @@
 import * as React from 'react'
 
-import * as MaterialUI from '@material-ui/core'
-import * as Styles from '@material-ui/core/styles'
+import Paper from '@material-ui/core/Paper'
+import withStyles, {
+  StyleRulesCallback,
+  WithStyles,
+} from '@material-ui/core/styles/withStyles'
 import * as log from 'loglevel'
 import {
   RouteComponentProps,
@@ -20,7 +23,7 @@ import Loader from './Loader'
 
 const logger = log.getLogger('HostRulesEdit')
 
-const styles: Styles.StyleRulesCallback = (theme) => ({
+const styles: StyleRulesCallback = (theme) => ({
   paper: {
     padding: theme.spacing.unit,
     margin: theme.spacing.unit * 2,
@@ -46,7 +49,7 @@ class State {
 class HostRulesEdit extends React.Component<
   HostRulesEditProps
   & RouteComponentProps<MatchParams>
-  & Styles.WithStyles
+  & WithStyles
   , State
 > {
   state = new State()
@@ -76,13 +79,13 @@ class HostRulesEdit extends React.Component<
         List
       </ButtonLink>
 
-      <MaterialUI.Paper className={this.props.classes.paper}>
+      <Paper className={this.props.classes.paper}>
         <HostRulesForm
           hostRules={hostRule}
           onSave={this.onSave(hostRule)}
           onHostRulesChanged={this.updateHostRules}
         />
-      </MaterialUI.Paper>
+      </Paper>
     </div>
   }
 
@@ -90,8 +93,8 @@ class HostRulesEdit extends React.Component<
     this.props
       .configApi
       .getHostRule(this.props.match.params.host)
-      .then(hostRules => this.setState({ hostRules }))
-      .catch(errorResponse => this.setState({ errorResponse }))
+      .then((hostRules: HostRules) => this.setState({ hostRules }))
+      .catch((errorResponse: Response) => this.setState({ errorResponse }))
 
   private onSave = (hostRules: HostRules) =>
     (onSuccess: () => void, onError: (response: Response) => void) =>
@@ -117,5 +120,5 @@ class HostRulesEdit extends React.Component<
   }
 }
 
-const styledComponent = MaterialUI.withStyles(styles)(HostRulesEdit)
+const styledComponent = withStyles(styles)(HostRulesEdit)
 export default withRouter(styledComponent)

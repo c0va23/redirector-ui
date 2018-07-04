@@ -1,7 +1,10 @@
 import * as React from 'react'
 
-import * as MaterialUI from '@material-ui/core'
-import * as Styles from '@material-ui/core/styles'
+import Paper from '@material-ui/core/Paper'
+import withStyles, {
+  StyleRulesCallback,
+  WithStyles,
+} from '@material-ui/core/styles/withStyles'
 import * as log from 'loglevel'
 
 import {
@@ -16,7 +19,7 @@ import Loader from './Loader'
 
 const logger = log.getLogger('HostRulesList')
 
-const styles: Styles.StyleRulesCallback = (theme) => ({
+const styles: StyleRulesCallback = (theme) => ({
   listItemWrapper: {
     margin: theme.spacing.unit * 2,
   },
@@ -36,7 +39,7 @@ class HostRulesListState {
 
 class HostRulesList extends React.Component<
   HostRulesListProps
-  & Styles.WithStyles
+  & WithStyles
   , HostRulesListState
 > {
   state = new HostRulesListState()
@@ -88,7 +91,7 @@ class HostRulesList extends React.Component<
   }
 
   private renderHostRules = (hostRules: HostRules) =>
-    <MaterialUI.Paper
+    <Paper
       key={hostRules.host}
       className={this.props.classes.listItemWrapper}
     >
@@ -96,7 +99,7 @@ class HostRulesList extends React.Component<
         hostRules={hostRules}
         onDelete={this.deleteHostRules}
       />
-    </MaterialUI.Paper>
+    </Paper>
 
   private deleteHostRules = (host: string) =>
     this
@@ -113,4 +116,4 @@ class HostRulesList extends React.Component<
     )
 }
 
-export default MaterialUI.withStyles(styles)(HostRulesList)
+export default withStyles(styles)(HostRulesList)

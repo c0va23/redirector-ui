@@ -1,10 +1,20 @@
 import * as React from 'react'
 
-import * as MaterialUI from '@material-ui/core'
-import * as Styles from '@material-ui/core/styles'
-import * as moment from 'moment'
+import Button from '@material-ui/core/Button'
+import FormControl from '@material-ui/core/FormControl'
+import FormGroup from '@material-ui/core/FormGroup'
+import InputLabel from '@material-ui/core/InputLabel'
+import MenuItem from '@material-ui/core/MenuItem'
+import Select from '@material-ui/core/Select'
+import TextField from '@material-ui/core/TextField'
+import withStyles, {
+  StyleRulesCallback,
+  WithStyles,
+} from '@material-ui/core/styles/withStyles'
 
 import { Rule, Target } from 'redirector-client'
+
+import formatInputTime from '../utils/formatInputTime'
 
 import TargetForm from './TargetForm'
 
@@ -20,7 +30,7 @@ interface Props {
 
 const downCaseCharRegex = /[a-z]/
 
-const styles: Styles.StyleRulesCallback = (theme) => ({
+const styles: StyleRulesCallback = (theme) => ({
   formControl: {
     marginTop: theme.spacing.unit * 2,
   },
@@ -29,14 +39,14 @@ const styles: Styles.StyleRulesCallback = (theme) => ({
   },
 })
 
-class RuleForm extends React.Component<Props & Styles.WithStyles> {
+class RuleForm extends React.Component<Props & WithStyles> {
   render () {
     let classes = this.props.classes
 
-    return <MaterialUI.FormGroup>
+    return <FormGroup>
       <h3>Rule</h3>
 
-      <MaterialUI.TextField
+      <TextField
         name='sourcePath'
         label='Source path'
         value={this.props.rule.sourcePath}
@@ -45,15 +55,15 @@ class RuleForm extends React.Component<Props & Styles.WithStyles> {
         required
       />
 
-      <MaterialUI.FormControl
+      <FormControl
         className={classes.formControl}
         required
       >
-        <MaterialUI.InputLabel
+        <InputLabel
           htmlFor={`rule-resolver-${this.props.ruleIndex}`}
-        >Resolver</MaterialUI.InputLabel>
+        >Resolver</InputLabel>
 
-        <MaterialUI.Select
+        <Select
           name='resolver'
           value={this.props.rule.resolver}
           onChange={this.onSelectChange}
@@ -63,10 +73,10 @@ class RuleForm extends React.Component<Props & Styles.WithStyles> {
           className={this.props.classes.selectInput}
         >
           {this.resolverItems()}
-        </MaterialUI.Select>
-      </MaterialUI.FormControl>
+        </Select>
+      </FormControl>
 
-      <MaterialUI.TextField
+      <TextField
         name='activeFrom'
         label='Active from'
         value={this.formatDate(this.props.rule.activeFrom)}
@@ -77,7 +87,7 @@ class RuleForm extends React.Component<Props & Styles.WithStyles> {
         className={classes.formControl}
       />
 
-      <MaterialUI.TextField
+      <TextField
         name='activeTo'
         label='Active to'
         value={this.formatDate(this.props.rule.activeTo)}
@@ -95,10 +105,10 @@ class RuleForm extends React.Component<Props & Styles.WithStyles> {
         onUpdateTarget={this.updateTarget}
       />
 
-      <MaterialUI.Button onClick={this.props.onRemoveRule}>
+      <Button onClick={this.props.onRemoveRule}>
         Remove
-      </MaterialUI.Button>
-    </MaterialUI.FormGroup>
+      </Button>
+    </FormGroup>
   }
 
   private onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -134,7 +144,7 @@ class RuleForm extends React.Component<Props & Styles.WithStyles> {
 
   private formatDate (date?: Date): string {
     if (!date) return ''
-    return moment(date).format('YYYY-MM-DDTHH:mm')
+    return formatInputTime(date)
   }
 
   private updateTarget = (target: Target) =>
@@ -147,10 +157,10 @@ class RuleForm extends React.Component<Props & Styles.WithStyles> {
     Object.keys(Rule.ResolverEnum)
       .filter((resolver: string) => downCaseCharRegex.test(resolver[0]))
       .map((resolver) =>
-        <MaterialUI.MenuItem
+        <MenuItem
           key={resolver}
           value={resolver}
-        >{Rule.ResolverEnum[resolver as any]}</MaterialUI.MenuItem>)
+        >{Rule.ResolverEnum[resolver as any]}</MenuItem>)
 }
 
-export default MaterialUI.withStyles(styles)(RuleForm)
+export default withStyles(styles)(RuleForm)

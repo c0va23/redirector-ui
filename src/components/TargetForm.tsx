@@ -1,6 +1,7 @@
 import * as React from 'react'
 
-import * as MaterialUI from '@material-ui/core'
+import FormGroup from '@material-ui/core/FormGroup'
+import TextField from '@material-ui/core/TextField'
 
 import { Target } from 'redirector-client'
 
@@ -13,8 +14,8 @@ export interface TargetFormProps {
 
 export default class TargetForm extends React.Component<TargetFormProps> {
   render () {
-    return <MaterialUI.FormGroup>
-      <MaterialUI.TextField
+    return <FormGroup>
+      <TextField
         name='httpCode'
         label='HTTP Code'
         value={this.props.target.httpCode}
@@ -25,14 +26,14 @@ export default class TargetForm extends React.Component<TargetFormProps> {
 
       <br />
 
-      <MaterialUI.TextField
+      <TextField
         name='path'
         label='Path'
         value={this.props.target.path}
         onChange={this.onTextChange.bind(this)}
         fullWidth
       />
-    </MaterialUI.FormGroup>
+    </FormGroup>
   }
 
   private onNumberChange (event: React.ChangeEvent<HTMLInputElement>) {

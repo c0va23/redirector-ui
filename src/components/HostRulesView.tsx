@@ -1,6 +1,13 @@
 import * as React from 'react'
 
-import * as MaterialUI from '@material-ui/core'
+import Button from '@material-ui/core/Button'
+import Table from '@material-ui/core/Table'
+import TableBody from '@material-ui/core/TableBody'
+import TableCell from '@material-ui/core/TableCell'
+import TableHead from '@material-ui/core/TableHead'
+import TableRow from '@material-ui/core/TableRow'
+import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
 
 import {
   HostRules,
@@ -27,62 +34,62 @@ export default class HostRulesView extends React.Component<HostRulesViewProps> {
   }
 
   private renderHostRules = (hostRules: HostRules) =>
-    <MaterialUI.Toolbar>
-      <MaterialUI.Typography variant='headline' style={{ flex: 1 }}>
+    <Toolbar>
+      <Typography variant='headline' style={{ flex: 1 }}>
         {hostRules.host}
-      </MaterialUI.Typography>
+      </Typography>
 
-      <MaterialUI.Button name='delete' onClick={this.onDelete}>
+      <Button name='delete' onClick={this.onDelete}>
         Delete
-      </MaterialUI.Button>
+      </Button>
       <ButtonLink to={`/host_rules_list/${hostRules.host}/edit`}>
         Edit
       </ButtonLink>
-    </MaterialUI.Toolbar>
+    </Toolbar>
 
   private renderRules = (rules: Array<Rule>, defaultTarget: Target) =>
-    <MaterialUI.Table>
-      <MaterialUI.TableHead>
-        <MaterialUI.TableRow>
-          <MaterialUI.TableCell>
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell>
             Source
-          </MaterialUI.TableCell>
-          <MaterialUI.TableCell>
+          </TableCell>
+          <TableCell>
             Target (Code)
-          </MaterialUI.TableCell>
-          <MaterialUI.TableCell>
+          </TableCell>
+          <TableCell>
             Target (Path)
-          </MaterialUI.TableCell>
-          <MaterialUI.TableCell>
+          </TableCell>
+          <TableCell>
             Active from
-          </MaterialUI.TableCell>
-          <MaterialUI.TableCell>
+          </TableCell>
+          <TableCell>
             Active to
-          </MaterialUI.TableCell>
-        </MaterialUI.TableRow>
-      </MaterialUI.TableHead>
-      <MaterialUI.TableBody>
+          </TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
         {rules.map((rule, index) =>
-          <MaterialUI.TableRow key={index}>
-            <MaterialUI.TableCell>{rule.sourcePath}</MaterialUI.TableCell>
-            <MaterialUI.TableCell>{rule.target.httpCode}</MaterialUI.TableCell>
-            <MaterialUI.TableCell>{rule.target.path}</MaterialUI.TableCell>
-            <MaterialUI.TableCell>
+          <TableRow key={index}>
+            <TableCell>{rule.sourcePath}</TableCell>
+            <TableCell>{rule.target.httpCode}</TableCell>
+            <TableCell>{rule.target.path}</TableCell>
+            <TableCell>
               {rule.activeFrom && rule.activeFrom.toISOString()}
-            </MaterialUI.TableCell>
-            <MaterialUI.TableCell>
+            </TableCell>
+            <TableCell>
               {rule.activeTo && rule.activeTo.toISOString()}
-            </MaterialUI.TableCell>
-          </MaterialUI.TableRow>)}
-        <MaterialUI.TableRow title='Default target'>
-          <MaterialUI.TableCell>*</MaterialUI.TableCell>
-          <MaterialUI.TableCell>{defaultTarget.httpCode}</MaterialUI.TableCell>
-          <MaterialUI.TableCell>{defaultTarget.path}</MaterialUI.TableCell>
-          <MaterialUI.TableCell />
-          <MaterialUI.TableCell />
-        </MaterialUI.TableRow>
-      </MaterialUI.TableBody>
-    </MaterialUI.Table>
+            </TableCell>
+          </TableRow>)}
+        <TableRow title='Default target'>
+          <TableCell>*</TableCell>
+          <TableCell>{defaultTarget.httpCode}</TableCell>
+          <TableCell>{defaultTarget.path}</TableCell>
+          <TableCell />
+          <TableCell />
+        </TableRow>
+      </TableBody>
+    </Table>
 
   private onDelete = (event: React.MouseEvent<HTMLFormElement>) => {
     event.preventDefault()

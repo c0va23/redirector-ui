@@ -1,8 +1,16 @@
 import * as React from 'react'
 
-import * as MaterialUI from '@material-ui/core'
-import * as Styles from '@material-ui/core/styles'
-import * as MaterialUIIcons from '@material-ui/icons'
+import Button from '@material-ui/core/Button'
+import FormControl from '@material-ui/core/FormControl'
+import IconButton from '@material-ui/core/IconButton'
+import Snackbar from '@material-ui/core/Snackbar'
+import SnackbarContent from '@material-ui/core/SnackbarContent'
+import TextField from '@material-ui/core/TextField'
+import withStyles, {
+  StyleRulesCallback,
+  WithStyles,
+} from '@material-ui/core/styles/withStyles'
+import Close from '@material-ui/icons/Close'
 
 import {
   HostRules,
@@ -13,7 +21,7 @@ import {
 import RuleForm from './RuleForm'
 import TargetForm from './TargetForm'
 
-const styles: Styles.StyleRulesCallback = (theme) => ({
+const styles: StyleRulesCallback = (theme) => ({
   actionsPanel: {
     display: 'flex',
     justifyContent: 'flex-end',
@@ -55,14 +63,14 @@ class State {
 
 class HostRulesForm extends React.Component<
   Props
-  & Styles.WithStyles
+  & WithStyles
   , State
 > {
   state = new State()
 
   render () {
     return <form onSubmit={this.onSubmit}>
-      <MaterialUI.TextField
+      <TextField
         name='host'
         label='Host'
         value={this.props.hostRules.host}
@@ -78,7 +86,7 @@ class HostRulesForm extends React.Component<
         onUpdateTarget={this.updateTarget}
       />
 
-      <MaterialUI.FormControl fullWidth>
+      <FormControl fullWidth>
         {this.props.hostRules.rules.map((rule, index) =>
           <RuleForm
             key={index}
@@ -89,38 +97,38 @@ class HostRulesForm extends React.Component<
           />)
         }
 
-        <MaterialUI.Button name='addRule' onClick={() => this.addRule()}>
+        <Button name='addRule' onClick={() => this.addRule()}>
           Add
-        </MaterialUI.Button>
-      </MaterialUI.FormControl>
+        </Button>
+      </FormControl>
 
       <br />
 
-      <MaterialUI.Snackbar
+      <Snackbar
         open={this.state.message !== undefined}
       >
-        <MaterialUI.SnackbarContent
+        <SnackbarContent
           message={<p>{this.state.message && this.state.message.text}</p>}
           className={this.state.message && this.state.message.className}
           action={
-            <MaterialUI.IconButton
+            <IconButton
               key='errorMessage'
               onClick={() => this.clearError()}
             >
-              <MaterialUIIcons.Close/>
-            </MaterialUI.IconButton>
+              <Close />
+            </IconButton>
           }
         />
-      </MaterialUI.Snackbar>
+      </Snackbar>
 
       <div className={this.props.classes.actionsPanel}>
-        <MaterialUI.Button
+        <Button
           type='submit'
           color='primary'
           variant='raised'
         >
           Save
-        </MaterialUI.Button>
+        </Button>
       </div>
     </form>
   }
@@ -211,4 +219,4 @@ class HostRulesForm extends React.Component<
   }
 }
 
-export default MaterialUI.withStyles(styles)(HostRulesForm)
+export default withStyles(styles)(HostRulesForm)
