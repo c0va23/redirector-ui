@@ -10,9 +10,9 @@ const logger = log.getLogger('index')
 let app = document.getElementById('app')
 
 if (null !== app) {
-  let apiUri = app.dataset['apiUri']
+  let apiUrl = app.dataset['apiUrl']
 
-  render(<App apiUri={apiUri} />, app)
+  render(<App apiUrl={apiUrl} />, app)
 } else {
   logger.error('Root element not found')
 }

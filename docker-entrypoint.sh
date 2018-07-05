@@ -1,9 +1,9 @@
 #!/bin/sh
 
-ESCAPED_API_URI=$(echo $API_URI | sed -e 's/\//\\\//g')
+ESCAPED_API_URL=$(echo $API_URL | sed -e 's/\//\\\//g')
 
 sed \
     -i /app/index.html \
-    -e "s/data-api-uri=\"\"/data-api-uri=\"$ESCAPED_API_URI\"/g"
+    -e "s/data-api-url=\"\"/data-api-url=\"$ESCAPED_API_URL\"/g"
 
 nginx -g 'daemon off;'

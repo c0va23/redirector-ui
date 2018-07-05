@@ -75,12 +75,12 @@ describe('LoginForm', () => {
   })
 
   describe('with not undefined prop apiUri', () => {
-    let apiUri: string
+    let apiUrl: string
 
     beforeEach(() => {
-      apiUri = internet.url()
+      apiUrl = internet.url()
       loginForm = mount(<LoginForm
-        apiUri={apiUri}
+        apiUrl={apiUrl}
         onSave={onSave}
       />)
     })
@@ -88,7 +88,7 @@ describe('LoginForm', () => {
     it('field basePath have value form apiUri', () => {
       let basePathInput = loginForm.find('input[name="basePath"]').first()
 
-      expect(basePathInput.prop('value')).toEqual(apiUri)
+      expect(basePathInput.prop('value')).toEqual(apiUrl)
     })
   })
 })
