@@ -34,3 +34,7 @@ FROM nginx:1.14-alpine
 COPY --from=builder /app/dist/* /app/
 
 ADD nginx.conf /etc/nginx/
+
+ADD docker-entrypoint.sh /usr/bin/
+
+CMD [ "/usr/bin/docker-entrypoint.sh" ]
