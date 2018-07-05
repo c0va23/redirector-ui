@@ -4,6 +4,7 @@ import {
   ReactWrapper,
   mount,
 } from 'enzyme'
+import { internet } from 'faker'
 
 import Config from '../../src/Config'
 import LoginForm from '../../src/components/LoginForm'
@@ -70,6 +71,24 @@ describe('LoginForm', () => {
         password,
         basePath,
       })
+    })
+  })
+
+  describe('with not undefined prop apiUri', () => {
+    let apiUri: string
+
+    beforeEach(() => {
+      apiUri = internet.url()
+      loginForm = mount(<LoginForm
+        apiUri={apiUri}
+        onSave={onSave}
+      />)
+    })
+
+    it('field basePath have value form apiUri', () => {
+      let basePathInput = loginForm.find('input[name="basePath"]').first()
+
+      expect(basePathInput.prop('value')).toEqual(apiUri)
     })
   })
 })

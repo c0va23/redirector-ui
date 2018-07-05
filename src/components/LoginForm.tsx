@@ -13,6 +13,7 @@ import withStyles, {
 import Config from '../Config'
 
 interface LoginFormProps {
+  apiUri?: string
   onSave: (config: Config) => void,
 }
 
@@ -31,7 +32,7 @@ class LoginForm extends React.Component<
   Config
 > {
   state: Config = {
-    basePath: '',
+    basePath: this.props.apiUri || '',
     username: '',
     password: '',
   }
