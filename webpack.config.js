@@ -18,6 +18,8 @@ const NODE_ENV = process.env['NODE_ENV'] || DEFAULT_NODE_ENV
 const DEFAULT_ANALYZER = 'disabled'
 const ANALYZER_MODE = process.env['ANALYZER_MODE'] || DEFAULT_ANALYZER
 
+const API_URI = process.env['API_URI']
+
 module.exports = {
   entry: './src/index.tsx',
 
@@ -60,6 +62,9 @@ module.exports = {
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new HtmlWebpackPlugin({
       template: 'src/index.html',
+      templateParameters: {
+        apiUri: API_URI,
+      },
     }),
     new BundleAnalyzerPlugin({
       analyzerMode: ANALYZER_MODE,

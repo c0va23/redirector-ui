@@ -28,6 +28,10 @@ class AppState {
   config?: Config
 }
 
+interface Props {
+  apiUri?: string
+}
+
 const LOGIN_PATH = '/login'
 const HOST_RULES_LIST_PATH = '/host_rules_list'
 const HOST_RULES_EDIT_PATH = HOST_RULES_LIST_PATH + '/:host/edit'
@@ -44,7 +48,7 @@ const styles: StyleRulesCallback =
     },
   })
 
-class App extends React.Component<WithStyles, AppState> {
+class App extends React.Component<Props & WithStyles, AppState> {
   state = new AppState()
 
   componentDidMount () {
@@ -83,7 +87,7 @@ class App extends React.Component<WithStyles, AppState> {
   }
 
   private loginForm () {
-    return <LoginForm onSave={this.logIn} />
+    return <LoginForm apiUri={this.props.apiUri} onSave={this.logIn} />
   }
 
   private routes (): JSX.Element {
