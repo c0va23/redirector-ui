@@ -1,5 +1,5 @@
 export default interface Config {
-  basePath: string
+  apiUrl: string
   username: string
   password: string
 }
