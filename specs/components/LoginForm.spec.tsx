@@ -19,10 +19,10 @@ describe('LoginForm', () => {
   })
 
   describe('fields', () => {
-    it('have basePath field', () => {
-      let basePathField = loginForm.find('[name="basePath"]').first()
+    it('have apiUrl field', () => {
+      let basePathField = loginForm.find('[name="apiUrl"]').first()
 
-      expect(basePathField.prop('label')).toEqual('Base path')
+      expect(basePathField.prop('label')).toEqual('API URL')
     })
 
     it('have username field', () => {
@@ -48,12 +48,12 @@ describe('LoginForm', () => {
   describe('onSave event', () => {
     const username = 'user'
     const password = 'pass'
-    const basePath = 'http://localhost:12345/'
+    const apiUrl = 'http://localhost:12345/'
 
     beforeEach(() => {
-      loginForm.find('input[name="basePath"]')
+      loginForm.find('input[name="apiUrl"]')
         .first()
-        .simulate('change', { target: { value: basePath, name: 'basePath' } })
+        .simulate('change', { target: { value: apiUrl, name: 'apiUrl' } })
 
       loginForm.find('input[name="username"]')
         .first()
@@ -69,26 +69,26 @@ describe('LoginForm', () => {
       expect(onSave).toBeCalledWith({
         username,
         password,
-        basePath,
+        apiUrl,
       })
     })
   })
 
-  describe('with not undefined prop apiUri', () => {
-    let apiUri: string
+  describe('with not undefined prop apiUrl', () => {
+    let apiUrl: string
 
     beforeEach(() => {
-      apiUri = internet.url()
+      apiUrl = internet.url()
       loginForm = mount(<LoginForm
-        apiUri={apiUri}
+        apiUrl={apiUrl}
         onSave={onSave}
       />)
     })
 
-    it('field basePath have value form apiUri', () => {
-      let basePathInput = loginForm.find('input[name="basePath"]').first()
+    it('field basePath have value form apiUrl', () => {
+      let basePathInput = loginForm.find('input[name="apiUrl"]').first()
 
-      expect(basePathInput.prop('value')).toEqual(apiUri)
+      expect(basePathInput.prop('value')).toEqual(apiUrl)
     })
   })
 })

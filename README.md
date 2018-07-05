@@ -9,8 +9,10 @@ WEB UI for [redirector](https://github.com/c0va23/redirector)
 ### Run with docker
 
 ```bash
-docker run -p 8080:80 c0va23/redirector-ui
+docker run -p 8080:80 -e API_URL=http://myhost.org c0va23/redirector-ui
 ```
+
+When `API_URL` is url of redirector server. Can be skipped.
 
 ## Build
 

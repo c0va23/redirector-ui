@@ -29,7 +29,7 @@ class AppState {
 }
 
 interface Props {
-  apiUri?: string
+  apiUrl?: string
 }
 
 const LOGIN_PATH = '/login'
@@ -87,7 +87,7 @@ class App extends React.Component<Props & WithStyles, AppState> {
   }
 
   private loginForm () {
-    return <LoginForm apiUri={this.props.apiUri} onSave={this.logIn} />
+    return <LoginForm apiUrl={this.props.apiUrl} onSave={this.logIn} />
   }
 
   private routes (): JSX.Element {

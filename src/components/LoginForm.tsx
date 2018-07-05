@@ -13,7 +13,7 @@ import withStyles, {
 import Config from '../Config'
 
 interface LoginFormProps {
-  apiUri?: string
+  apiUrl?: string
   onSave: (config: Config) => void,
 }
 
@@ -32,7 +32,7 @@ class LoginForm extends React.Component<
   Config
 > {
   state: Config = {
-    basePath: this.props.apiUri || '',
+    apiUrl: this.props.apiUrl || '',
     username: '',
     password: '',
   }
@@ -62,9 +62,9 @@ class LoginForm extends React.Component<
   private renderForm (): JSX.Element {
     return <form onSubmit={this.onSubmit}>
       <TextField
-        label='Base path'
-        name='basePath'
-        value={this.state.basePath}
+        label='API URL'
+        name='apiUrl'
+        value={this.state.apiUrl}
         onChange={this.onInputChange}
         fullWidth
       />
