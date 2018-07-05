@@ -1,74 +1,100 @@
 import * as React from 'react'
 
+import { Typography } from '@material-ui/core'
+
 import { ReactWrapper, mount } from 'enzyme'
 import { lorem } from 'faker'
 
 import ErrorView from '../../src/components/ErrorView'
 
 describe('ErrorView', () => {
-  let bodyText: string
-  let status: number
-  let statusText: string
-  let response: {
-    status: number,
-    statusText: string,
-    text: jest.Mock,
-  }
   let errorView: ReactWrapper
 
-  beforeEach(() => {
-    bodyText = lorem.sentence()
-    status = 400 + Math.round(100 * Math.random())
-    statusText = lorem.sentence(2)
+  describe('on simple error', () => {
+    let response: Error
 
-    response = {
-      status: status,
-      statusText: statusText,
-      text: jest.fn(),
-    }
-  })
-
-  describe('when response body read success', () => {
     beforeEach(() => {
-      response.text.mockResolvedValue(bodyText)
+      response = new TypeError(lorem.sentence())
+
       errorView = mount(<ErrorView response={response} />)
-      return response.text()
-        .then(() => errorView = errorView.update())
     })
 
-    it('have status code', () => {
-      let statusEl = errorView.find('[role="status"]').first()
-      expect(statusEl.text()).toEqual(status.toString())
+    it('render error name', () => {
+      let headlineEl = errorView.find(Typography).filter({ id: 'errorName' })
+      expect(headlineEl.text()).toEqual(response.name)
     })
 
-    it('have status text', () => {
-      let statusTextEl = errorView.find('[role="statusText"]').first()
-      expect(statusTextEl.text()).toEqual(statusText)
-    })
-
-    it('have body text', () => {
-      let bodyTextEl = errorView.find('[role="bodyText"]').first()
-
-      expect(bodyTextEl.text()).toEqual(bodyText)
+    it('render error message', () => {
+      let bodyMessageEl = errorView.find(Typography).filter({ id: 'errorMessage' })
+      expect(bodyMessageEl.text()).toEqual(response.message)
     })
   })
 
-  describe('when response body read success', () => {
-    let readErrorMessage: string
+  describe('on HTTP error', () => {
+    let bodyText: string
+    let status: number
+    let statusText: string
+    let response: Response
+    let testFn: jest.SpyInstance
+
     beforeEach(() => {
-      readErrorMessage = lorem.sentence()
-      response.text.mockRejectedValue(new Error(readErrorMessage))
+      bodyText = lorem.sentence()
+      status = 400 + Math.round(100 * Math.random())
+      statusText = lorem.sentence(2)
 
-      errorView = mount(<ErrorView response={response} />)
+      response = new Response(undefined, {
+        status: status,
+        statusText: statusText,
+      })
 
-      return new Promise(setImmediate)
-        .then(() => errorView = errorView.update())
+      testFn = jest.spyOn(response, 'text')
     })
 
-    it('render read error', () => {
-      let bodyTextEl = errorView.find('[role="bodyText"]').first()
+    describe('when response body read success', () => {
+      beforeEach(() => {
+        testFn.mockResolvedValue(bodyText)
+        errorView = mount(<ErrorView response={response} />)
+        return response.text()
+          .then(() => errorView = errorView.update())
+      })
 
-      expect(bodyTextEl.text()).toEqual(`Error\n${readErrorMessage}`)
+      it('have name "HTTP code"', () => {
+        let nameEl = errorView.find(Typography).filter({ id: 'errorName' })
+        expect(nameEl.text()).toEqual('HTTP error')
+      })
+
+      it('have status message', () => {
+        let messageEl = errorView.find(Typography).filter({ id: 'errorMessage' })
+        expect(messageEl.text()).toEqual(`${status}: ${statusText}`)
+      })
+
+      it('have body text', () => {
+        let bodyTextEl = errorView.find(Typography).filter({ id: 'bodyText' })
+        expect(bodyTextEl.text()).toEqual(bodyText)
+      })
+    })
+
+    describe('when response body read error', () => {
+      let readErrorMessage: string
+      beforeEach(() => {
+        readErrorMessage = lorem.sentence()
+        testFn.mockRejectedValue(new Error(readErrorMessage))
+
+        errorView = mount(<ErrorView response={response} />)
+
+        return new Promise(setImmediate)
+          .then(() => errorView = errorView.update())
+      })
+
+      it('render read error name', () => {
+        let nameEl = errorView.find(Typography).filter({ id: 'errorName' })
+        expect(nameEl.text()).toEqual('Error')
+      })
+
+      it('render read error message', () => {
+        let messageEl = errorView.find(Typography).filter({ id: 'errorMessage' })
+        expect(messageEl.text()).toEqual(readErrorMessage)
+      })
     })
   })
 })

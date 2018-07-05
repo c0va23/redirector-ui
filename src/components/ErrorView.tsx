@@ -22,20 +22,25 @@ const styles: StyleRulesCallback = (theme) => ({
   },
 })
 
+type ErrorType = Response | Error
+
 export interface ErrorViewProps {
-  response: {
-    status: number,
-    statusText: string,
-    text: () => Promise<string>,
-  },
+  response: ErrorType,
 }
 
 class State {
   bodyText?: string
+  constructor (
+    readonly error: ErrorType,
+  ) {}
 }
 
-class ErrorView extends React.PureComponent<ErrorViewProps & WithStyles, State> {
-  state = new State()
+class ErrorView extends React.PureComponent<
+  ErrorViewProps
+  & WithStyles
+  , State
+> {
+  state = new State(this.props.response)
 
   render () {
     return <Grid
@@ -48,16 +53,19 @@ class ErrorView extends React.PureComponent<ErrorViewProps & WithStyles, State> 
         item
         className={this.props.classes.item}
       >
-        <Typography variant='headline'>
-          Error
+        <Typography variant='headline' id='errorName'>
+          {this.formatedName()}
         </Typography>
-        <Typography variant='subheading'>
-          <span role='status'>{this.props.response.status}</span>:
-          &nbsp;
-          <span role='statusText'>{this.props.response.statusText}</span>
+
+        <Typography
+          variant='subheading'
+          id='errorMessage'
+        >
+          {this.formattedMessage()}
         </Typography>
+
         {this.state.bodyText !== undefined &&
-          <Typography variant='body1' role='bodyText'>
+          <Typography variant='body1' id='bodyText'>
             {this.state.bodyText}
           </Typography>}
       </Grid>
@@ -65,11 +73,35 @@ class ErrorView extends React.PureComponent<ErrorViewProps & WithStyles, State> 
   }
 
   componentDidMount () {
-    this.props.response.text()
+    if (this.props.response instanceof Response) {
+      this.fetchResponseText(this.props.response)
+    }
+  }
+
+  private formatedName = (): string => {
+    let error = this.state.error
+    if (error instanceof Response) {
+      return 'HTTP error'
+    } else {
+      return error.name
+    }
+  }
+
+  private formattedMessage = () => {
+    let error = this.state.error
+    if (error instanceof Response) {
+      return `${error.status}: ${error.statusText}`
+    } else {
+      return error.message
+    }
+  }
+
+  private fetchResponseText (response: Response) {
+    response.text()
       .then(bodyText => this.setState({ bodyText }))
       .catch((error: Error) => {
         logger.error(error)
-        this.setState({ bodyText: `${error.name}\n${error.message}` })
+        this.setState({ error })
       })
   }
 }
