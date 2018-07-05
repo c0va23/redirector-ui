@@ -7,7 +7,7 @@
     "test": "jest --coverage",
     "lint": "tslint --project .",
     "dev-server": "NODE_ENV=development webpack-serve --config webpack.config.js --hot",
-    "build": "ANALYZER_MODE=server webpack --config webpack.config.js"
+    "build": "webpack --config webpack.config.js"
   },
   "repository": {
     "type": "git",
