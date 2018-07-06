@@ -87,7 +87,7 @@ class App extends React.Component<Props & WithStyles, AppState> {
   }
 
   private loginForm () {
-    return <LoginForm apiUrl={this.props.apiUrl} onSave={this.logIn} />
+    return <LoginForm apiUrl={this.props.apiUrl} logIn={this.logIn} />
   }
 
   private routes (): JSX.Element {

@@ -12,9 +12,11 @@ import withStyles, {
 
 import Config from '../Config'
 
+export type LogIn = (config: Config) => void
+
 interface LoginFormProps {
   apiUrl?: string
-  onSave: (config: Config) => void,
+  logIn: LogIn,
 }
 
 const styles: StyleRulesCallback = (theme) => ({
@@ -117,7 +119,7 @@ class LoginForm extends React.Component<
 
   private onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    this.props.onSave(this.state)
+    this.props.logIn(this.state)
   }
 }
 

@@ -6,16 +6,17 @@ import {
 } from 'enzyme'
 import { internet } from 'faker'
 
-import Config from '../../src/Config'
-import LoginForm from '../../src/components/LoginForm'
+import LoginForm, {
+  LogIn,
+} from '../../src/components/LoginForm'
 
 describe('LoginForm', () => {
-  let onSave: (config: Config) => void
+  let logIn: LogIn
   let loginForm: ReactWrapper
 
   beforeEach(() => {
-    onSave = jest.fn()
-    loginForm = mount(<LoginForm onSave={onSave} />)
+    logIn = jest.fn()
+    loginForm = mount(<LoginForm logIn={logIn} />)
   })
 
   describe('fields', () => {
@@ -66,7 +67,7 @@ describe('LoginForm', () => {
 
     it('call onSave event with valid config', () => {
       loginForm.find('form').first().simulate('submit')
-      expect(onSave).toBeCalledWith({
+      expect(logIn).toBeCalledWith({
         username,
         password,
         apiUrl,
@@ -81,7 +82,7 @@ describe('LoginForm', () => {
       apiUrl = internet.url()
       loginForm = mount(<LoginForm
         apiUrl={apiUrl}
-        onSave={onSave}
+        logIn={logIn}
       />)
     })
 
