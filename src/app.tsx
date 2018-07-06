@@ -98,7 +98,11 @@ class App extends React.Component<Props & WithStyles, AppState> {
   }
 
   private authorizedRoutes (config: Config): JSX.Element {
-    let configApi = new ConfigApi(config)
+    let configApi = new ConfigApi({
+      basePath: config.apiUrl,
+      username: config.username,
+      password: config.password,
+    })
     return <HashRouter>
       <Switch>
         <Route path={HOST_RULES_EDIT_PATH}>
