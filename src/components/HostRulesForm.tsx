@@ -1,6 +1,7 @@
 import * as React from 'react'
 
 import Button from '@material-ui/core/Button'
+import CircularProgress from '@material-ui/core/CircularProgress'
 import FormControl from '@material-ui/core/FormControl'
 import IconButton from '@material-ui/core/IconButton'
 import Snackbar from '@material-ui/core/Snackbar'
@@ -21,6 +22,8 @@ import {
 import RuleForm from './RuleForm'
 import TargetForm from './TargetForm'
 
+const circularSize = 24
+
 const styles: StyleRulesCallback = (theme) => ({
   actionsPanel: {
     display: 'flex',
@@ -33,6 +36,16 @@ const styles: StyleRulesCallback = (theme) => ({
   },
   infoMessage: {
     backgroundColor: theme.palette.primary.light,
+  },
+  buttonWrapper: {
+    position: 'relative',
+  },
+  buttonProgress: {
+    position: 'absolute',
+    marginTop: -circularSize / 2,
+    marginLeft: -circularSize / 2,
+    left: '50%',
+    top: '50%',
   },
 })
 
@@ -59,6 +72,7 @@ interface Message {
 
 class State {
   message?: Message
+  loading: boolean = false
 }
 
 class HostRulesForm extends React.Component<
@@ -122,13 +136,23 @@ class HostRulesForm extends React.Component<
       </Snackbar>
 
       <div className={this.props.classes.actionsPanel}>
-        <Button
-          type='submit'
-          color='primary'
-          variant='raised'
-        >
-          Save
-        </Button>
+        <div className={this.props.classes.buttonWrapper}>
+          <Button
+            type='submit'
+            color='primary'
+            variant='raised'
+            disabled={this.state.loading}
+            className={this.props.classes.button}
+          >
+            Save
+          </Button>
+          {this.state.loading &&
+            <CircularProgress
+              variant='indeterminate'
+              size={circularSize}
+              className={this.props.classes.buttonProgress}
+            />}
+        </div>
       </div>
     </form>
   }
@@ -145,6 +169,7 @@ class HostRulesForm extends React.Component<
 
   private onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
+    this.setState({ loading: true })
     this.props.onSave(this.onSuccessSave, this.onErrorError)
   }
 
@@ -154,6 +179,7 @@ class HostRulesForm extends React.Component<
         text: 'Success',
         className: this.props.classes.infoMessage,
       },
+      loading: false,
     })
 
   private onErrorError = (response: Response) =>
@@ -163,6 +189,7 @@ class HostRulesForm extends React.Component<
           text: reason,
           className: this.props.classes.errorMessage,
         },
+        loading: false,
       }),
     )
 
