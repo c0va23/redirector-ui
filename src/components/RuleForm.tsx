@@ -18,14 +18,14 @@ import formatInputTime from '../utils/formatInputTime'
 
 import TargetForm from './TargetForm'
 
-export type OnUpdateRule = (rule: Rule) => void
-export type OnRemoveRule = () => void
+export type UpdateRule = (rule: Rule) => void
+export type RemoveRule = () => void
 
 interface Props {
   rule: Rule,
   ruleIndex: Number,
-  onUpdateRule: OnUpdateRule,
-  onRemoveRule: OnRemoveRule,
+  onUpdateRule: UpdateRule,
+  onRemoveRule: RemoveRule,
 }
 
 const downCaseCharRegex = /[a-z]/

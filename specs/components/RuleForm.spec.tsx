@@ -20,8 +20,8 @@ import {
 
 import RuleForm from '../../src/components/RuleForm'
 import TargetForm, {
-  OnUpdateTarget,
   TargetFormProps,
+  UpdateTarget,
 } from '../../src/components/TargetForm'
 import formatInputTime from '../../src/utils/formatInputTime'
 
@@ -226,7 +226,7 @@ describe('RuleForm', () => {
       let newTarget: Target
 
       beforeEach(() => {
-        let onUpdateTarget: OnUpdateTarget = targetForm.prop('onUpdateTarget')
+        let onUpdateTarget: UpdateTarget = targetForm.prop('onUpdateTarget')
         onUpdateTarget(newTarget)
       })
 

@@ -36,20 +36,20 @@ const styles: StyleRulesCallback = (theme) => ({
   },
 })
 
-export type OnChange = (hostRules: HostRules) => void
+export type UpdateHostRules = (hostRules: HostRules) => void
 
 export type SuccessSaveCb = () => void
 export type ErrorSaveCb = (response: Response) => void
 
-export type OnSave = (
+export type SaveHostRules = (
   onSuccess: SuccessSaveCb,
   onError: ErrorSaveCb,
 ) => void
 
 interface Props {
   hostRules: HostRules,
-  onHostRulesChanged: OnChange,
-  onSave: OnSave,
+  onHostRulesChanged: UpdateHostRules,
+  onSave: SaveHostRules,
 }
 
 interface Message {

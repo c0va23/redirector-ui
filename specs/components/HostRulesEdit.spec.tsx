@@ -12,9 +12,9 @@ import ErrorView from '../../src/components/ErrorView'
 import HostRulesEdit from '../../src/components/HostRulesEdit'
 import HostRulesForm, {
   ErrorSaveCb,
-  OnChange,
-  OnSave,
+  SaveHostRules,
   SuccessSaveCb,
+  UpdateHostRules,
 } from '../../src/components/HostRulesForm'
 import Loader from '../../src/components/Loader'
 
@@ -143,7 +143,7 @@ describe('HostRulesEdit', () => {
       beforeEach(() => {
         newHostRules = randomHostRules()
 
-        let onHostRulesChanged: OnChange = hostRulesForm().prop('onHostRulesChanged')
+        let onHostRulesChanged: UpdateHostRules = hostRulesForm().prop('onHostRulesChanged')
         onHostRulesChanged(newHostRules)
       })
 
@@ -161,7 +161,7 @@ describe('HostRulesEdit', () => {
           successSaveCb = jest.fn()
           errorSaveCb = jest.fn()
 
-          let onSave: OnSave = hostRulesForm().prop('onSave')
+          let onSave: SaveHostRules = hostRulesForm().prop('onSave')
           onSave(successSaveCb, errorSaveCb)
         })
 
@@ -183,7 +183,7 @@ describe('HostRulesEdit', () => {
       let errorSaveCb: ErrorSaveCb
 
       let callSave = () => {
-        let onSave: OnSave = hostRulesForm().prop('onSave')
+        let onSave: SaveHostRules = hostRulesForm().prop('onSave')
         onSave(successSaveCb, errorSaveCb)
       }
 
