@@ -24,6 +24,13 @@ const styles: StyleRulesCallback = (theme) => ({
   content: {
     padding: theme.spacing.unit * 2,
   },
+  form: {
+    marginTop: theme.spacing.unit,
+    marginBottom: 0,
+  },
+  button: {
+    marginTop: theme.spacing.unit,
+  },
 })
 
 class LoginForm extends React.Component<
@@ -46,11 +53,13 @@ class LoginForm extends React.Component<
     >
       <Grid
         item
-        md={4}
+        xl={4}
+        md={6}
+        sm={8}
         xs={12}
       >
         <Paper className={this.props.classes.content}>
-          <Typography variant='subheading'>
+          <Typography variant='headline'>
             Log in
           </Typography>
           {this.renderForm()}
@@ -60,7 +69,10 @@ class LoginForm extends React.Component<
   }
 
   private renderForm (): JSX.Element {
-    return <form onSubmit={this.onSubmit}>
+    return <form
+      onSubmit={this.onSubmit}
+      className={this.props.classes.form}
+    >
       <TextField
         label='API URL'
         name='apiUrl'
@@ -86,6 +98,7 @@ class LoginForm extends React.Component<
       <Button
         type='submit'
         variant='raised'
+        className={this.props.classes.button}
       >
         Login
       </Button>
