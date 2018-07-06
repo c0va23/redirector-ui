@@ -17,11 +17,11 @@ import { HostRules } from 'redirector-client'
 
 import HostRulesForm from '../../src/components/HostRulesForm'
 import RuleForm, {
-  OnUpdateRule,
+  UpdateRule,
 } from '../../src/components/RuleForm'
 import TargetForm, {
-  OnUpdateTarget,
   TargetFormProps,
+  UpdateTarget,
 } from '../../src/components/TargetForm'
 
 import * as HostRulesFactory from '../factories/HostRulesFactory'
@@ -114,7 +114,7 @@ describe('HostRulesForm', () => {
 
     it('update target on TargetForm.onChange', () => {
       let target = TargetFactory.randomTarget()
-      let onUpdateTarget: OnUpdateTarget = targetForm.prop('onUpdateTarget')
+      let onUpdateTarget: UpdateTarget = targetForm.prop('onUpdateTarget')
       onUpdateTarget(target)
 
       expect(hostRulesChangedCb).toBeCalledWith({
@@ -173,7 +173,7 @@ describe('HostRulesForm', () => {
         let newRule = RuleFactory.randomRule()
 
         let ruleForm = hostRulesForm.find(RuleForm).at(1)
-        let onUpdateRule: OnUpdateRule = ruleForm.prop('onUpdateRule')
+        let onUpdateRule: UpdateRule = ruleForm.prop('onUpdateRule')
         onUpdateRule(newRule)
 
         expect(hostRulesChangedCb).toBeCalledWith({

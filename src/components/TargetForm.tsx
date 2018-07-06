@@ -5,11 +5,11 @@ import TextField from '@material-ui/core/TextField'
 
 import { Target } from 'redirector-client'
 
-export type OnUpdateTarget = (target: Target) => void
+export type UpdateTarget = (target: Target) => void
 
 export interface TargetFormProps {
   target: Target,
-  onUpdateTarget: OnUpdateTarget,
+  onUpdateTarget: UpdateTarget,
 }
 
 export default class TargetForm extends React.Component<TargetFormProps> {

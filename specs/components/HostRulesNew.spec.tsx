@@ -13,9 +13,9 @@ import { HostRules } from 'redirector-client'
 import ButtonLink from '../../src/components/ButtonLink'
 import HostRulesForm, {
   ErrorSaveCb,
-  OnChange,
-  OnSave,
+  SaveHostRules,
   SuccessSaveCb,
+  UpdateHostRules,
 } from '../../src/components/HostRulesForm'
 import HostRulesNew from '../../src/components/HostRulesNew'
 
@@ -51,7 +51,7 @@ describe('HostRulesNew', () => {
     let newHostRules: HostRules
     let successSaveCb: SuccessSaveCb
     let errorSaveCb: ErrorSaveCb
-    let onSave: OnSave
+    let onSave: SaveHostRules
 
     const callSave = () =>
       onSave(successSaveCb, errorSaveCb)
@@ -59,7 +59,7 @@ describe('HostRulesNew', () => {
     beforeEach(() => {
       newHostRules = randomHostRules()
 
-      let onHostRulesChanged: OnChange = hostRulesForm.prop('onHostRulesChanged')
+      let onHostRulesChanged: UpdateHostRules = hostRulesForm.prop('onHostRulesChanged')
       onHostRulesChanged(newHostRules)
 
       successSaveCb = jest.fn()
