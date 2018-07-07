@@ -16,9 +16,11 @@ import {
   Switch,
 } from 'react-router-dom'
 
-import { ConfigApi } from 'redirector-client'
+import Config, {
+  ConfigApiBuilder,
+  ConfigStore,
+} from './Config'
 
-import Config from './Config'
 import HostRulesEdit from './pages/HostRulesEdit'
 import HostRulesList from './pages/HostRulesList'
 import HostRulesNew from './pages/HostRulesNew'
@@ -30,14 +32,14 @@ class AppState {
 
 interface Props {
   apiUrl?: string
+  configApiBuilder: ConfigApiBuilder
+  configStore: ConfigStore
 }
 
 const LOGIN_PATH = '/login'
 const HOST_RULES_LIST_PATH = '/host_rules_list'
 const HOST_RULES_EDIT_PATH = HOST_RULES_LIST_PATH + '/:host/edit'
 const HOST_RULES_NEW_PATH = HOST_RULES_LIST_PATH + '/new'
-
-const CONFIG_KEY = 'config'
 
 const styles: StyleRulesCallback =
   (_theme) => ({
@@ -55,7 +57,9 @@ class App extends React.Component<Props & WithStyles, AppState> {
   state = new AppState()
 
   componentDidMount () {
-    this.setState({ config: this.loadConfig() })
+    this.setState({
+      config: this.props.configStore.load(),
+    })
   }
 
   render () {
@@ -82,12 +86,12 @@ class App extends React.Component<Props & WithStyles, AppState> {
 
   private logIn = (config: Config) => {
     this.setState({ config })
-    this.storeConfig(config)
+    this.props.configStore.store(config)
   }
 
   private logOut = () => {
     this.setState({ config: undefined })
-    this.clearConfig()
+    this.props.configStore.clear()
   }
 
   private routes (): JSX.Element {
@@ -98,11 +102,7 @@ class App extends React.Component<Props & WithStyles, AppState> {
   }
 
   private authorizedRoutes (config: Config): JSX.Element {
-    let configApi = new ConfigApi({
-      basePath: config.apiUrl,
-      username: config.username,
-      password: config.password,
-    })
+    let configApi = this.props.configApiBuilder(config)
     return <HashRouter>
       <Switch>
         <Route path={HOST_RULES_EDIT_PATH}>
@@ -135,21 +135,6 @@ class App extends React.Component<Props & WithStyles, AppState> {
         <Redirect to={LOGIN_PATH} />
       </Switch>
     </HashRouter>
-  }
-
-  private loadConfig (): Config | undefined {
-    const configJson = sessionStorage.getItem(CONFIG_KEY)
-    if (null === configJson) return undefined
-    return JSON.parse(configJson)
-  }
-
-  private storeConfig (config: Config) {
-    const configJson = JSON.stringify(config)
-    sessionStorage.setItem(CONFIG_KEY, configJson)
-  }
-
-  private clearConfig () {
-    sessionStorage.removeItem(CONFIG_KEY)
   }
 }
 
