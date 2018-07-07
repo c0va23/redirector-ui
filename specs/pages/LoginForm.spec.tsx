@@ -8,7 +8,7 @@ import { internet } from 'faker'
 
 import LoginForm, {
   LogIn,
-} from '../../src/components/LoginForm'
+} from '../../src/pages/LoginForm'
 
 describe('LoginForm', () => {
   let logIn: LogIn

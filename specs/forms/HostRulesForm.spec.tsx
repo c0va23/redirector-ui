@@ -17,14 +17,14 @@ import { HostRules } from 'redirector-client'
 
 import HostRulesForm, {
   HostRulesFormProps,
-} from '../../src/components/HostRulesForm'
+} from '../../src/forms/HostRulesForm'
 import RuleForm, {
   UpdateRule,
-} from '../../src/components/RuleForm'
+} from '../../src/forms/RuleForm'
 import TargetForm, {
   TargetFormProps,
   UpdateTarget,
-} from '../../src/components/TargetForm'
+} from '../../src/forms/TargetForm'
 
 import * as HostRulesFactory from '../factories/HostRulesFactory'
 import * as RuleFactory from '../factories/RuleFactory'

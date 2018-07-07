@@ -16,10 +16,11 @@ import {
   HostRules,
 } from 'redirector-client'
 
-import ButtonLink from './ButtonLink'
-import ErrorView from './ErrorView'
-import HostRulesForm from './HostRulesForm'
-import Loader from './Loader'
+import HostRulesForm from '../forms/HostRulesForm'
+
+import ButtonLink from '../components/ButtonLink'
+import ErrorView from '../components/ErrorView'
+import Loader from '../components/Loader'
 
 const logger = log.getLogger('HostRulesEdit')
 

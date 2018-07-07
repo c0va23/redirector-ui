@@ -13,11 +13,11 @@ import {
   HostRules,
 } from 'redirector-client'
 
-import ButtonLink from './ButtonLink'
+import ButtonLink from '../components/ButtonLink'
 import HostRulesForm, {
   ErrorSaveCb,
   SuccessSaveCb,
-} from './HostRulesForm'
+} from '../forms/HostRulesForm'
 
 const logger = log.getLogger('HostRulesNew')
 
