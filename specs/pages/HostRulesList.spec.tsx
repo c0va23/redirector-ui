@@ -5,9 +5,10 @@ import { HostRules } from 'redirector-client'
 
 import { ReactWrapper, mount } from 'enzyme'
 
+import HostRulesList from '../../src/pages/HostRulesList'
+
 import ButtonLink from '../../src/components/ButtonLink'
 import ErrorView from '../../src/components/ErrorView'
-import HostRulesList from '../../src/components/HostRulesList'
 import HostRulesView, {
   OnDeleteHostRules,
 } from '../../src/components/HostRulesView'

@@ -21,11 +21,12 @@ import {
 import RuleForm, {
  RemoveRule,
   UpdateRule,
-} from '../../src/components/RuleForm'
+} from '../../src/forms/RuleForm'
 import TargetForm, {
   TargetFormProps,
   UpdateTarget,
-} from '../../src/components/TargetForm'
+} from '../../src/forms/TargetForm'
+
 import formatInputTime from '../../src/utils/formatInputTime'
 
 import { randomDate } from '../factories/DateFactory'

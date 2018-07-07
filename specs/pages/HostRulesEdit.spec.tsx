@@ -7,16 +7,18 @@ import { ReactWrapper, mount } from 'enzyme'
 
 import { HostRules } from 'redirector-client'
 
+import HostRulesEdit from '../../src/pages/HostRulesEdit'
+
 import ButtonLink from '../../src/components/ButtonLink'
 import ErrorView from '../../src/components/ErrorView'
-import HostRulesEdit from '../../src/components/HostRulesEdit'
+import Loader from '../../src/components/Loader'
+
 import HostRulesForm, {
   ErrorSaveCb,
   HostRulesFormProps,
   SaveHostRules,
   SuccessSaveCb,
-} from '../../src/components/HostRulesForm'
-import Loader from '../../src/components/Loader'
+} from '../../src/forms/HostRulesForm'
 
 import { randomHostRules } from '../factories/HostRulesFactory'
 import { randomResponse } from '../factories/ResponseFactory'

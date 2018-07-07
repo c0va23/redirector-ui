@@ -19,10 +19,10 @@ import {
 import { ConfigApi } from 'redirector-client'
 
 import Config from './Config'
-import HostRulesEdit from './components/HostRulesEdit'
-import HostRulesList from './components/HostRulesList'
-import HostRulesNew from './components/HostRulesNew'
-import LoginForm from './components/LoginForm'
+import HostRulesEdit from './pages/HostRulesEdit'
+import HostRulesList from './pages/HostRulesList'
+import HostRulesNew from './pages/HostRulesNew'
+import LoginForm from './pages/LoginForm'
 
 class AppState {
   config?: Config

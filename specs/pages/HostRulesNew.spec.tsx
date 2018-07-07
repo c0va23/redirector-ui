@@ -11,13 +11,15 @@ import {
 import { HostRules } from 'redirector-client'
 
 import ButtonLink from '../../src/components/ButtonLink'
+
 import HostRulesForm, {
   ErrorSaveCb,
   HostRulesFormProps,
   SaveHostRules,
   SuccessSaveCb,
-} from '../../src/components/HostRulesForm'
-import HostRulesNew from '../../src/components/HostRulesNew'
+} from '../../src/forms/HostRulesForm'
+
+import HostRulesNew from '../../src/pages/HostRulesNew'
 
 import {
   newHostRules,

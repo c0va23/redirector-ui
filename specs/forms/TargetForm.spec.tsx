@@ -9,7 +9,7 @@ import { Target } from 'redirector-client'
 
 import TargetForm, {
   UpdateTarget,
-} from '../../src/components/TargetForm'
+} from '../../src/forms/TargetForm'
 
 import { randomPath } from '../factories/PathFactory'
 import {

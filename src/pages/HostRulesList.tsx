@@ -12,10 +12,10 @@ import {
   HostRules,
 } from 'redirector-client'
 
-import ButtonLink from './ButtonLink'
-import ErrorView from './ErrorView'
-import HostRulesView from './HostRulesView'
-import Loader from './Loader'
+import ButtonLink from '../components/ButtonLink'
+import ErrorView from '../components/ErrorView'
+import HostRulesView from '../components/HostRulesView'
+import Loader from '../components/Loader'
 
 const logger = log.getLogger('HostRulesList')
 
