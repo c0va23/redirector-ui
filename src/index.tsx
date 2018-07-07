@@ -3,7 +3,7 @@ import { render } from 'react-dom'
 
 import * as log from 'loglevel'
 
-import App from './app'
+import App from './App'
 
 const logger = log.getLogger('index')
 
