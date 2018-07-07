@@ -15,7 +15,9 @@ import * as Faker from 'faker'
 
 import { HostRules } from 'redirector-client'
 
-import HostRulesForm from '../../src/components/HostRulesForm'
+import HostRulesForm, {
+  HostRulesFormProps,
+} from '../../src/components/HostRulesForm'
 import RuleForm, {
   UpdateRule,
 } from '../../src/components/RuleForm'
@@ -33,7 +35,7 @@ describe('HostRulesForm', () => {
 
   let hostRulesChangedCb: jest.Mock
   let saveCb: jest.Mock
-  let hostRulesForm: ReactWrapper
+  let hostRulesForm: ReactWrapper<HostRulesFormProps>
 
   beforeEach(() => {
     hostRules = HostRulesFactory.randomHostRules()
@@ -43,7 +45,7 @@ describe('HostRulesForm', () => {
     hostRulesForm = mount(
       <HostRulesForm
         hostRules={hostRules}
-        onHostRulesChanged={hostRulesChangedCb}
+        onUpdateHostRules={hostRulesChangedCb}
         onSave={saveCb}
       />,
     )

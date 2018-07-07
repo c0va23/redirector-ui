@@ -83,7 +83,7 @@ class HostRulesEdit extends React.Component<
         <HostRulesForm
           hostRules={hostRule}
           onSave={this.onSave(hostRule)}
-          onHostRulesChanged={this.updateHostRules}
+          onUpdateHostRules={this.updateHostRules}
         />
       </Paper>
     </div>
