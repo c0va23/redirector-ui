@@ -59,9 +59,9 @@ export type SaveHostRules = (
   onError: ErrorSaveCb,
 ) => void
 
-interface Props {
+export interface HostRulesFormProps {
   hostRules: HostRules,
-  onHostRulesChanged: UpdateHostRules,
+  onUpdateHostRules: UpdateHostRules,
   onSave: SaveHostRules,
 }
 
@@ -76,7 +76,7 @@ class State {
 }
 
 class HostRulesForm extends React.Component<
-  Props
+  HostRulesFormProps
   & WithStyles
   , State
 > {
@@ -161,7 +161,7 @@ class HostRulesForm extends React.Component<
     event.preventDefault()
     const name = event.target.name
     const value = event.target.value
-    this.props.onHostRulesChanged({
+    this.props.onUpdateHostRules({
       ...this.props.hostRules,
       [name]: value,
     })
@@ -196,7 +196,7 @@ class HostRulesForm extends React.Component<
   private clearError = () => this.setState({ message: undefined })
 
   private updateTarget = (target: Target) => {
-    this.props.onHostRulesChanged({
+    this.props.onUpdateHostRules({
       ...this.props.hostRules,
       defaultTarget: target,
     })
@@ -214,7 +214,7 @@ class HostRulesForm extends React.Component<
       rules,
     }
 
-    this.props.onHostRulesChanged(hostRules)
+    this.props.onUpdateHostRules(hostRules)
   }
 
   private removeRule (index: number) {
@@ -223,7 +223,7 @@ class HostRulesForm extends React.Component<
       ...this.props.hostRules.rules.slice(index + 1),
     ]
 
-    this.props.onHostRulesChanged({
+    this.props.onUpdateHostRules({
       ...this.props.hostRules,
       rules: newRules,
     })
@@ -239,7 +239,7 @@ class HostRulesForm extends React.Component<
       },
     }])
 
-    this.props.onHostRulesChanged({
+    this.props.onUpdateHostRules({
       ...this.props.hostRules,
       rules: newRules,
     })

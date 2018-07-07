@@ -18,7 +18,10 @@ import {
   Target,
 } from 'redirector-client'
 
-import RuleForm from '../../src/components/RuleForm'
+import RuleForm, {
+ RemoveRule,
+  UpdateRule,
+} from '../../src/components/RuleForm'
 import TargetForm, {
   TargetFormProps,
   UpdateTarget,
@@ -35,11 +38,15 @@ import {
 describe('RuleForm', () => {
   let rule: Rule
   let ruleIndex: number
-  let updateRuleCb: (rule: Rule) => void
-  let removeRuleCb: () => void
+  let updateRuleCb: UpdateRule
+  let removeRuleCb: RemoveRule
   let ruleForm: ReactWrapper
 
-  const fireChangeInput = (field: ReactWrapper, name: string, value: string) =>
+  const fireChangeInput = (
+    field: ReactWrapper,
+    name: keyof Rule,
+    value: string,
+  ) =>
     field
       .find('input')
       .simulate('change', {
@@ -193,6 +200,7 @@ describe('RuleForm', () => {
 
       beforeEach(() => {
         newResolver = randomResolver()
+
         let onChange: OnChange = resolverSelect.prop('onChange')
 
         onChange({

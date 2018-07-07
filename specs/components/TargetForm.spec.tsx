@@ -7,7 +7,9 @@ import {
 
 import { Target } from 'redirector-client'
 
-import TargetForm from '../../src/components/TargetForm'
+import TargetForm, {
+  UpdateTarget,
+} from '../../src/components/TargetForm'
 
 import { randomPath } from '../factories/PathFactory'
 import {
@@ -18,7 +20,7 @@ import {
 describe('TargetForm', () => {
   let target: Target
   let targetForm: ReactWrapper
-  let updateTargetCb: (target: Target) => void
+  let updateTargetCb: UpdateTarget
 
   beforeEach(() => {
     target = randomTarget()

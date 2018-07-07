@@ -13,9 +13,9 @@ import { HostRules } from 'redirector-client'
 import ButtonLink from '../../src/components/ButtonLink'
 import HostRulesForm, {
   ErrorSaveCb,
+  HostRulesFormProps,
   SaveHostRules,
   SuccessSaveCb,
-  UpdateHostRules,
 } from '../../src/components/HostRulesForm'
 import HostRulesNew from '../../src/components/HostRulesNew'
 
@@ -28,7 +28,7 @@ import { ConfigApiMock } from '../mocks/ConfigApiMock'
 describe('HostRulesNew', () => {
   let configApi: ConfigApiMock
   let hostRulesNew: ReactWrapper
-  let hostRulesForm: ReactWrapper
+  let hostRulesForm: ReactWrapper<HostRulesFormProps>
 
   beforeEach(() => {
     configApi = new ConfigApiMock()
@@ -59,8 +59,9 @@ describe('HostRulesNew', () => {
     beforeEach(() => {
       newHostRules = randomHostRules()
 
-      let onHostRulesChanged: UpdateHostRules = hostRulesForm.prop('onHostRulesChanged')
-      onHostRulesChanged(newHostRules)
+      hostRulesForm
+        .props()
+        .onUpdateHostRules(newHostRules)
 
       successSaveCb = jest.fn()
       errorSaveCb = jest.fn()

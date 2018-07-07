@@ -12,9 +12,9 @@ import ErrorView from '../../src/components/ErrorView'
 import HostRulesEdit from '../../src/components/HostRulesEdit'
 import HostRulesForm, {
   ErrorSaveCb,
+  HostRulesFormProps,
   SaveHostRules,
   SuccessSaveCb,
-  UpdateHostRules,
 } from '../../src/components/HostRulesForm'
 import Loader from '../../src/components/Loader'
 
@@ -29,10 +29,11 @@ describe('HostRulesEdit', () => {
 
   let hostRulesEdit = () => hostRulesEditWrapper.find(HostRulesEdit).first()
 
-  let hostRulesForm = () => hostRulesEditWrapper
-    .update()
-    .find(HostRulesForm)
-    .first()
+  let hostRulesForm = (): ReactWrapper<HostRulesFormProps> =>
+    hostRulesEditWrapper
+      .update()
+      .find(HostRulesForm)
+      .first()
 
   let waitLoading = () =>
     configApiMock
@@ -143,8 +144,9 @@ describe('HostRulesEdit', () => {
       beforeEach(() => {
         newHostRules = randomHostRules()
 
-        let onHostRulesChanged: UpdateHostRules = hostRulesForm().prop('onHostRulesChanged')
-        onHostRulesChanged(newHostRules)
+        hostRulesForm()
+          .props()
+          .onUpdateHostRules(newHostRules)
       })
 
       it('set host rules on form', () => {
