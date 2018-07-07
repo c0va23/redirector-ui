@@ -41,6 +41,9 @@ const CONFIG_KEY = 'config'
 
 const styles: StyleRulesCallback =
   (_theme) => ({
+    toolBarTitle: {
+      flex: 1,
+    },
     wrapper: {
       height: '100%',
       display: 'flex',
@@ -56,12 +59,13 @@ class App extends React.Component<Props & WithStyles, AppState> {
   }
 
   render () {
-    return <div className={this.props.classes.wrapper}>
+    let classes = this.props.classes
+    return <div className={classes.wrapper}>
       <CssBaseline />
 
       <AppBar position='sticky' color='default'>
         <Toolbar>
-          <Typography variant='title' style={{ flex: 1 }}>
+          <Typography variant='title' className={classes.toolBarTitle}>
             Redirector
           </Typography>
 
@@ -84,10 +88,6 @@ class App extends React.Component<Props & WithStyles, AppState> {
   private logOut = () => {
     this.setState({ config: undefined })
     this.clearConfig()
-  }
-
-  private loginForm () {
-    return <LoginForm apiUrl={this.props.apiUrl} logIn={this.logIn} />
   }
 
   private routes (): JSX.Element {
@@ -114,7 +114,7 @@ class App extends React.Component<Props & WithStyles, AppState> {
         </Route>
 
         <Route path={HOST_RULES_LIST_PATH}>
-        <HostRulesList {...{ configApi }} />
+          <HostRulesList {...{ configApi }} />
         </Route>
 
         <Redirect
@@ -128,14 +128,11 @@ class App extends React.Component<Props & WithStyles, AppState> {
   private notAuthorizedRoutes (): JSX.Element {
     return <HashRouter>
       <Switch>
-        <Route
-          path={LOGIN_PATH}
-          render={this.loginForm.bind(this)}
-        />
+        <Route path={LOGIN_PATH}>
+          <LoginForm apiUrl={this.props.apiUrl} logIn={this.logIn} />
+        </Route>
 
-        <Redirect
-          to={LOGIN_PATH}
-        />
+        <Redirect to={LOGIN_PATH} />
       </Switch>
     </HashRouter>
   }
