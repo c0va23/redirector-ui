@@ -28,7 +28,7 @@ const styles: StyleRulesCallback = (theme) => ({
   },
 })
 
-interface HostRulesListProps {
+export interface HostRulesListProps {
   configApi: ConfigApiInterface
 }
 

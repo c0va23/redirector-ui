@@ -10,11 +10,12 @@ import withStyles, {
   WithStyles,
 } from '@material-ui/core/styles/withStyles'
 import {
-  HashRouter,
   Redirect,
   Route,
   Switch,
 } from 'react-router-dom'
+
+import { ConfigApiInterface } from 'redirector-client'
 
 import Config, {
   ConfigApiBuilder,
@@ -30,7 +31,7 @@ class AppState {
   config?: Config
 }
 
-interface Props {
+export interface AppProps {
   apiUrl?: string
   configApiBuilder: ConfigApiBuilder
   configStore: ConfigStore
@@ -53,7 +54,7 @@ const styles: StyleRulesCallback =
     },
   })
 
-class App extends React.Component<Props & WithStyles, AppState> {
+class App extends React.Component<AppProps & WithStyles, AppState> {
   state = new AppState()
 
   componentDidMount () {
@@ -74,7 +75,10 @@ class App extends React.Component<Props & WithStyles, AppState> {
           </Typography>
 
           {this.state.config &&
-            <Button onClick={this.logOut}>
+            <Button
+              name='logOut'
+              onClick={this.logOut}
+            >
               Log out
             </Button>}
         </Toolbar>
@@ -98,44 +102,38 @@ class App extends React.Component<Props & WithStyles, AppState> {
     if (undefined === this.state.config) {
       return this.notAuthorizedRoutes()
     }
-    return this.authorizedRoutes(this.state.config)
+    let configApi = this.props.configApiBuilder(this.state.config)
+    return this.authorizedRoutes(configApi)
   }
 
-  private authorizedRoutes (config: Config): JSX.Element {
-    let configApi = this.props.configApiBuilder(config)
-    return <HashRouter>
-      <Switch>
-        <Route path={HOST_RULES_EDIT_PATH}>
-          <HostRulesEdit {...{ configApi }} />
-        </Route>
+  private authorizedRoutes = (configApi: ConfigApiInterface) =>
+    <Switch>
+      <Route path={HOST_RULES_EDIT_PATH}>
+        <HostRulesEdit {...{ configApi }} />
+      </Route>
 
-        <Route path={HOST_RULES_NEW_PATH}>
-          <HostRulesNew {...{ configApi }} />
-        </Route>
+      <Route path={HOST_RULES_NEW_PATH}>
+        <HostRulesNew {...{ configApi }} />
+      </Route>
 
-        <Route path={HOST_RULES_LIST_PATH}>
-          <HostRulesList {...{ configApi }} />
-        </Route>
+      <Route path={HOST_RULES_LIST_PATH}>
+        <HostRulesList {...{ configApi }} />
+      </Route>
 
-        <Redirect
-          exact
-          to={HOST_RULES_LIST_PATH}
-        />
-      </Switch>
-    </HashRouter>
-  }
+      <Redirect
+        exact
+        to={HOST_RULES_LIST_PATH}
+      />
+    </Switch>
 
-  private notAuthorizedRoutes (): JSX.Element {
-    return <HashRouter>
-      <Switch>
-        <Route path={LOGIN_PATH}>
-          <LoginForm apiUrl={this.props.apiUrl} logIn={this.logIn} />
-        </Route>
+  private notAuthorizedRoutes = () =>
+    <Switch>
+      <Route path={LOGIN_PATH}>
+        <LoginForm apiUrl={this.props.apiUrl} logIn={this.logIn} />
+      </Route>
 
-        <Redirect to={LOGIN_PATH} />
-      </Switch>
-    </HashRouter>
-  }
+      <Redirect to={LOGIN_PATH} />
+    </Switch>
 }
 
 export default withStyles(styles)(App)
