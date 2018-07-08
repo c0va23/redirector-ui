@@ -60,7 +60,7 @@ class HostRulesNew extends React.Component<
         <HostRulesForm
           hostRules={this.state}
           onSave={this.onSave}
-          onUpdateHostRules={this.setState.bind(this)}
+          onUpdateHostRules={this.updateHostRules}
         />
       </Paper>
     </div>
@@ -79,6 +79,9 @@ class HostRulesNew extends React.Component<
         logger.error(error)
         onError(error)
       })
+
+  private updateHostRules = (hostRules: HostRules) =>
+    this.setState(hostRules)
 
   private redirectToEditPage = (hostRules: HostRules): void =>
       this.props

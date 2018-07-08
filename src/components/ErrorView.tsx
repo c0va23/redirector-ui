@@ -64,10 +64,7 @@ class ErrorView extends React.PureComponent<
           {this.formattedMessage()}
         </Typography>
 
-        {this.state.bodyText !== undefined &&
-          <Typography variant='body1' id='bodyText'>
-            {this.state.bodyText}
-          </Typography>}
+        {this.bodyText()}
       </Grid>
     </Grid>
   }
@@ -103,6 +100,15 @@ class ErrorView extends React.PureComponent<
         logger.error(error)
         this.setState({ error })
       })
+  }
+
+  private bodyText () {
+    if (undefined === this.state.bodyText) return undefined
+    return (
+      <Typography variant='body1' id='bodyText'>
+        {this.state.bodyText}
+      </Typography>
+    )
   }
 }
 

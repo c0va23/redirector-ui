@@ -59,13 +59,7 @@ class App extends React.Component<AppProps & WithStyles, AppState> {
             Redirector
           </Typography>
 
-          {this.state.config &&
-            <Button
-              name='logOut'
-              onClick={this.logOut}
-            >
-              Log out
-            </Button>}
+          {this.logOutButton()}
         </Toolbar>
       </AppBar>
 
@@ -81,6 +75,18 @@ class App extends React.Component<AppProps & WithStyles, AppState> {
   private logOut = () => {
     this.setState({ config: undefined })
     this.props.configStore.clear()
+  }
+
+  private logOutButton () {
+    if (undefined === this.state.config) return undefined
+    return (
+      <Button
+        name='logOut'
+        onClick={this.logOut}
+      >
+        Log out
+      </Button>
+    )
   }
 
   private routes (): JSX.Element {

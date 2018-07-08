@@ -26,11 +26,11 @@ export interface HostRulesViewProps {
 
 export default class HostRulesView extends React.Component<HostRulesViewProps> {
   render () {
-    return <div>
-      {this.renderHostRules(this.props.hostRules)}
-      {this.renderRules(this.props.hostRules.rules,
-                        this.props.hostRules.defaultTarget)}
-    </div>
+    let hostRules = this.props.hostRules
+    return <>
+      {this.renderHostRules(hostRules)}
+      {this.renderRules(hostRules.rules, hostRules.defaultTarget)}
+    </>
   }
 
   private renderHostRules = (hostRules: HostRules) =>
@@ -69,18 +69,7 @@ export default class HostRulesView extends React.Component<HostRulesViewProps> {
         </TableRow>
       </TableHead>
       <TableBody>
-        {rules.map((rule, index) =>
-          <TableRow key={index}>
-            <TableCell>{rule.sourcePath}</TableCell>
-            <TableCell>{rule.target.httpCode}</TableCell>
-            <TableCell>{rule.target.path}</TableCell>
-            <TableCell>
-              {rule.activeFrom && rule.activeFrom.toISOString()}
-            </TableCell>
-            <TableCell>
-              {rule.activeTo && rule.activeTo.toISOString()}
-            </TableCell>
-          </TableRow>)}
+        {rules.map(this.renderRuleRow)}
         <TableRow title='Default target'>
           <TableCell>*</TableCell>
           <TableCell>{defaultTarget.httpCode}</TableCell>
@@ -90,6 +79,20 @@ export default class HostRulesView extends React.Component<HostRulesViewProps> {
         </TableRow>
       </TableBody>
     </Table>
+
+  private renderRuleRow = (rule: Rule, index: number) => (
+    <TableRow key={index}>
+      <TableCell>{rule.sourcePath}</TableCell>
+      <TableCell>{rule.target.httpCode}</TableCell>
+      <TableCell>{rule.target.path}</TableCell>
+      <TableCell>
+        {rule.activeFrom && rule.activeFrom.toISOString()}
+      </TableCell>
+      <TableCell>
+        {rule.activeTo && rule.activeTo.toISOString()}
+      </TableCell>
+    </TableRow>
+  )
 
   private onDelete = (event: React.MouseEvent<HTMLFormElement>) => {
     event.preventDefault()

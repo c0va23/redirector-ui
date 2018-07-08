@@ -24,7 +24,9 @@
           "multiline": "always",
           "singleline": "never"
         }
-      ]
+      ],
+      "jsx-wrap-multiline": false,
+      "jsx-boolean-value": false
     },
     "rulesDirectory": []
 }

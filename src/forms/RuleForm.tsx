@@ -61,15 +61,15 @@ class RuleForm extends React.Component<Props & WithStyles> {
       >
         <InputLabel
           htmlFor={`rule-resolver-${this.props.ruleIndex}`}
-        >Resolver</InputLabel>
+        >
+          Resolver
+        </InputLabel>
 
         <Select
           name='resolver'
           value={this.props.rule.resolver}
           onChange={this.onSelectChange}
-          inputProps={{
-            id: `rule-resolver-${this.props.ruleIndex}`,
-          }}
+          inputProps={{ id: `rule-resolver-${this.props.ruleIndex}` }}
           className={this.props.classes.selectInput}
         >
           {this.resolverItems()}
@@ -160,7 +160,9 @@ class RuleForm extends React.Component<Props & WithStyles> {
         <MenuItem
           key={resolver}
           value={resolver}
-        >{Rule.ResolverEnum[resolver as any]}</MenuItem>)
+        >
+          {Rule.ResolverEnum[resolver as any]}
+        </MenuItem>)
 }
 
 export default withStyles(styles)(RuleForm)

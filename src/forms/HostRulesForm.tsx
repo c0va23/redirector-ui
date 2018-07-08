@@ -101,17 +101,9 @@ class HostRulesForm extends React.Component<
       />
 
       <FormControl fullWidth>
-        {this.props.hostRules.rules.map((rule, index) =>
-          <RuleForm
-            key={index}
-            rule={rule}
-            ruleIndex={index}
-            onUpdateRule={(rule: Rule) => this.updateRule(index, rule)}
-            onRemoveRule={() => this.removeRule(index)}
-          />)
-        }
+        {this.props.hostRules.rules.map(this.renderRuleForm)}
 
-        <Button name='addRule' onClick={() => this.addRule()}>
+        <Button name='addRule' onClick={this.addRule}>
           Add
         </Button>
       </FormControl>
@@ -124,14 +116,7 @@ class HostRulesForm extends React.Component<
         <SnackbarContent
           message={<p>{this.state.message && this.state.message.text}</p>}
           className={this.state.message && this.state.message.className}
-          action={
-            <IconButton
-              key='errorMessage'
-              onClick={() => this.clearError()}
-            >
-              <Close />
-            </IconButton>
-          }
+          action={this.renderCloseButton()}
         />
       </Snackbar>
 
@@ -146,16 +131,39 @@ class HostRulesForm extends React.Component<
           >
             Save
           </Button>
-          {this.state.loading &&
-            <CircularProgress
-              variant='indeterminate'
-              size={circularSize}
-              className={this.props.classes.buttonProgress}
-            />}
+          {this.renderLoader()}
         </div>
       </div>
     </form>
   }
+
+  private renderRuleForm = (rule: Rule, index: number) =>
+    <RuleForm
+      key={index}
+      rule={rule}
+      ruleIndex={index}
+      onUpdateRule={this.updateRule(index)}
+      onRemoveRule={this.removeRule(index)}
+    />
+
+  private renderLoader () {
+    if (!this.state.loading) return undefined
+    return (
+      <CircularProgress
+        variant='indeterminate'
+        size={circularSize}
+        className={this.props.classes.buttonProgress}
+      />
+    )
+  }
+
+  private renderCloseButton = () =>
+    <IconButton
+      key='errorMessage'
+      onClick={this.clearError}
+    >
+      <Close />
+    </IconButton>
 
   private onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault()
@@ -202,7 +210,7 @@ class HostRulesForm extends React.Component<
     })
   }
 
-  private updateRule (index: number, rule: Rule) {
+  private updateRule = (index: number) => (rule: Rule) => {
     const rules = [
       ...this.props.hostRules.rules.slice(0, index),
       rule,
@@ -217,7 +225,7 @@ class HostRulesForm extends React.Component<
     this.props.onUpdateHostRules(hostRules)
   }
 
-  private removeRule (index: number) {
+  private removeRule = (index: number) => () => {
     const newRules = [
       ...this.props.hostRules.rules.slice(0, index),
       ...this.props.hostRules.rules.slice(index + 1),
@@ -229,7 +237,7 @@ class HostRulesForm extends React.Component<
     })
   }
 
-  private addRule () {
+  private addRule = () => {
     const newRules = this.props.hostRules.rules.concat([{
       sourcePath: '',
       resolver: Rule.ResolverEnum.Simple,
