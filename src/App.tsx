@@ -9,23 +9,15 @@ import withStyles, {
   StyleRulesCallback,
   WithStyles,
 } from '@material-ui/core/styles/withStyles'
-import {
-  Redirect,
-  Route,
-  Switch,
-} from 'react-router-dom'
-
-import { ConfigApiInterface } from 'redirector-client'
 
 import Config, {
   ConfigApiBuilder,
   ConfigStore,
 } from './Config'
-
-import HostRulesEdit from './pages/HostRulesEdit'
-import HostRulesList from './pages/HostRulesList'
-import HostRulesNew from './pages/HostRulesNew'
-import LoginForm from './pages/LoginForm'
+import {
+  AuthorizedRoutes,
+  UnauthorizedRoutes,
+} from './routes'
 
 class AppState {
   config?: Config
@@ -35,12 +27,9 @@ export interface AppProps {
   apiUrl?: string
   configApiBuilder: ConfigApiBuilder
   configStore: ConfigStore
+  authorizedRoutes: AuthorizedRoutes
+  unauthorizedRoutes: UnauthorizedRoutes
 }
-
-const LOGIN_PATH = '/login'
-const HOST_RULES_LIST_PATH = '/host_rules_list'
-const HOST_RULES_EDIT_PATH = HOST_RULES_LIST_PATH + '/:host/edit'
-const HOST_RULES_NEW_PATH = HOST_RULES_LIST_PATH + '/new'
 
 const styles: StyleRulesCallback =
   (_theme) => ({
@@ -100,40 +89,14 @@ class App extends React.Component<AppProps & WithStyles, AppState> {
 
   private routes (): JSX.Element {
     if (undefined === this.state.config) {
-      return this.notAuthorizedRoutes()
+      return this.props.unauthorizedRoutes({
+        apiUrl: this.props.apiUrl,
+        logIn: this.logIn,
+      })
     }
     let configApi = this.props.configApiBuilder(this.state.config)
-    return this.authorizedRoutes(configApi)
+    return this.props.authorizedRoutes({ configApi })
   }
-
-  private authorizedRoutes = (configApi: ConfigApiInterface) =>
-    <Switch>
-      <Route path={HOST_RULES_EDIT_PATH}>
-        <HostRulesEdit {...{ configApi }} />
-      </Route>
-
-      <Route path={HOST_RULES_NEW_PATH}>
-        <HostRulesNew {...{ configApi }} />
-      </Route>
-
-      <Route path={HOST_RULES_LIST_PATH}>
-        <HostRulesList {...{ configApi }} />
-      </Route>
-
-      <Redirect
-        exact
-        to={HOST_RULES_LIST_PATH}
-      />
-    </Switch>
-
-  private notAuthorizedRoutes = () =>
-    <Switch>
-      <Route path={LOGIN_PATH}>
-        <LoginForm apiUrl={this.props.apiUrl} logIn={this.logIn} />
-      </Route>
-
-      <Redirect to={LOGIN_PATH} />
-    </Switch>
 }
 
 export default withStyles(styles)(App)

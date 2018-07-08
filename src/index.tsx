@@ -9,6 +9,10 @@ import {
   DefaultConfigStore,
   defaultConfigApiBuilder,
 } from './Config'
+import {
+  defaultAuthorizedRoutes,
+  defaultUnauthorizedRoutes,
+} from './routes'
 
 const logger = log.getLogger('index')
 
@@ -23,6 +27,8 @@ if (null !== app) {
       apiUrl={apiUrl}
       configApiBuilder={defaultConfigApiBuilder}
       configStore={configStore}
+      authorizedRoutes={defaultAuthorizedRoutes}
+      unauthorizedRoutes={defaultUnauthorizedRoutes}
     />
   </HashRouter>, app)
 } else {

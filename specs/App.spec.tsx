@@ -6,19 +6,23 @@ import { MemoryRouter } from 'react-router-dom'
 import { ReactWrapper, mount } from 'enzyme'
 import { internet } from 'faker'
 
-import { HostRules } from 'redirector-client'
-
 import App, { AppProps } from '../src/App'
 import Config from '../src/Config'
-import HostRulesList, { HostRulesListProps } from '../src/pages/HostRulesList'
-import LoginForm, { LoginFormProps } from '../src/pages/LoginForm'
+import {
+  AuthorizedRoutesProps,
+  UnauthorizedRoutesProps,
+} from '../src/routes'
 
 import { randomConfig } from './factories/ConfigFactory'
 
-import { randomArray } from './factories/ArrayFactory'
-import { randomHostRules } from './factories/HostRulesFactory'
 import { ConfigApiMock } from './mocks/ConfigApiMock'
 import ConfigStoreMock from './mocks/ConfigStoreMock'
+import {
+  AuthorizedRoutesMock,
+  UnauthorizedRoutesMock,
+  mockedAuthorizedRoutes,
+  mockedUnauthorizedRoutes,
+} from './mocks/routesMocks'
 
 describe('App', () => {
   let app: ReactWrapper<AppProps>
@@ -34,6 +38,8 @@ describe('App', () => {
         apiUrl={apiUrl}
         configStore={configStore}
         configApiBuilder={configApiBuilder}
+        authorizedRoutes={mockedAuthorizedRoutes}
+        unauthorizedRoutes={mockedUnauthorizedRoutes}
       />
     </MemoryRouter>)
 
@@ -50,13 +56,16 @@ describe('App', () => {
   })
 
   describe('unauthenticated', () => {
+    let unauthorizedRoutes: ReactWrapper<UnauthorizedRoutesProps>
+
     beforeEach(() => {
       configStore.loadMock.mockReturnValue(undefined)
       app = buildApp()
+      unauthorizedRoutes = app.find(UnauthorizedRoutesMock)
     })
 
-    it('render LoginForm with apiUrl', () => {
-      expect(app.find(LoginForm).prop('apiUrl')).toEqual(apiUrl)
+    it('render unauthorized routes', () => {
+      expect(unauthorizedRoutes.props().apiUrl).toEqual(apiUrl)
     })
 
     it('not render logOutButton', () => {
@@ -65,18 +74,11 @@ describe('App', () => {
 
     describe('on logIn', () => {
       let config: Config
-      let hostRulesList: Array<HostRules>
 
       beforeEach(() => {
         config = randomConfig()
 
-        hostRulesList = randomArray(randomHostRules, 1, 3)
-        configApi
-          .listHostRulesMock
-          .mockResolvedValue(hostRulesList)
-
-        let loginForm: ReactWrapper<LoginFormProps> = app.find(LoginForm)
-        loginForm
+        unauthorizedRoutes
           .props()
           .logIn(config)
 
@@ -88,8 +90,9 @@ describe('App', () => {
       })
 
       it('render host rules list', () => {
-        let hostRulesListEl: ReactWrapper<HostRulesListProps> = app.find(HostRulesList).first()
-        expect(hostRulesListEl.props().configApi).toEqual(configApi)
+        let authorizedRoutes: ReactWrapper<AuthorizedRoutesProps> =
+          app.find(AuthorizedRoutesMock).first()
+        expect(authorizedRoutes.props().configApi).toEqual(configApi)
       })
 
       it('render logOut Button', () => {
@@ -100,14 +103,10 @@ describe('App', () => {
 
   describe('authenticated', () => {
     let config: Config
-    let hostRulesList: Array<HostRules>
 
     beforeEach(() => {
       config = randomConfig()
       configStore.loadMock.mockReturnValue(config)
-
-      hostRulesList = randomArray(randomHostRules, 1, 3)
-      configApi.listHostRulesMock.mockResolvedValue(hostRulesList)
 
       app = buildApp()
     })
@@ -129,13 +128,14 @@ describe('App', () => {
 
       it('render LoginForm on click', () => {
         logOutButton.simulate('click')
-        expect(app.update().find(LoginForm)).toHaveLength(1)
+        expect(app.update().find(UnauthorizedRoutesMock)).toHaveLength(1)
       })
     })
 
-    it('render host rules list', () => {
-      let hostRulesListEl: ReactWrapper<HostRulesListProps> = app.find(HostRulesList).first()
-      expect(hostRulesListEl.props().configApi).toEqual(configApi)
+    it('render authorized routes', () => {
+      let authorizedRoutes: ReactWrapper<AuthorizedRoutesProps> =
+        app.find(AuthorizedRoutesMock)
+      expect(authorizedRoutes.props().configApi).toEqual(configApi)
     })
   })
 })
