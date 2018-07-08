@@ -20,7 +20,9 @@ import {
 } from './routes'
 
 class AppState {
-  config?: Config
+  constructor (
+    readonly config?: Config,
+  ) {}
 }
 
 export interface AppProps {
@@ -44,13 +46,7 @@ const styles: StyleRulesCallback =
   })
 
 class App extends React.Component<AppProps & WithStyles, AppState> {
-  state = new AppState()
-
-  componentDidMount () {
-    this.setState({
-      config: this.props.configStore.load(),
-    })
-  }
+  state = new AppState(this.props.configStore.load())
 
   render () {
     let classes = this.props.classes
