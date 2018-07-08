@@ -14,7 +14,7 @@ import Config from '../Config'
 
 export type LogIn = (config: Config) => void
 
-interface LoginFormProps {
+export interface LoginFormProps {
   apiUrl?: string
   logIn: LogIn,
 }
