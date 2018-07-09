@@ -22,15 +22,18 @@ if (null !== app) {
   let apiUrl = app.dataset['apiUrl']
   let configStore = new DefaultConfigStore(sessionStorage)
 
-  render(<HashRouter>
-    <App
-      apiUrl={apiUrl}
-      configApiBuilder={defaultConfigApiBuilder}
-      configStore={configStore}
-      authorizedRoutes={defaultAuthorizedRoutes}
-      unauthorizedRoutes={defaultUnauthorizedRoutes}
-    />
-  </HashRouter>, app)
+  render(
+    <HashRouter>
+      <App
+        apiUrl={apiUrl}
+        configApiBuilder={defaultConfigApiBuilder}
+        configStore={configStore}
+        authorizedRoutes={defaultAuthorizedRoutes}
+        unauthorizedRoutes={defaultUnauthorizedRoutes}
+      />
+    </HashRouter>,
+    app,
+  )
 } else {
   logger.error('Root element not found')
 }

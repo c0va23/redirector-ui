@@ -72,22 +72,24 @@ class HostRulesEdit extends React.Component<
   }
 
   private renderForm (hostRule: HostRules): JSX.Element {
-    return <div>
-      <ButtonLink
-        to='/host_rules_list'
-        className={this.props.classes.backButton}
-      >
-        List
-      </ButtonLink>
+    return (
+      <>
+        <ButtonLink
+          to='/host_rules_list'
+          className={this.props.classes.backButton}
+        >
+          List
+        </ButtonLink>
 
-      <Paper className={this.props.classes.paper}>
-        <HostRulesForm
-          hostRules={hostRule}
-          onSave={this.onSave(hostRule)}
-          onUpdateHostRules={this.updateHostRules}
-        />
-      </Paper>
-    </div>
+        <Paper className={this.props.classes.paper}>
+          <HostRulesForm
+            hostRules={hostRule}
+            onSave={this.onSave(hostRule)}
+            onUpdateHostRules={this.updateHostRules}
+          />
+        </Paper>
+      </>
+    )
   }
 
   private fetchHostRules = () =>

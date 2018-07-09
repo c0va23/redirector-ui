@@ -47,31 +47,33 @@ class LoginForm extends React.Component<
   }
 
   render () {
-    return <Grid
-      container
-      justify='center'
-      alignItems='center'
-      className={this.props.classes.wrapper}
-    >
+    return (
       <Grid
-        item
-        xl={4}
-        md={6}
-        sm={8}
-        xs={12}
+        container
+        justify='center'
+        alignItems='center'
+        className={this.props.classes.wrapper}
       >
-        <Paper className={this.props.classes.content}>
-          <Typography variant='headline'>
-            Log in
-          </Typography>
-          {this.renderForm()}
-        </Paper>
+        <Grid
+          item
+          xl={4}
+          md={6}
+          sm={8}
+          xs={12}
+        >
+          <Paper className={this.props.classes.content}>
+            <Typography variant='headline'>
+              Log in
+            </Typography>
+            {this.renderForm()}
+          </Paper>
+        </Grid>
       </Grid>
-    </Grid>
+    )
   }
 
-  private renderForm (): JSX.Element {
-    return <form
+  private renderForm = () => (
+    <form
       onSubmit={this.onSubmit}
       className={this.props.classes.form}
     >
@@ -105,7 +107,7 @@ class LoginForm extends React.Component<
         Login
       </Button>
     </form>
-  }
+  )
 
   private onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault()

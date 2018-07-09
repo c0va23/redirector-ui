@@ -44,16 +44,18 @@ describe('HostRulesEdit', () => {
       .catch(() => hostRulesEditWrapper = hostRulesEditWrapper.update())
 
   let buildHostRulesEdit = () =>
-    hostRulesEditWrapper = mount(<MemoryRouter
-      initialEntries={[`/host_rules_list/${hostRules.host}/edit`]}
-      initialIndex={0}
-    >
-      <Route path='/host_rules_list/:host/edit'>
-        <HostRulesEdit
-          configApi={configApiMock}
-        />
-      </Route>
-    </MemoryRouter>)
+    hostRulesEditWrapper = mount(
+      <MemoryRouter
+        initialEntries={[`/host_rules_list/${hostRules.host}/edit`]}
+        initialIndex={0}
+      >
+        <Route path='/host_rules_list/:host/edit'>
+          <HostRulesEdit
+            configApi={configApiMock}
+          />
+        </Route>
+      </MemoryRouter>,
+    )
 
   beforeEach(() => {
     configApiMock = new ConfigApiMock()

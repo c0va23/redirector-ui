@@ -27,7 +27,7 @@ export type AuthorizedRoutes =
 
 export const defaultAuthorizedRoutes: AuthorizedRoutes = ({
   configApi,
-}) =>
+}) => (
   <Switch>
     <Route path={HOST_RULES_EDIT_PATH}>
       <HostRulesEdit {...{ configApi }} />
@@ -46,6 +46,7 @@ export const defaultAuthorizedRoutes: AuthorizedRoutes = ({
       to={HOST_RULES_LIST_PATH}
     />
   </Switch>
+)
 
 const LOGIN_PATH = '/login'
 
@@ -59,7 +60,7 @@ export type UnauthorizedRoutes =
 export const defaultUnauthorizedRoutes: UnauthorizedRoutes = ({
   logIn,
   apiUrl,
-}) =>
+}) => (
   <Switch>
     <Route path={LOGIN_PATH}>
       <LoginForm apiUrl={apiUrl} logIn={logIn} />
@@ -67,3 +68,4 @@ export const defaultUnauthorizedRoutes: UnauthorizedRoutes = ({
 
     <Redirect to={LOGIN_PATH} />
   </Switch>
+)

@@ -43,72 +43,74 @@ class RuleForm extends React.Component<Props & WithStyles> {
   render () {
     let classes = this.props.classes
 
-    return <FormGroup>
-      <h3>Rule</h3>
+    return (
+      <FormGroup>
+        <h3>Rule</h3>
 
-      <TextField
-        name='sourcePath'
-        label='Source path'
-        value={this.props.rule.sourcePath}
-        onChange={this.onInputChange}
-        className={classes.formControl}
-        required
-      />
+        <TextField
+          name='sourcePath'
+          label='Source path'
+          value={this.props.rule.sourcePath}
+          onChange={this.onInputChange}
+          className={classes.formControl}
+          required
+        />
 
-      <FormControl
-        className={classes.formControl}
-        required
-      >
-        <InputLabel
-          htmlFor={`rule-resolver-${this.props.ruleIndex}`}
-        >Resolver</InputLabel>
-
-        <Select
-          name='resolver'
-          value={this.props.rule.resolver}
-          onChange={this.onSelectChange}
-          inputProps={{
-            id: `rule-resolver-${this.props.ruleIndex}`,
-          }}
-          className={this.props.classes.selectInput}
+        <FormControl
+          className={classes.formControl}
+          required
         >
-          {this.resolverItems()}
-        </Select>
-      </FormControl>
+          <InputLabel
+            htmlFor={`rule-resolver-${this.props.ruleIndex}`}
+          >
+            Resolver
+          </InputLabel>
 
-      <TextField
-        name='activeFrom'
-        label='Active from'
-        value={this.formatDate(this.props.rule.activeFrom)}
-        onChange={this.onDateTimeChange}
-        type='datetime-local'
-        fullWidth
-        InputLabelProps={{ shrink: true }}
-        className={classes.formControl}
-      />
+          <Select
+            name='resolver'
+            value={this.props.rule.resolver}
+            onChange={this.onSelectChange}
+            inputProps={{ id: `rule-resolver-${this.props.ruleIndex}` }}
+            className={this.props.classes.selectInput}
+          >
+            {this.resolverItems()}
+          </Select>
+        </FormControl>
 
-      <TextField
-        name='activeTo'
-        label='Active to'
-        value={this.formatDate(this.props.rule.activeTo)}
-        onChange={this.onDateTimeChange}
-        type='datetime-local'
-        fullWidth
-        InputLabelProps={{ shrink: true }}
-        className={classes.formControl}
-      />
+        <TextField
+          name='activeFrom'
+          label='Active from'
+          value={this.formatDate(this.props.rule.activeFrom)}
+          onChange={this.onDateTimeChange}
+          type='datetime-local'
+          fullWidth
+          InputLabelProps={{ shrink: true }}
+          className={classes.formControl}
+        />
 
-      <h3>Target</h3>
+        <TextField
+          name='activeTo'
+          label='Active to'
+          value={this.formatDate(this.props.rule.activeTo)}
+          onChange={this.onDateTimeChange}
+          type='datetime-local'
+          fullWidth
+          InputLabelProps={{ shrink: true }}
+          className={classes.formControl}
+        />
 
-      <TargetForm
-        target={this.props.rule.target}
-        onUpdateTarget={this.updateTarget}
-      />
+        <h3>Target</h3>
 
-      <Button onClick={this.props.onRemoveRule}>
-        Remove
-      </Button>
-    </FormGroup>
+        <TargetForm
+          target={this.props.rule.target}
+          onUpdateTarget={this.updateTarget}
+        />
+
+        <Button onClick={this.props.onRemoveRule}>
+          Remove
+        </Button>
+      </FormGroup>
+    )
   }
 
   private onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -156,11 +158,14 @@ class RuleForm extends React.Component<Props & WithStyles> {
   private resolverItems = () =>
     Object.keys(Rule.ResolverEnum)
       .filter((resolver: string) => downCaseCharRegex.test(resolver[0]))
-      .map((resolver) =>
+      .map((resolver) => (
         <MenuItem
           key={resolver}
           value={resolver}
-        >{Rule.ResolverEnum[resolver as any]}</MenuItem>)
+        >
+          {Rule.ResolverEnum[resolver as any]}
+        </MenuItem>
+      ))
 }
 
 export default withStyles(styles)(RuleForm)

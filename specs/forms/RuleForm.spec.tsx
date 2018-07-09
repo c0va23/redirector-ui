@@ -62,12 +62,14 @@ describe('RuleForm', () => {
     ruleIndex = Math.round(Math.random() * 10)
     updateRuleCb = jest.fn()
     removeRuleCb = jest.fn()
-    ruleForm = mount(<RuleForm
-      rule={rule}
-      ruleIndex={ruleIndex}
-      onUpdateRule={updateRuleCb}
-      onRemoveRule={removeRuleCb}
-    />)
+    ruleForm = mount(
+      <RuleForm
+        rule={rule}
+        ruleIndex={ruleIndex}
+        onUpdateRule={updateRuleCb}
+        onRemoveRule={removeRuleCb}
+      />,
+    )
   })
 
   describe('field sourcePath', () => {

@@ -43,33 +43,32 @@ class ErrorView extends React.PureComponent<
   state = new State(this.props.response)
 
   render () {
-    return <Grid
-      container
-      justify='center'
-      alignItems='center'
-      className={this.props.classes.container}
-    >
+    return (
       <Grid
-        item
-        className={this.props.classes.item}
+        container
+        justify='center'
+        alignItems='center'
+        className={this.props.classes.container}
       >
-        <Typography variant='headline' id='errorName'>
-          {this.formatedName()}
-        </Typography>
-
-        <Typography
-          variant='subheading'
-          id='errorMessage'
+        <Grid
+          item
+          className={this.props.classes.item}
         >
-          {this.formattedMessage()}
-        </Typography>
+          <Typography variant='headline' id='errorName'>
+            {this.formatedName()}
+          </Typography>
 
-        {this.state.bodyText !== undefined &&
-          <Typography variant='body1' id='bodyText'>
-            {this.state.bodyText}
-          </Typography>}
+          <Typography
+            variant='subheading'
+            id='errorMessage'
+          >
+            {this.formattedMessage()}
+          </Typography>
+
+          {this.bodyText()}
+        </Grid>
       </Grid>
-    </Grid>
+    )
   }
 
   componentDidMount () {
@@ -103,6 +102,15 @@ class ErrorView extends React.PureComponent<
         logger.error(error)
         this.setState({ error })
       })
+  }
+
+  private bodyText () {
+    if (undefined === this.state.bodyText) return undefined
+    return (
+      <Typography variant='body1' id='bodyText'>
+        {this.state.bodyText}
+      </Typography>
+    )
   }
 }
 

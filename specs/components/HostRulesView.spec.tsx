@@ -31,14 +31,16 @@ describe('HostRulesView', () => {
   beforeEach(() => {
     hostRules = randomHostRules()
     onDeleteHostRulesCb = jest.fn()
-    hostRulesViewWrapper = mount(<MemoryRouter>
-      <Route>
-        <HostRulesView
-          hostRules={hostRules}
-          onDelete={onDeleteHostRulesCb}
-        />
-      </Route>
-    </MemoryRouter>)
+    hostRulesViewWrapper = mount(
+      <MemoryRouter>
+        <Route>
+          <HostRulesView
+            hostRules={hostRules}
+            onDelete={onDeleteHostRulesCb}
+          />
+        </Route>
+      </MemoryRouter>,
+    )
     hostRulesView = hostRulesViewWrapper.find(HostRulesView).first()
   })
 

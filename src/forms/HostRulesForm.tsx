@@ -83,79 +83,91 @@ class HostRulesForm extends React.Component<
   state = new State()
 
   render () {
-    return <form onSubmit={this.onSubmit}>
-      <TextField
-        name='host'
-        label='Host'
-        value={this.props.hostRules.host}
-        onChange={this.onInputChange}
-        fullWidth
-      />
-
-      <br />
-
-      <h3>Default Target</h3>
-      <TargetForm
-        target={this.props.hostRules.defaultTarget}
-        onUpdateTarget={this.updateTarget}
-      />
-
-      <FormControl fullWidth>
-        {this.props.hostRules.rules.map((rule, index) =>
-          <RuleForm
-            key={index}
-            rule={rule}
-            ruleIndex={index}
-            onUpdateRule={(rule: Rule) => this.updateRule(index, rule)}
-            onRemoveRule={() => this.removeRule(index)}
-          />)
-        }
-
-        <Button name='addRule' onClick={() => this.addRule()}>
-          Add
-        </Button>
-      </FormControl>
-
-      <br />
-
-      <Snackbar
-        open={this.state.message !== undefined}
-      >
-        <SnackbarContent
-          message={<p>{this.state.message && this.state.message.text}</p>}
-          className={this.state.message && this.state.message.className}
-          action={
-            <IconButton
-              key='errorMessage'
-              onClick={() => this.clearError()}
-            >
-              <Close />
-            </IconButton>
-          }
+    return (
+      <form onSubmit={this.onSubmit}>
+        <TextField
+          name='host'
+          label='Host'
+          value={this.props.hostRules.host}
+          onChange={this.onInputChange}
+          fullWidth
         />
-      </Snackbar>
 
-      <div className={this.props.classes.actionsPanel}>
-        <div className={this.props.classes.buttonWrapper}>
-          <Button
-            type='submit'
-            color='primary'
-            variant='raised'
-            disabled={this.state.loading}
-            className={this.props.classes.button}
-          >
-            Save
+        <br />
+
+        <h3>Default Target</h3>
+        <TargetForm
+          target={this.props.hostRules.defaultTarget}
+          onUpdateTarget={this.updateTarget}
+        />
+
+        <FormControl fullWidth>
+          {this.props.hostRules.rules.map(this.renderRuleForm)}
+
+          <Button name='addRule' onClick={this.addRule}>
+            Add
           </Button>
-          {this.state.loading &&
-            <CircularProgress
-              variant='indeterminate'
-              size={circularSize}
-              className={this.props.classes.buttonProgress}
-            />}
+        </FormControl>
+
+        <br />
+
+        <Snackbar
+          open={this.state.message !== undefined}
+        >
+          <SnackbarContent
+            message={<p>{this.state.message && this.state.message.text}</p>}
+            className={this.state.message && this.state.message.className}
+            action={this.renderCloseButton()}
+          />
+        </Snackbar>
+
+        <div className={this.props.classes.actionsPanel}>
+          <div className={this.props.classes.buttonWrapper}>
+            <Button
+              type='submit'
+              color='primary'
+              variant='raised'
+              disabled={this.state.loading}
+              className={this.props.classes.button}
+            >
+              Save
+            </Button>
+            {this.renderLoader()}
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+    )
   }
+
+  private renderRuleForm = (rule: Rule, index: number) => (
+    <RuleForm
+      key={index}
+      rule={rule}
+      ruleIndex={index}
+      onUpdateRule={this.updateRule(index)}
+      onRemoveRule={this.removeRule(index)}
+    />
+  )
+
+  private renderLoader () {
+    if (!this.state.loading) return undefined
+    return (
+      <CircularProgress
+        variant='indeterminate'
+        size={circularSize}
+        className={this.props.classes.buttonProgress}
+      />
+    )
+  }
+
+  private renderCloseButton = () => (
+    <IconButton
+      key='errorMessage'
+      onClick={this.clearError}
+    >
+      <Close />
+    </IconButton>
+  )
 
   private onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault()
@@ -202,7 +214,7 @@ class HostRulesForm extends React.Component<
     })
   }
 
-  private updateRule (index: number, rule: Rule) {
+  private updateRule = (index: number) => (rule: Rule) => {
     const rules = [
       ...this.props.hostRules.rules.slice(0, index),
       rule,
@@ -217,7 +229,7 @@ class HostRulesForm extends React.Component<
     this.props.onUpdateHostRules(hostRules)
   }
 
-  private removeRule (index: number) {
+  private removeRule = (index: number) => () => {
     const newRules = [
       ...this.props.hostRules.rules.slice(0, index),
       ...this.props.hostRules.rules.slice(index + 1),
@@ -229,7 +241,7 @@ class HostRulesForm extends React.Component<
     })
   }
 
-  private addRule () {
+  private addRule = () => {
     const newRules = this.props.hostRules.rules.concat([{
       sourcePath: '',
       resolver: Rule.ResolverEnum.Simple,

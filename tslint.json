@@ -1,6 +1,7 @@
 {
     "defaultSeverity": "error",
     "extends": [
+        "tslint-react",
         "tslint-config-standard"
     ],
     "jsRules": {},
@@ -23,7 +24,8 @@
           "multiline": "always",
           "singleline": "never"
         }
-      ]
+      ],
+      "jsx-boolean-value": false
     },
     "rulesDirectory": []
 }

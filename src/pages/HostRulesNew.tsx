@@ -51,7 +51,8 @@ class HostRulesNew extends React.Component<
   }
 
   render () {
-    return <div>
+    return (
+    <>
       <ButtonLink to='/host_rules_list' className={this.props.classes.backButton}>
         List
       </ButtonLink>
@@ -60,10 +61,10 @@ class HostRulesNew extends React.Component<
         <HostRulesForm
           hostRules={this.state}
           onSave={this.onSave}
-          onUpdateHostRules={this.setState.bind(this)}
+          onUpdateHostRules={this.updateHostRules}
         />
       </Paper>
-    </div>
+    </>)
   }
 
   private onSave = (
@@ -79,6 +80,9 @@ class HostRulesNew extends React.Component<
         logger.error(error)
         onError(error)
       })
+
+  private updateHostRules = (hostRules: HostRules) =>
+    this.setState(hostRules)
 
   private redirectToEditPage = (hostRules: HostRules): void =>
       this.props

@@ -24,9 +24,11 @@ describe('HostRulesList', () => {
   let hostRulesListWrapper: ReactWrapper
 
   let renderHostRulesList = () =>
-    hostRulesListWrapper = mount(<MemoryRouter>
-      <HostRulesList configApi={configApiMock} />
-    </MemoryRouter>)
+    hostRulesListWrapper = mount(
+      <MemoryRouter>
+        <HostRulesList configApi={configApiMock} />
+      </MemoryRouter>,
+    )
 
   beforeEach(() => {
     configApiMock = new ConfigApiMock()

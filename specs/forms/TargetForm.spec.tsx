@@ -25,10 +25,12 @@ describe('TargetForm', () => {
   beforeEach(() => {
     target = randomTarget()
     updateTargetCb = jest.fn()
-    targetForm = mount(<TargetForm
-      target={target}
-      onUpdateTarget={updateTargetCb}
-    />)
+    targetForm = mount(
+      <TargetForm
+        target={target}
+        onUpdateTarget={updateTargetCb}
+      />,
+    )
   })
 
   describe('field httpCode', () => {

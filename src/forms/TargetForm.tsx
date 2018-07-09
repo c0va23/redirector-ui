@@ -14,29 +14,31 @@ export interface TargetFormProps {
 
 export default class TargetForm extends React.Component<TargetFormProps> {
   render () {
-    return <FormGroup>
-      <TextField
-        name='httpCode'
-        label='HTTP Code'
-        value={this.props.target.httpCode}
-        onChange={this.onNumberChange.bind(this)}
-        type='number'
-        fullWidth
-      />
+    return (
+      <FormGroup>
+        <TextField
+          name='httpCode'
+          label='HTTP Code'
+          value={this.props.target.httpCode}
+          onChange={this.onNumberChange}
+          type='number'
+          fullWidth
+        />
 
-      <br />
+        <br />
 
-      <TextField
-        name='path'
-        label='Path'
-        value={this.props.target.path}
-        onChange={this.onTextChange.bind(this)}
-        fullWidth
-      />
-    </FormGroup>
+        <TextField
+          name='path'
+          label='Path'
+          value={this.props.target.path}
+          onChange={this.onTextChange}
+          fullWidth
+        />
+      </FormGroup>
+    )
   }
 
-  private onNumberChange (event: React.ChangeEvent<HTMLInputElement>) {
+  private onNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault()
     const name = event.target.name
     const value = Number.parseFloat(event.target.value)
@@ -46,7 +48,7 @@ export default class TargetForm extends React.Component<TargetFormProps> {
     })
   }
 
-  private onTextChange (event: React.ChangeEvent<HTMLInputElement>) {
+  private onTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault()
     const name = event.target.name
     const value = event.target.value
