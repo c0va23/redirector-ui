@@ -51,7 +51,8 @@ class HostRulesNew extends React.Component<
   }
 
   render () {
-    return <div>
+    return (
+    <>
       <ButtonLink to='/host_rules_list' className={this.props.classes.backButton}>
         List
       </ButtonLink>
@@ -63,7 +64,7 @@ class HostRulesNew extends React.Component<
           onUpdateHostRules={this.updateHostRules}
         />
       </Paper>
-    </div>
+    </>)
   }
 
   private onSave = (

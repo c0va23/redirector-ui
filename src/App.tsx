@@ -50,21 +50,23 @@ class App extends React.Component<AppProps & WithStyles, AppState> {
 
   render () {
     let classes = this.props.classes
-    return <div className={classes.wrapper}>
-      <CssBaseline />
+    return (
+      <div className={classes.wrapper}>
+        <CssBaseline />
 
-      <AppBar position='sticky' color='default'>
-        <Toolbar>
-          <Typography variant='title' className={classes.toolBarTitle}>
-            Redirector
-          </Typography>
+        <AppBar position='sticky' color='default'>
+          <Toolbar>
+            <Typography variant='title' className={classes.toolBarTitle}>
+              Redirector
+            </Typography>
 
-          {this.logOutButton()}
-        </Toolbar>
-      </AppBar>
+            {this.logOutButton()}
+          </Toolbar>
+        </AppBar>
 
-      {this.routes()}
-    </div>
+        {this.routes()}
+      </div>
+    )
   }
 
   private logIn = (config: Config) => {

@@ -10,8 +10,10 @@ type Props = LinkProps & ButtonProps
 
 export default class ButtonLink extends React.Component<Props> {
   render () {
-    return <Button component={Link} {...this.props as any}>
-      {this.props.children}
-    </Button>
+    return (
+      <Button component={Link} {...this.props as any}>
+        {this.props.children}
+      </Button>
+    )
   }
 }

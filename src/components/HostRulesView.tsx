@@ -27,13 +27,15 @@ export interface HostRulesViewProps {
 export default class HostRulesView extends React.Component<HostRulesViewProps> {
   render () {
     let hostRules = this.props.hostRules
-    return <>
-      {this.renderHostRules(hostRules)}
-      {this.renderRules(hostRules.rules, hostRules.defaultTarget)}
-    </>
+    return (
+      <>
+        {this.renderHostRules(hostRules)}
+        {this.renderRules(hostRules.rules, hostRules.defaultTarget)}
+      </>
+    )
   }
 
-  private renderHostRules = (hostRules: HostRules) =>
+  private renderHostRules = (hostRules: HostRules) => (
     <Toolbar>
       <Typography variant='headline' style={{ flex: 1 }}>
         {hostRules.host}
@@ -46,8 +48,9 @@ export default class HostRulesView extends React.Component<HostRulesViewProps> {
         Edit
       </ButtonLink>
     </Toolbar>
+  )
 
-  private renderRules = (rules: Array<Rule>, defaultTarget: Target) =>
+  private renderRules = (rules: Array<Rule>, defaultTarget: Target) => (
     <Table>
       <TableHead>
         <TableRow>
@@ -79,6 +82,7 @@ export default class HostRulesView extends React.Component<HostRulesViewProps> {
         </TableRow>
       </TableBody>
     </Table>
+  )
 
   private renderRuleRow = (rule: Rule, index: number) => (
     <TableRow key={index}>

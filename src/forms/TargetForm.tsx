@@ -14,26 +14,28 @@ export interface TargetFormProps {
 
 export default class TargetForm extends React.Component<TargetFormProps> {
   render () {
-    return <FormGroup>
-      <TextField
-        name='httpCode'
-        label='HTTP Code'
-        value={this.props.target.httpCode}
-        onChange={this.onNumberChange}
-        type='number'
-        fullWidth
-      />
+    return (
+      <FormGroup>
+        <TextField
+          name='httpCode'
+          label='HTTP Code'
+          value={this.props.target.httpCode}
+          onChange={this.onNumberChange}
+          type='number'
+          fullWidth
+        />
 
-      <br />
+        <br />
 
-      <TextField
-        name='path'
-        label='Path'
-        value={this.props.target.path}
-        onChange={this.onTextChange}
-        fullWidth
-      />
-    </FormGroup>
+        <TextField
+          name='path'
+          label='Path'
+          value={this.props.target.path}
+          onChange={this.onTextChange}
+          fullWidth
+        />
+      </FormGroup>
+    )
   }
 
   private onNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {

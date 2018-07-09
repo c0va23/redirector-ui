@@ -31,9 +31,11 @@ describe('defaultUnauthorizedRoutes', () => {
   let routes: ReactWrapper
   const buildUnaAuthorizedRoutes =
     (initialEntries?: string[]) =>
-      mount(<MemoryRouter initialEntries={initialEntries}>
-        {defaultUnauthorizedRoutes({ apiUrl, logIn })}
-      </MemoryRouter>)
+      mount(
+        <MemoryRouter initialEntries={initialEntries}>
+          {defaultUnauthorizedRoutes({ apiUrl, logIn })}
+        </MemoryRouter>,
+      )
 
   describe('default path', () => {
     beforeEach(() => {
@@ -67,9 +69,11 @@ describe('defaultAuthorizedRoutes', () => {
   let routes: ReactWrapper
   const buildAuthorizedRoutes =
     (initialEntries?: string[]) =>
-      mount(<MemoryRouter initialEntries={initialEntries}>
-        {defaultAuthorizedRoutes({ configApi })}
-      </MemoryRouter>)
+      mount(
+        <MemoryRouter initialEntries={initialEntries}>
+          {defaultAuthorizedRoutes({ configApi })}
+        </MemoryRouter>,
+      )
 
   const currentPath = () =>
     routes

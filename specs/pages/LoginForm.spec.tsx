@@ -80,10 +80,12 @@ describe('LoginForm', () => {
 
     beforeEach(() => {
       apiUrl = internet.url()
-      loginForm = mount(<LoginForm
-        apiUrl={apiUrl}
-        logIn={logIn}
-      />)
+      loginForm = mount(
+        <LoginForm
+          apiUrl={apiUrl}
+          logIn={logIn}
+        />,
+      )
     })
 
     it('field basePath have value form apiUrl', () => {

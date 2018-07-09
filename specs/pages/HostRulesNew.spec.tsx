@@ -34,9 +34,11 @@ describe('HostRulesNew', () => {
 
   beforeEach(() => {
     configApi = new ConfigApiMock()
-    hostRulesNew = mount(<MemoryRouter>
-      <HostRulesNew configApi={configApi} />
-    </MemoryRouter>)
+    hostRulesNew = mount(
+      <MemoryRouter>
+        <HostRulesNew configApi={configApi} />
+      </MemoryRouter>,
+    )
     hostRulesForm = hostRulesNew.find(HostRulesForm)
   })
 

@@ -61,17 +61,19 @@ class HostRulesList extends React.Component<
   }
 
   private renderList (hostRulesList: Array<HostRules>) {
-    return <div>
-      <ButtonLink
-        to='/host_rules_list/new'
-        className={this.props.classes.newButton}
-        name='new'
-      >
-        New
-      </ButtonLink>
+    return (
+      <>
+        <ButtonLink
+          to='/host_rules_list/new'
+          className={this.props.classes.newButton}
+          name='new'
+        >
+          New
+        </ButtonLink>
 
-      {hostRulesList.map(this.renderHostRules)}
-    </div>
+        {hostRulesList.map(this.renderHostRules)}
+      </>
+    )
   }
 
   private fetchHostRulesList () {
@@ -90,7 +92,7 @@ class HostRulesList extends React.Component<
     this.setState({ errorResponse })
   }
 
-  private renderHostRules = (hostRules: HostRules) =>
+  private renderHostRules = (hostRules: HostRules) => (
     <Paper
       key={hostRules.host}
       className={this.props.classes.listItemWrapper}
@@ -100,6 +102,7 @@ class HostRulesList extends React.Component<
         onDelete={this.deleteHostRules}
       />
     </Paper>
+  )
 
   private deleteHostRules = (host: string) =>
     this

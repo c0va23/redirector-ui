@@ -33,15 +33,17 @@ describe('App', () => {
   let configApiBuilder = (_: Config) => configApi
 
   let buildApp = () =>
-    mount(<MemoryRouter>
-      <App
-        apiUrl={apiUrl}
-        configStore={configStore}
-        configApiBuilder={configApiBuilder}
-        authorizedRoutes={mockedAuthorizedRoutes}
-        unauthorizedRoutes={mockedUnauthorizedRoutes}
-      />
-    </MemoryRouter>)
+    mount(
+      <MemoryRouter>
+        <App
+          apiUrl={apiUrl}
+          configStore={configStore}
+          configApiBuilder={configApiBuilder}
+          authorizedRoutes={mockedAuthorizedRoutes}
+          unauthorizedRoutes={mockedUnauthorizedRoutes}
+        />
+      </MemoryRouter>,
+    )
 
   let findLogOutButton = () =>
     app

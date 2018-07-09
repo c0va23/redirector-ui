@@ -83,61 +83,63 @@ class HostRulesForm extends React.Component<
   state = new State()
 
   render () {
-    return <form onSubmit={this.onSubmit}>
-      <TextField
-        name='host'
-        label='Host'
-        value={this.props.hostRules.host}
-        onChange={this.onInputChange}
-        fullWidth
-      />
-
-      <br />
-
-      <h3>Default Target</h3>
-      <TargetForm
-        target={this.props.hostRules.defaultTarget}
-        onUpdateTarget={this.updateTarget}
-      />
-
-      <FormControl fullWidth>
-        {this.props.hostRules.rules.map(this.renderRuleForm)}
-
-        <Button name='addRule' onClick={this.addRule}>
-          Add
-        </Button>
-      </FormControl>
-
-      <br />
-
-      <Snackbar
-        open={this.state.message !== undefined}
-      >
-        <SnackbarContent
-          message={<p>{this.state.message && this.state.message.text}</p>}
-          className={this.state.message && this.state.message.className}
-          action={this.renderCloseButton()}
+    return (
+      <form onSubmit={this.onSubmit}>
+        <TextField
+          name='host'
+          label='Host'
+          value={this.props.hostRules.host}
+          onChange={this.onInputChange}
+          fullWidth
         />
-      </Snackbar>
 
-      <div className={this.props.classes.actionsPanel}>
-        <div className={this.props.classes.buttonWrapper}>
-          <Button
-            type='submit'
-            color='primary'
-            variant='raised'
-            disabled={this.state.loading}
-            className={this.props.classes.button}
-          >
-            Save
+        <br />
+
+        <h3>Default Target</h3>
+        <TargetForm
+          target={this.props.hostRules.defaultTarget}
+          onUpdateTarget={this.updateTarget}
+        />
+
+        <FormControl fullWidth>
+          {this.props.hostRules.rules.map(this.renderRuleForm)}
+
+          <Button name='addRule' onClick={this.addRule}>
+            Add
           </Button>
-          {this.renderLoader()}
+        </FormControl>
+
+        <br />
+
+        <Snackbar
+          open={this.state.message !== undefined}
+        >
+          <SnackbarContent
+            message={<p>{this.state.message && this.state.message.text}</p>}
+            className={this.state.message && this.state.message.className}
+            action={this.renderCloseButton()}
+          />
+        </Snackbar>
+
+        <div className={this.props.classes.actionsPanel}>
+          <div className={this.props.classes.buttonWrapper}>
+            <Button
+              type='submit'
+              color='primary'
+              variant='raised'
+              disabled={this.state.loading}
+              className={this.props.classes.button}
+            >
+              Save
+            </Button>
+            {this.renderLoader()}
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+    )
   }
 
-  private renderRuleForm = (rule: Rule, index: number) =>
+  private renderRuleForm = (rule: Rule, index: number) => (
     <RuleForm
       key={index}
       rule={rule}
@@ -145,6 +147,7 @@ class HostRulesForm extends React.Component<
       onUpdateRule={this.updateRule(index)}
       onRemoveRule={this.removeRule(index)}
     />
+  )
 
   private renderLoader () {
     if (!this.state.loading) return undefined
@@ -157,13 +160,14 @@ class HostRulesForm extends React.Component<
     )
   }
 
-  private renderCloseButton = () =>
+  private renderCloseButton = () => (
     <IconButton
       key='errorMessage'
       onClick={this.clearError}
     >
       <Close />
     </IconButton>
+  )
 
   private onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault()
