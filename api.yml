@@ -1,7 +1,7 @@
 swagger: "2.0"
 info:
   description: Redirector configure API
-  version: "1.0.0"
+  version: "0.6.0"
   title: "Redirector API"
   contact:
     email: "c0va23@gmail.com"
@@ -63,7 +63,7 @@ paths:
         400: { $ref: '#/responses/InvalidJSON' }
         409:
           description: Host rules already exists
-        422: { $ref: '#/responses/InvalidData' }
+        422: { $ref: '#/responses/ValidationError' }
         500:
           $ref: '#/responses/InternalServerError'
 
@@ -120,7 +120,7 @@ paths:
             $ref: '#/definitions/HostRules'
         400: { $ref: '#/responses/InvalidJSON' }
         404: { $ref: '#/responses/NotFound' }
-        422: { $ref: '#/responses/InvalidData' }
+        422: { $ref: '#/responses/ValidationError' }
         500:
           $ref: '#/responses/InternalServerError'
 
@@ -143,6 +143,19 @@ paths:
         500:
           $ref: '#/responses/InternalServerError'
 
+  /locales.json:
+    get:
+      summary: Locales dictionary
+      operationId: locales
+      tags:
+      - config
+      responses:
+        200:
+          description: |
+            Always return locales dictionary.
+          schema:
+            $ref: '#/definitions/Locales'
+
   /_healthcheck:
     get:
       summary: Check service status
@@ -158,42 +171,6 @@ paths:
         500:
           description: Service cannot handle requests.
 
-  /{sourcePath}:
-    parameters:
-    - in: path
-      name: sourcePath
-      type: string
-      description: "*sourcePath* for match rule"
-      required: true
-    - in: header
-      name: Host
-      type: string
-      description: "*Host* for match rule"
-      required: true
-    get:
-      summary: "Source path for redirect"
-      description: |
-        If with path match any defined rule, then it redirect to rule target.
-        Otherwise return 404 response.
-      tags:
-      - redirect
-      operationId: redirect
-      responses:
-        404:
-          description: 'Response when rule for sourcePath and host not found'
-        500:
-          $ref: '#/responses/InternalServerError'
-        default:
-          description: |
-            Response when rule for `sourcePath` and host is found
-
-            Code of response equal `http_code` from `HostRule.Target`.
-            And header `Location` equal `target_path` from `HostRule.target`.
-          headers:
-            Location:
-              description: Redirect target path
-              type: string
-
 responses:
   InternalServerError:
     description: Internal server error
@@ -201,8 +178,10 @@ responses:
       $ref: '#/definitions/ServerError'
   NotFound:
     description: Not found
-  InvalidData:
-    description: Invalid data
+  ValidationError:
+    description: Validation error
+    schema:
+      $ref: '#/definitions/ModelValidationError'
   InvalidJSON:
     description: Invalid JSON
 
@@ -315,3 +294,74 @@ definitions:
     properties:
       message:
         type: string
+
+  Translation:
+    type: object
+    x-nullable: false
+    properties:
+      key:
+        type: string
+        description: |
+          Inner translation key.
+      message:
+        type: string
+        description: |
+          Translated message.
+
+  LocaleTranslations:
+    type: object
+    x-nullable: false
+    properties:
+      code:
+        type: string
+        description: |
+          Locale code of [ISO 639-1](https://en.wikipedia.org/wiki/ISO_639-1).
+
+      translations:
+        type: array
+        items:
+          $ref: '#/definitions/Translation'
+
+      default:
+        type: boolean
+        default: false
+        x-nullable: false
+        description: |
+          By default false. Only on default locale is true.
+
+  Locales:
+    type: array
+    items:
+      $ref: '#/definitions/LocaleTranslations'
+
+  ValidationError:
+    type: object
+    x-nullable: false
+    properties:
+      translationKey:
+        description:
+          Inner translation key. On front should be mapped with error tranlation
+          dictionary.
+        type: string
+    required:
+    - translationKey
+
+  FieldValidationError:
+    type: object
+    x-nullable: false
+    properties:
+      name:
+        description: Field name.
+        type: string
+      errors:
+        type: array
+        items:
+          $ref: '#/definitions/ValidationError'
+    required:
+    - name
+    - errors
+
+  ModelValidationError:
+    type: array
+    items:
+      $ref: '#/definitions/FieldValidationError'
