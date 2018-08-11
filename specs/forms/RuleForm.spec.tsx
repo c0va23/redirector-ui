@@ -14,6 +14,7 @@ import {
 } from 'enzyme'
 
 import {
+  ModelValidationError,
   Rule,
   Target,
 } from 'redirector-client'
@@ -22,10 +23,7 @@ import RuleForm, {
  RemoveRule,
   UpdateRule,
 } from '../../src/forms/RuleForm'
-import TargetForm, {
-  TargetFormProps,
-  UpdateTarget,
-} from '../../src/forms/TargetForm'
+import TargetForm from '../../src/forms/TargetForm'
 
 import formatInputTime from '../../src/utils/formatInputTime'
 
@@ -35,13 +33,33 @@ import {
   randomResolver,
   randomRule,
 } from '../factories/RuleFactory'
+import { randomTarget } from '../factories/TargetFactory'
 
 describe('RuleForm', () => {
   let rule: Rule
   let ruleIndex: number
   let updateRuleCb: UpdateRule
   let removeRuleCb: RemoveRule
-  let ruleForm: ReactWrapper
+  let modelError: ModelValidationError
+  const ruleForm = () => mount(
+      <RuleForm
+        rule={rule}
+        ruleIndex={ruleIndex}
+        onUpdateRule={updateRuleCb}
+        onRemoveRule={removeRuleCb}
+        modelError={modelError}
+      />,
+    )
+
+  const fieldErrors = (fieldName: string) => [{
+    name: fieldName,
+    errors: [
+      { translationKey: 'error1' },
+      { translationKey: 'error2' },
+    ],
+  }]
+
+  const fieldErrorMessage = 'error1, error2'
 
   const fireChangeInput = (
     field: ReactWrapper,
@@ -62,30 +80,25 @@ describe('RuleForm', () => {
     ruleIndex = Math.round(Math.random() * 10)
     updateRuleCb = jest.fn()
     removeRuleCb = jest.fn()
-    ruleForm = mount(
-      <RuleForm
-        rule={rule}
-        ruleIndex={ruleIndex}
-        onUpdateRule={updateRuleCb}
-        onRemoveRule={removeRuleCb}
-      />,
-    )
+    modelError = []
   })
 
   describe('field sourcePath', () => {
-    let sourcePathField: ReactWrapper
     const fieldName = 'sourcePath'
-
-    beforeEach(() => {
-      sourcePathField = ruleForm.find(TextField).filter({ name: fieldName })
-    })
+    let sourcePathField = () =>
+      ruleForm().find(TextField).filter({ name: fieldName }).first()
 
     it('have label', () => {
-      expect(sourcePathField.prop('label')).toEqual('Source path')
+      expect(sourcePathField().prop('label')).toEqual('Source path')
     })
 
     it('have value', () => {
-      expect(sourcePathField.prop('value')).toEqual(rule.sourcePath)
+      expect(sourcePathField().prop('value')).toEqual(rule.sourcePath)
+    })
+
+    it('not have error', () => {
+      expect(sourcePathField().prop('error')).toBeFalsy()
+      expect(sourcePathField().prop('helperText')).toEqual('')
     })
 
     describe('update event', () => {
@@ -93,7 +106,7 @@ describe('RuleForm', () => {
 
       beforeEach(() => {
         newSourcePath = randomPath()
-        fireChangeInput(sourcePathField, fieldName, newSourcePath)
+        fireChangeInput(sourcePathField(), fieldName, newSourcePath)
       })
 
       it('call update rule callback', () => {
@@ -103,23 +116,34 @@ describe('RuleForm', () => {
         })
       })
     })
+
+    describe('with errors', () => {
+      beforeEach(() => modelError = fieldErrors(fieldName))
+
+      it('have error', () => {
+        expect(sourcePathField().prop('error')).toBeTruthy()
+        expect(sourcePathField().prop('helperText')).toEqual(fieldErrorMessage)
+      })
+    })
   })
 
   const describeNullableDate = (fieldName: 'activeTo' | 'activeFrom', label: string) => {
     describe(`field ${fieldName}`, () => {
-      let field: ReactWrapper
-
-      beforeEach(() => {
-        field = ruleForm.find(TextField).filter({ name: fieldName }).first()
-      })
+      let field = () =>
+        ruleForm().find(TextField).filter({ name: fieldName }).first()
 
       it('have label', () => {
-        expect(field.prop('label')).toEqual(label)
+        expect(field().prop('label')).toEqual(label)
       })
 
       it('have value', () => {
         let formattedValue = formatInputTime(rule[fieldName] as Date)
-        expect(field.prop('value')).toEqual(formattedValue)
+        expect(field().prop('value')).toEqual(formattedValue)
+      })
+
+      it('not have error', () => {
+        expect(field().prop('error')).toBeFalsy()
+        expect(field().prop('helperText')).toEqual('')
       })
 
       describe('update event', () => {
@@ -127,7 +151,7 @@ describe('RuleForm', () => {
 
         beforeEach(() => {
           newDate = randomDate()
-          fireChangeInput(field, fieldName, formatInputTime(newDate))
+          fireChangeInput(field(), fieldName, formatInputTime(newDate))
         })
 
         it('call update rule callback', () => {
@@ -139,29 +163,27 @@ describe('RuleForm', () => {
       })
 
       describe('when active from null', () => {
-        beforeEach(() => {
-          ruleForm.setProps({
-            rule: {
-              ...rule,
-              [fieldName]: null,
-            },
-          })
-          field = ruleForm.find(TextField).filter({ name: fieldName })
-        })
+        beforeEach(() => rule = { ...rule, [fieldName]: null })
 
         it('have empty string value', () => {
-          expect(field.prop('value')).toEqual('')
+          expect(field().prop('value')).toEqual('')
         })
       })
 
       describe('change to empty string', () => {
-        beforeEach(() => fireChangeInput(field, fieldName, ''))
+        beforeEach(() => fireChangeInput(field(), fieldName, ''))
 
         it('call update rule callback with null activeTo', () => {
-          expect(updateRuleCb).toBeCalledWith({
-            ...rule,
-            [fieldName]: null,
-          })
+          expect(updateRuleCb).toBeCalledWith({ ...rule, [fieldName]: null })
+        })
+      })
+
+      describe('with error', () => {
+        beforeEach(() => modelError = fieldErrors(fieldName))
+
+        it('have error', () => {
+          expect(field().prop('error')).toBeTruthy()
+          expect(field().prop('helperText')).toEqual(fieldErrorMessage)
         })
       })
     })
@@ -171,20 +193,17 @@ describe('RuleForm', () => {
   describeNullableDate('activeTo', 'Active to')
 
   describe('resolver selector', () => {
-    let resolverSelect: ReactWrapper
     const fieldName = 'resolver'
-
-    beforeEach(() => {
-      resolverSelect = ruleForm.find(Select).filter({ name: fieldName })
-    })
+    let resolverSelect = () =>
+      ruleForm().find(Select).filter({ name: fieldName }).first()
 
     it('have value', () => {
-      expect(resolverSelect.prop('value')).toEqual(rule.resolver)
+      expect(resolverSelect().prop('value')).toEqual(rule.resolver)
     })
 
     it('have label', () => {
-      let inputProps: InputProps = resolverSelect.prop('inputProps')
-      let inputLabel = ruleForm.find(InputLabel).filter({
+      let inputProps: InputProps = resolverSelect().prop('inputProps')
+      let inputLabel = ruleForm().find(InputLabel).filter({
         htmlFor: inputProps['id'],
       })
       expect(inputLabel.text()).toEqual(expect.stringContaining('Resolver'))
@@ -204,7 +223,7 @@ describe('RuleForm', () => {
       beforeEach(() => {
         newResolver = randomResolver()
 
-        let onChange: OnChange = resolverSelect.prop('onChange')
+        let onChange: OnChange = resolverSelect().prop('onChange')
 
         onChange({
           preventDefault: jest.fn(),
@@ -216,29 +235,28 @@ describe('RuleForm', () => {
       })
 
       it('call update rule callback', () => {
-        expect(updateRuleCb).toBeCalledWith({
-          ...rule,
-          resolver: newResolver,
-        })
+        expect(updateRuleCb).toBeCalledWith({ ...rule, resolver: newResolver })
       })
     })
   })
 
   describe('target fields', () => {
-    let targetForm: ReactWrapper<TargetFormProps, any>
-
-    beforeEach(() => targetForm = ruleForm.find(TargetForm).first())
+    let targetForm = () => ruleForm().find(TargetForm).first()
 
     it('have value', () => {
-      expect(targetForm.prop('target')).toEqual(rule.target)
+      expect(targetForm().prop('target')).toEqual(rule.target)
+    })
+
+    it('have empty model errors', () => {
+      expect(targetForm().prop('modelError')).toEqual([])
     })
 
     describe('on update target', () => {
       let newTarget: Target
 
       beforeEach(() => {
-        let onUpdateTarget: UpdateTarget = targetForm.prop('onUpdateTarget')
-        onUpdateTarget(newTarget)
+        newTarget = randomTarget()
+        targetForm().prop('onUpdateTarget')(newTarget)
       })
 
       it('call update rule callback', () => {
@@ -248,19 +266,25 @@ describe('RuleForm', () => {
         })
       })
     })
+
+    describe('with errors', () => {
+      beforeEach(() => modelError = fieldErrors('target.httpCode'))
+
+      it('have model error', () => {
+        expect(targetForm().prop('modelError')).toEqual(fieldErrors('httpCode'))
+      })
+    })
   })
 
   describe('Remove button', () => {
-    let removeButton: ReactWrapper
-
-    beforeEach(() => removeButton = ruleForm.find(Button))
+    const removeButton = () => ruleForm().find(Button).first()
 
     it('have text', () => {
-      expect(removeButton.text()).toEqual('Remove')
+      expect(removeButton().text()).toEqual('Remove')
     })
 
     describe('on click', () => {
-      beforeEach(() => { removeButton.simulate('click') })
+      beforeEach(() => removeButton().simulate('click'))
 
       it('call remove rule callback', () => {
         expect(removeRuleCb).toBeCalled()

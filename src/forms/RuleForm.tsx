@@ -12,9 +12,17 @@ import withStyles, {
   WithStyles,
 } from '@material-ui/core/styles/withStyles'
 
-import { Rule, Target } from 'redirector-client'
+import {
+  ModelValidationError,
+  Rule,
+  Target,
+} from 'redirector-client'
 
 import formatInputTime from '../utils/formatInputTime'
+import {
+  embedValidationErrors,
+  fieldValidationErrors,
+} from '../utils/validationErrors'
 
 import TargetForm from './TargetForm'
 
@@ -26,6 +34,7 @@ interface Props {
   ruleIndex: Number,
   onUpdateRule: UpdateRule,
   onRemoveRule: RemoveRule,
+  modelError: ModelValidationError,
 }
 
 const downCaseCharRegex = /[a-z]/
@@ -54,6 +63,8 @@ class RuleForm extends React.Component<Props & WithStyles> {
           onChange={this.onInputChange}
           className={classes.formControl}
           required
+          error={this.fieldErrors('sourcePath').length > 0}
+          helperText={this.fieldErrors('sourcePath').join(', ')}
         />
 
         <FormControl
@@ -86,6 +97,8 @@ class RuleForm extends React.Component<Props & WithStyles> {
           fullWidth
           InputLabelProps={{ shrink: true }}
           className={classes.formControl}
+          error={this.fieldErrors('activeFrom').length > 0}
+          helperText={this.fieldErrors('activeFrom').join(', ')}
         />
 
         <TextField
@@ -97,6 +110,8 @@ class RuleForm extends React.Component<Props & WithStyles> {
           fullWidth
           InputLabelProps={{ shrink: true }}
           className={classes.formControl}
+          error={this.fieldErrors('activeTo').length > 0}
+          helperText={this.fieldErrors('activeTo').join(', ')}
         />
 
         <h3>Target</h3>
@@ -104,6 +119,7 @@ class RuleForm extends React.Component<Props & WithStyles> {
         <TargetForm
           target={this.props.rule.target}
           onUpdateTarget={this.updateTarget}
+          modelError={embedValidationErrors(this.props.modelError, 'target')}
         />
 
         <Button onClick={this.props.onRemoveRule}>
@@ -166,6 +182,10 @@ class RuleForm extends React.Component<Props & WithStyles> {
           {Rule.ResolverEnum[resolver as any]}
         </MenuItem>
       ))
+
+  private fieldErrors = (fieldName: string) =>
+    fieldValidationErrors(this.props.modelError, fieldName)
+      .map(_ => _.translationKey)
 }
 
 export default withStyles(styles)(RuleForm)

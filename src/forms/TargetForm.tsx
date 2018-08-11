@@ -3,13 +3,19 @@ import * as React from 'react'
 import FormGroup from '@material-ui/core/FormGroup'
 import TextField from '@material-ui/core/TextField'
 
-import { Target } from 'redirector-client'
+import {
+  ModelValidationError,
+  Target,
+} from 'redirector-client'
+
+import { fieldValidationErrors } from '../utils/validationErrors'
 
 export type UpdateTarget = (target: Target) => void
 
 export interface TargetFormProps {
   target: Target,
   onUpdateTarget: UpdateTarget,
+  modelError: ModelValidationError,
 }
 
 export default class TargetForm extends React.Component<TargetFormProps> {
@@ -23,6 +29,9 @@ export default class TargetForm extends React.Component<TargetFormProps> {
           onChange={this.onNumberChange}
           type='number'
           fullWidth
+          required
+          error={this.fieldErrors('httpCode').length > 0}
+          helperText={this.fieldErrors('httpCode').join(', ')}
         />
 
         <br />
@@ -33,6 +42,9 @@ export default class TargetForm extends React.Component<TargetFormProps> {
           value={this.props.target.path}
           onChange={this.onTextChange}
           fullWidth
+          required
+          error={this.fieldErrors('path').length > 0}
+          helperText={this.fieldErrors('path').join(', ')}
         />
       </FormGroup>
     )
@@ -57,4 +69,7 @@ export default class TargetForm extends React.Component<TargetFormProps> {
       [name]: value,
     })
   }
+  private fieldErrors = (fieldName: string): Array<string> =>
+    fieldValidationErrors(this.props.modelError, fieldName)
+      .map(_ => _.translationKey)
 }

@@ -1,11 +1,13 @@
 import * as React from 'react'
 
 import {
-  ReactWrapper,
   mount,
 } from 'enzyme'
 
-import { Target } from 'redirector-client'
+import {
+  ModelValidationError,
+  Target,
+} from 'redirector-client'
 
 import TargetForm, {
   UpdateTarget,
@@ -19,37 +21,48 @@ import {
 
 describe('TargetForm', () => {
   let target: Target
-  let targetForm: ReactWrapper
   let updateTargetCb: UpdateTarget
+  let modelError: ModelValidationError
+
+  let targetForm = () => mount(
+    <TargetForm
+      target={target}
+      onUpdateTarget={updateTargetCb}
+      modelError={modelError}
+    />,
+  )
 
   beforeEach(() => {
     target = randomTarget()
     updateTargetCb = jest.fn()
-    targetForm = mount(
-      <TargetForm
-        target={target}
-        onUpdateTarget={updateTargetCb}
-      />,
-    )
   })
 
   describe('field httpCode', () => {
-    let httpCodeField: ReactWrapper
+    let httpCodeField = () =>
+      targetForm().find('TextField[name="httpCode"]').first()
 
     beforeEach(() => {
-      httpCodeField = targetForm.find('TextField[name="httpCode"]').first()
+      modelError = []
     })
 
     it('have label', () => {
-      expect(httpCodeField.prop('label')).toEqual('HTTP Code')
+      expect(httpCodeField().prop('label')).toEqual('HTTP Code')
     })
 
     it('have value', () => {
-      expect(httpCodeField.prop('value')).toEqual(target.httpCode)
+      expect(httpCodeField().prop('value')).toEqual(target.httpCode)
     })
 
     it('have type number', () => {
-      expect(httpCodeField.prop('type')).toEqual('number')
+      expect(httpCodeField().prop('type')).toEqual('number')
+    })
+
+    it('not have error', () => {
+      expect(httpCodeField().prop('error')).toEqual(false)
+    })
+
+    it('not show helper text', () => {
+      expect(httpCodeField().prop('helperText')).toEqual('')
     })
 
     describe('change event', () => {
@@ -57,7 +70,7 @@ describe('TargetForm', () => {
 
       beforeEach(() => {
         newHttpCode = randomHttpCode()
-        httpCodeField.find('input')
+        httpCodeField().find('input')
           .simulate('change', {
             target: {
               name: 'httpCode',
@@ -73,21 +86,42 @@ describe('TargetForm', () => {
         })
       })
     })
+
+    describe('with errors', () => {
+      beforeEach(() => {
+        modelError = [{
+          name: 'httpCode',
+          errors: [
+            { translationKey: 'error1' },
+            { translationKey: 'error2' },
+          ],
+        }]
+      })
+
+      it('have error', () => {
+        expect(httpCodeField().prop('error')).toEqual(true)
+      })
+
+      it('have errors into helper text', () => {
+        expect(httpCodeField().prop('helperText')).toEqual('error1, error2')
+      })
+    })
   })
 
   describe('field path', () => {
-    let pathField: ReactWrapper
+    let pathField = () =>
+      targetForm().find('TextField[name="path"]')
 
     beforeEach(() => {
-      pathField = targetForm.find('TextField[name="path"]')
+      modelError = []
     })
 
     it('have label', () => {
-      expect(pathField.prop('label')).toEqual('Path')
+      expect(pathField().prop('label')).toEqual('Path')
     })
 
     it('have value', () => {
-      expect(pathField.prop('value')).toEqual(target.path)
+      expect(pathField().prop('value')).toEqual(target.path)
     })
 
     describe('change event', () => {
@@ -95,7 +129,7 @@ describe('TargetForm', () => {
 
       beforeEach(() => {
         newPath = randomPath()
-        pathField
+        pathField()
           .find('input')
           .simulate('change', {
             target: {
@@ -110,6 +144,26 @@ describe('TargetForm', () => {
           ...target,
           path: newPath,
         })
+      })
+    })
+
+    describe('with errors', () => {
+      beforeEach(() => {
+        modelError = [{
+          name: 'path',
+          errors: [
+            { translationKey: 'error1' },
+            { translationKey: 'error2' },
+          ],
+        }]
+      })
+
+      it('has error', () => {
+        expect(pathField().prop('error')).toEqual(true)
+      })
+
+      it('has errors into helper text', () => {
+        expect(pathField().prop('helperText')).toEqual('error1, error2')
       })
     })
   })

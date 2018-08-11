@@ -15,9 +15,15 @@ import Close from '@material-ui/icons/Close'
 
 import {
   HostRules,
+  ModelValidationError,
   Rule,
   Target,
 } from 'redirector-client'
+
+import {
+  embedValidationErrors,
+  fieldValidationErrors,
+} from '../utils/validationErrors'
 
 import RuleForm from './RuleForm'
 import TargetForm from './TargetForm'
@@ -73,6 +79,7 @@ interface Message {
 class State {
   message?: Message
   loading: boolean = false
+  modelError: ModelValidationError = []
 }
 
 class HostRulesForm extends React.Component<
@@ -91,6 +98,9 @@ class HostRulesForm extends React.Component<
           value={this.props.hostRules.host}
           onChange={this.onInputChange}
           fullWidth
+          required
+          error={this.fieldErrors('host').length > 0}
+          helperText={this.fieldErrors('host').join(', ')}
         />
 
         <br />
@@ -99,6 +109,7 @@ class HostRulesForm extends React.Component<
         <TargetForm
           target={this.props.hostRules.defaultTarget}
           onUpdateTarget={this.updateTarget}
+          modelError={embedValidationErrors(this.state.modelError, 'defaultTarget')}
         />
 
         <FormControl fullWidth>
@@ -146,6 +157,7 @@ class HostRulesForm extends React.Component<
       ruleIndex={index}
       onUpdateRule={this.updateRule(index)}
       onRemoveRule={this.removeRule(index)}
+      modelError={embedValidationErrors(this.state.modelError, 'rules', index)}
     />
   )
 
@@ -194,7 +206,25 @@ class HostRulesForm extends React.Component<
       loading: false,
     })
 
-  private onErrorError = (response: Response) =>
+  private onErrorError = (response: Response) => {
+    switch (response.status) {
+      case 422:
+        this.setValidationError(response)
+        break
+      default:
+        this.setSimpleError(response)
+    }
+  }
+
+  private setValidationError = (response: Response) =>
+    response.json().then((modelError: ModelValidationError) => {
+      this.setState({
+        loading: false,
+        modelError,
+      })
+    })
+
+  private setSimpleError = (response: Response) =>
     response.text().then(reason =>
       this.setState({
         message: {
@@ -256,6 +286,10 @@ class HostRulesForm extends React.Component<
       rules: newRules,
     })
   }
+
+  private fieldErrors = (fieldName: string): Array<string> =>
+    fieldValidationErrors(this.state.modelError, fieldName)
+      .map(_ => _.translationKey)
 }
 
 export default withStyles(styles)(HostRulesForm)
