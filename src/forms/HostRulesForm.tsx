@@ -1,17 +1,8 @@
 import * as React from 'react'
 
 import Button from '@material-ui/core/Button'
-import CircularProgress from '@material-ui/core/CircularProgress'
 import FormControl from '@material-ui/core/FormControl'
-import IconButton from '@material-ui/core/IconButton'
-import Snackbar from '@material-ui/core/Snackbar'
-import SnackbarContent from '@material-ui/core/SnackbarContent'
 import TextField from '@material-ui/core/TextField'
-import withStyles, {
-  StyleRulesCallback,
-  WithStyles,
-} from '@material-ui/core/styles/withStyles'
-import Close from '@material-ui/icons/Close'
 
 import {
   HostRules,
@@ -28,70 +19,20 @@ import {
 import RuleForm from './RuleForm'
 import TargetForm from './TargetForm'
 
-const circularSize = 24
-
-const styles: StyleRulesCallback = (theme) => ({
-  actionsPanel: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    marginTop: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-  },
-  errorMessage: {
-    backgroundColor: theme.palette.error.light,
-  },
-  infoMessage: {
-    backgroundColor: theme.palette.primary.light,
-  },
-  buttonWrapper: {
-    position: 'relative',
-  },
-  buttonProgress: {
-    position: 'absolute',
-    marginTop: -circularSize / 2,
-    marginLeft: -circularSize / 2,
-    left: '50%',
-    top: '50%',
-  },
-})
-
 export type UpdateHostRules = (hostRules: HostRules) => void
-
-export type SuccessSaveCb = () => void
-export type ErrorSaveCb = (response: Response) => void
-
-export type SaveHostRules = (
-  onSuccess: SuccessSaveCb,
-  onError: ErrorSaveCb,
-) => void
 
 export interface HostRulesFormProps {
   hostRules: HostRules,
   onUpdateHostRules: UpdateHostRules,
-  onSave: SaveHostRules,
+  modelError: ModelValidationError,
 }
 
-interface Message {
-  text: string
-  className: string,
-}
-
-class State {
-  message?: Message
-  loading: boolean = false
-  modelError: ModelValidationError = []
-}
-
-class HostRulesForm extends React.Component<
+export default class HostRulesForm extends React.Component<
   HostRulesFormProps
-  & WithStyles
-  , State
 > {
-  state = new State()
-
   render () {
     return (
-      <form onSubmit={this.onSubmit}>
+      <>
         <TextField
           name='host'
           label='Host'
@@ -109,7 +50,7 @@ class HostRulesForm extends React.Component<
         <TargetForm
           target={this.props.hostRules.defaultTarget}
           onUpdateTarget={this.updateTarget}
-          modelError={embedValidationErrors(this.state.modelError, 'defaultTarget')}
+          modelError={embedValidationErrors(this.props.modelError, 'defaultTarget')}
         />
 
         <FormControl fullWidth>
@@ -119,34 +60,7 @@ class HostRulesForm extends React.Component<
             Add
           </Button>
         </FormControl>
-
-        <br />
-
-        <Snackbar
-          open={this.state.message !== undefined}
-        >
-          <SnackbarContent
-            message={<p>{this.state.message && this.state.message.text}</p>}
-            className={this.state.message && this.state.message.className}
-            action={this.renderCloseButton()}
-          />
-        </Snackbar>
-
-        <div className={this.props.classes.actionsPanel}>
-          <div className={this.props.classes.buttonWrapper}>
-            <Button
-              type='submit'
-              color='primary'
-              variant='raised'
-              disabled={this.state.loading}
-              className={this.props.classes.button}
-            >
-              Save
-            </Button>
-            {this.renderLoader()}
-          </div>
-        </div>
-      </form>
+      </>
     )
   }
 
@@ -157,28 +71,8 @@ class HostRulesForm extends React.Component<
       ruleIndex={index}
       onUpdateRule={this.updateRule(index)}
       onRemoveRule={this.removeRule(index)}
-      modelError={embedValidationErrors(this.state.modelError, 'rules', index)}
+      modelError={embedValidationErrors(this.props.modelError, 'rules', index)}
     />
-  )
-
-  private renderLoader () {
-    if (!this.state.loading) return undefined
-    return (
-      <CircularProgress
-        variant='indeterminate'
-        size={circularSize}
-        className={this.props.classes.buttonProgress}
-      />
-    )
-  }
-
-  private renderCloseButton = () => (
-    <IconButton
-      key='errorMessage'
-      onClick={this.clearError}
-    >
-      <Close />
-    </IconButton>
   )
 
   private onInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -190,52 +84,6 @@ class HostRulesForm extends React.Component<
       [name]: value,
     })
   }
-
-  private onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    this.setState({ loading: true })
-    this.props.onSave(this.onSuccessSave, this.onErrorError)
-  }
-
-  private onSuccessSave = () =>
-    this.setState({
-      message: {
-        text: 'Success',
-        className: this.props.classes.infoMessage,
-      },
-      loading: false,
-    })
-
-  private onErrorError = (response: Response) => {
-    switch (response.status) {
-      case 422:
-        this.setValidationError(response)
-        break
-      default:
-        this.setSimpleError(response)
-    }
-  }
-
-  private setValidationError = (response: Response) =>
-    response.json().then((modelError: ModelValidationError) => {
-      this.setState({
-        loading: false,
-        modelError,
-      })
-    })
-
-  private setSimpleError = (response: Response) =>
-    response.text().then(reason =>
-      this.setState({
-        message: {
-          text: reason,
-          className: this.props.classes.errorMessage,
-        },
-        loading: false,
-      }),
-    )
-
-  private clearError = () => this.setState({ message: undefined })
 
   private updateTarget = (target: Target) => {
     this.props.onUpdateHostRules({
@@ -288,8 +136,6 @@ class HostRulesForm extends React.Component<
   }
 
   private fieldErrors = (fieldName: string): Array<string> =>
-    fieldValidationErrors(this.state.modelError, fieldName)
+    fieldValidationErrors(this.props.modelError, fieldName)
       .map(_ => _.translationKey)
 }
-
-export default withStyles(styles)(HostRulesForm)

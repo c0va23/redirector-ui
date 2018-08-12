@@ -16,7 +16,7 @@ import {
   HostRules,
 } from 'redirector-client'
 
-import HostRulesForm from '../forms/HostRulesForm'
+import HostRulesFormWrapper from '../forms/HostRulesFormWrapper'
 
 import ButtonLink from '../components/ButtonLink'
 import ErrorView from '../components/ErrorView'
@@ -82,9 +82,9 @@ class HostRulesEdit extends React.Component<
         </ButtonLink>
 
         <Paper className={this.props.classes.paper}>
-          <HostRulesForm
+          <HostRulesFormWrapper
             hostRules={hostRule}
-            onSave={this.onSave(hostRule)}
+            onSaveHostRules={this.onSave(hostRule)}
             onUpdateHostRules={this.updateHostRules}
           />
         </Paper>

@@ -2,71 +2,75 @@ import * as React from 'react'
 
 import {
   Button,
-  IconButton,
-  Snackbar,
   TextField,
 } from '@material-ui/core'
 
 import {
-  ReactWrapper,
   mount,
 } from 'enzyme'
 import * as Faker from 'faker'
 
-import { HostRules } from 'redirector-client'
+import {
+  HostRules,
+  ModelValidationError,
+  Rule,
+} from 'redirector-client'
 
-import HostRulesForm, {
-  HostRulesFormProps,
-} from '../../src/forms/HostRulesForm'
-import RuleForm, {
-  UpdateRule,
-} from '../../src/forms/RuleForm'
-import TargetForm, {
-  TargetFormProps,
-  UpdateTarget,
-} from '../../src/forms/TargetForm'
+import HostRulesForm from '../../src/forms/HostRulesForm'
+import RuleForm from '../../src/forms/RuleForm'
+import TargetForm from '../../src/forms/TargetForm'
 
 import * as HostRulesFactory from '../factories/HostRulesFactory'
 import * as RuleFactory from '../factories/RuleFactory'
 import * as TargetFactory from '../factories/TargetFactory'
 
+import { embedValidationErrors } from '../../src/utils/validationErrors'
+
 describe('HostRulesForm', () => {
   let hostRules: HostRules
+  let modelError: ModelValidationError
 
-  let hostRulesChangedCb: jest.Mock
-  let saveCb: jest.Mock
-  let hostRulesForm: ReactWrapper<HostRulesFormProps>
+  let updateCb: jest.Mock
+
+  let hostRulesForm = () =>
+    mount(
+      <HostRulesForm
+        hostRules={hostRules}
+        onUpdateHostRules={updateCb}
+        modelError={modelError}
+      />,
+    )
 
   beforeEach(() => {
     hostRules = HostRulesFactory.randomHostRules()
+    modelError = []
 
-    hostRulesChangedCb = jest.fn()
-    saveCb = jest.fn()
-    hostRulesForm = mount(
-      <HostRulesForm
-        hostRules={hostRules}
-        onUpdateHostRules={hostRulesChangedCb}
-        onSave={saveCb}
-      />,
-    )
+    updateCb = jest.fn()
   })
 
   describe('host field', () => {
-    let hostField: ReactWrapper
+    const fieldName = 'host'
 
-    beforeEach(() => {
-      hostField = hostRulesForm
+    let hostField = () =>
+      hostRulesForm()
         .find(TextField)
-        .filter({ name: 'host' })
+        .filter({ name: fieldName })
         .first()
-    })
 
     it('host field have label', () => {
-      expect(hostField.prop('label')).toEqual('Host')
+      expect(hostField().prop('label')).toEqual('Host')
     })
 
     it('host field have value', () => {
-      expect(hostField.prop('value')).toEqual(hostRules.host)
+      expect(hostField().prop('value')).toEqual(hostRules.host)
+    })
+
+    it('not have error', () => {
+      expect(hostField().prop('error')).toEqual(false)
+    })
+
+    it('not have helper text', () => {
+      expect(hostField().prop('helperText')).toEqual('')
     })
 
     describe('on change', () => {
@@ -83,63 +87,100 @@ describe('HostRulesForm', () => {
       beforeEach(() => {
         newHost = Faker.internet.domainName()
 
-        let onChange: OnChangeFn = hostField.prop('onChange')
+        let onChange: OnChangeFn = hostField().prop('onChange')
 
         onChange({
           preventDefault: jest.fn(),
           target: {
             value: newHost,
-            name: 'host',
+            name: fieldName,
           },
         })
       })
 
       it('update host into hostRules', () => {
-        expect(hostRulesChangedCb).toBeCalledWith({
+        expect(updateCb).toBeCalledWith({
           ...hostRules,
           host: newHost,
         })
       })
     })
+
+    describe('with errors', () => {
+      beforeEach(() => {
+        modelError = [
+          {
+            name: fieldName,
+            errors: [
+              { translationKey: 'error1' },
+              { translationKey: 'error2' },
+            ],
+          },
+        ]
+      })
+
+      it('have error', () => {
+        expect(hostField().prop('error')).toEqual(true)
+      })
+
+      it('have helper text', () => {
+        expect(hostField().prop('helperText')).toEqual('error1, error2')
+      })
+    })
   })
 
   describe('target form', () => {
-    let targetForm: ReactWrapper<TargetFormProps, any>
-
-    beforeEach(() => {
-      targetForm = hostRulesForm.find(TargetForm).first()
-    })
+    let targetForm = () => hostRulesForm().find(TargetForm).first()
 
     it('have value', () => {
-      expect(targetForm.prop('target')).toEqual(hostRules.defaultTarget)
+      expect(targetForm().prop('target')).toEqual(hostRules.defaultTarget)
     })
 
     it('update target on TargetForm.onChange', () => {
       let target = TargetFactory.randomTarget()
-      let onUpdateTarget: UpdateTarget = targetForm.prop('onUpdateTarget')
-      onUpdateTarget(target)
+      targetForm().prop('onUpdateTarget')(target)
 
-      expect(hostRulesChangedCb).toBeCalledWith({
+      expect(updateCb).toBeCalledWith({
         ...hostRules,
         defaultTarget: target,
+      })
+    })
+
+    it('have empty model error', () => {
+      expect(targetForm().prop('modelError')).toEqual([])
+    })
+
+    describe('have errors', () => {
+      beforeEach(() => {
+        modelError = [
+          {
+            name: 'defaultTarget.field',
+            errors: [
+              { translationKey: 'error1' },
+              { translationKey: 'error2' },
+            ],
+          },
+        ]
+      })
+
+      it('have model errors', () => {
+        expect(targetForm().prop('modelError'))
+          .toEqual(embedValidationErrors(modelError, 'defaultTarget'))
       })
     })
   })
 
   describe('add rule', () => {
-    let addRuleButton: ReactWrapper
-
-    beforeEach(() => {
-      addRuleButton = hostRulesForm
+    let addRuleButton = () =>
+       hostRulesForm()
         .find(Button)
         .filter({ name : 'addRule' })
         .first()
-    })
 
     it('add one rule', () => {
-      addRuleButton.simulate('click')
+      addRuleButton().simulate('click')
 
-      expect(hostRulesChangedCb).toBeCalledWith({
+      expect(updateCb).toBeCalledWith({
         ...hostRules,
         rules: hostRules.rules.concat(RuleFactory.newRule()),
       })
@@ -147,129 +188,85 @@ describe('HostRulesForm', () => {
 
     describe('when host rules have two rules', () => {
       beforeEach(() => {
-        hostRulesForm.setProps({
-          hostRules: {
-            ...hostRules,
-            rules: [
-              RuleFactory.newRule(),
-              RuleFactory.newRule(),
-            ],
-          },
-        })
+        hostRules = {
+          ...hostRules,
+          rules: [
+            RuleFactory.randomRule(),
+            RuleFactory.randomRule(),
+          ],
+        }
       })
 
       it('add third rule', () => {
-        addRuleButton.simulate('click')
+        addRuleButton().simulate('click')
 
-        expect(hostRulesChangedCb).toBeCalledWith({
+        expect(updateCb).toBeCalledWith({
           ...hostRules,
-          rules: [
-            RuleFactory.newRule(),
-            RuleFactory.newRule(),
-            RuleFactory.newRule(),
-          ],
+          rules: hostRules.rules.concat(RuleFactory.newRule()),
         })
       })
 
-      it('update rule', () => {
-        let newRule = RuleFactory.randomRule()
+      describe('when rule have error', () => {
+        const ruleIndex = 1
+        const ruleForm = () => hostRulesForm().find(RuleForm).at(ruleIndex)
 
-        let ruleForm = hostRulesForm.find(RuleForm).at(1)
-        let onUpdateRule: UpdateRule = ruleForm.prop('onUpdateRule')
-        onUpdateRule(newRule)
-
-        expect(hostRulesChangedCb).toBeCalledWith({
-          ...hostRules,
-          rules: [
-            RuleFactory.newRule(),
-            newRule,
-          ],
-        })
-      })
-
-      it('remove rule', () => {
-        let ruleForm = hostRulesForm.find(RuleForm).at(1)
-        let onRemoveRule = ruleForm.prop('onRemoveRule') as () => void
-        onRemoveRule()
-
-        expect(hostRulesChangedCb).toBeCalledWith({
-          ...hostRules,
-          rules: [
-            RuleFactory.newRule(),
-          ],
-        })
-      })
-    })
-  })
-
-  describe('click Save button', () => {
-    beforeEach(() => {
-      hostRulesForm
-        .find(Button)
-        .filter({ type: 'submit' })
-        .first()
-        .simulate('submit')
-    })
-
-    it('call save callback', () => {
-      expect(saveCb).toBeCalled()
-    })
-
-    describe('on success callback', () => {
-      let snackbar: ReactWrapper
-      beforeEach(() => {
-        let [ onSuccess ] = saveCb.mock.calls[0]
-        onSuccess()
-        snackbar = hostRulesForm.update().find(Snackbar).first()
-      })
-
-      it('show success message', () => {
-        expect(snackbar.first().text()).toMatch(/Success/)
-      })
-
-      it('open snackbar', () => {
-        expect(snackbar.prop('open')).toBeTruthy()
-      })
-    })
-
-    describe('on error callback', () => {
-      let errorMessage = 'error message'
-      let snackbar: ReactWrapper
-
-      beforeEach(() => {
-        let [ , onError ] = saveCb.mock.calls[0]
-        let response = { text: jest.fn().mockResolvedValue(errorMessage) }
-        onError(response)
-
-        return response.text().then(() => {
-          snackbar = hostRulesForm
-            .update()
-            .find(Snackbar)
-            .first()
-        })
-      })
-
-      it('show error message', () => {
-        expect(snackbar.text()).toEqual(expect.stringContaining(errorMessage))
-      })
-
-      it('open snackbar', () => {
-        expect(snackbar.prop('open')).toBeTruthy()
-      })
-
-      describe('close snackbar', () => {
         beforeEach(() => {
-          snackbar
-            .find(IconButton)
-            .first()
-            .simulate('click')
-          snackbar = hostRulesForm
-            .find(Snackbar)
-            .first()
+          modelError = [
+            {
+              name: `rules.${ruleIndex}.field`,
+              errors: [
+                { translationKey: 'error1' },
+                { translationKey: 'error1' },
+              ],
+            },
+          ]
         })
 
-        it('close snackbar', () => {
-          expect(snackbar.prop('open')).toBeFalsy()
+        it('render rule form with error', () => {
+          expect(ruleForm().prop('modelError')).toEqual([
+            {
+              name: 'field',
+              errors: modelError[0].errors,
+            },
+          ])
+        })
+      })
+
+      describe('on update rule', () => {
+        let newRule: Rule
+
+        beforeEach(() => {
+          newRule = RuleFactory.randomRule()
+
+          hostRulesForm()
+            .find(RuleForm).at(1)
+            .prop('onUpdateRule')(newRule)
+        })
+
+        it('update rule', () => {
+          expect(updateCb).toBeCalledWith({
+            ...hostRules,
+            rules: [
+              hostRules.rules[0],
+              newRule,
+            ],
+          })
+        })
+      })
+
+      describe('on remove rule', () => {
+        beforeEach(() => {
+          hostRulesForm()
+            .find(RuleForm)
+            .at(1)
+            .prop('onRemoveRule')()
+        })
+
+        it('remove rule', () => {
+          expect(updateCb).toBeCalledWith({
+            ...hostRules,
+            rules: [hostRules.rules[0]],
+          })
         })
       })
     })

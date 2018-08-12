@@ -13,12 +13,12 @@ import ButtonLink from '../../src/components/ButtonLink'
 import ErrorView from '../../src/components/ErrorView'
 import Loader from '../../src/components/Loader'
 
-import HostRulesForm, {
+import HostRulesFormWrapper, {
   ErrorSaveCb,
-  HostRulesFormProps,
+  HostRulesFormWrapperProps,
   SaveHostRules,
   SuccessSaveCb,
-} from '../../src/forms/HostRulesForm'
+} from '../../src/forms/HostRulesFormWrapper'
 
 import { randomHostRules } from '../factories/HostRulesFactory'
 import { randomResponse } from '../factories/ResponseFactory'
@@ -27,14 +27,14 @@ import { ConfigApiMock } from '../mocks/ConfigApiMock'
 describe('HostRulesEdit', () => {
   let configApiMock: ConfigApiMock
   let hostRules: HostRules
-  let hostRulesEditWrapper: ReactWrapper
+  let hostRulesEditWrapper: ReactWrapper<HostRulesFormWrapperProps>
 
   let hostRulesEdit = () => hostRulesEditWrapper.find(HostRulesEdit).first()
 
-  let hostRulesForm = (): ReactWrapper<HostRulesFormProps> =>
+  let hostRulesForm = () =>
     hostRulesEditWrapper
       .update()
-      .find(HostRulesForm)
+      .find(HostRulesFormWrapper)
       .first()
 
   let waitLoading = () =>
@@ -167,7 +167,7 @@ describe('HostRulesEdit', () => {
           successSaveCb = jest.fn()
           errorSaveCb = jest.fn()
 
-          let onSave: SaveHostRules = hostRulesForm().prop('onSave')
+          let onSave: SaveHostRules = hostRulesForm().prop('onSaveHostRules')
           onSave(successSaveCb, errorSaveCb)
         })
 
@@ -189,7 +189,7 @@ describe('HostRulesEdit', () => {
       let errorSaveCb: ErrorSaveCb
 
       let callSave = () => {
-        let onSave: SaveHostRules = hostRulesForm().prop('onSave')
+        let onSave: SaveHostRules = hostRulesForm().prop('onSaveHostRules')
         onSave(successSaveCb, errorSaveCb)
       }
 

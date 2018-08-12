@@ -14,10 +14,10 @@ import {
 } from 'redirector-client'
 
 import ButtonLink from '../components/ButtonLink'
-import HostRulesForm, {
+import HostRulesFormWrapper, {
   ErrorSaveCb,
   SuccessSaveCb,
-} from '../forms/HostRulesForm'
+} from '../forms/HostRulesFormWrapper'
 
 const logger = log.getLogger('HostRulesNew')
 
@@ -58,9 +58,9 @@ class HostRulesNew extends React.Component<
       </ButtonLink>
 
       <Paper className={this.props.classes.paper}>
-        <HostRulesForm
+        <HostRulesFormWrapper
           hostRules={this.state}
-          onSave={this.onSave}
+          onSaveHostRules={this.onSave}
           onUpdateHostRules={this.updateHostRules}
         />
       </Paper>

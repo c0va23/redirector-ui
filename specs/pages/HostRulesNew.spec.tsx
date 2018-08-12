@@ -12,12 +12,12 @@ import { HostRules } from 'redirector-client'
 
 import ButtonLink from '../../src/components/ButtonLink'
 
-import HostRulesForm, {
+import HostRulesFormWrapper, {
   ErrorSaveCb,
-  HostRulesFormProps,
+  HostRulesFormWrapperProps,
   SaveHostRules,
   SuccessSaveCb,
-} from '../../src/forms/HostRulesForm'
+} from '../../src/forms/HostRulesFormWrapper'
 
 import HostRulesNew from '../../src/pages/HostRulesNew'
 
@@ -30,7 +30,7 @@ import { ConfigApiMock } from '../mocks/ConfigApiMock'
 describe('HostRulesNew', () => {
   let configApi: ConfigApiMock
   let hostRulesNew: ReactWrapper
-  let hostRulesForm: ReactWrapper<HostRulesFormProps>
+  let hostRulesForm: ReactWrapper<HostRulesFormWrapperProps>
 
   beforeEach(() => {
     configApi = new ConfigApiMock()
@@ -39,7 +39,7 @@ describe('HostRulesNew', () => {
         <HostRulesNew configApi={configApi} />
       </MemoryRouter>,
     )
-    hostRulesForm = hostRulesNew.find(HostRulesForm)
+    hostRulesForm = hostRulesNew.find(HostRulesFormWrapper)
   })
 
   it('render host rules form', () => {
@@ -70,7 +70,7 @@ describe('HostRulesNew', () => {
       successSaveCb = jest.fn()
       errorSaveCb = jest.fn()
 
-      onSave = hostRulesForm.prop('onSave')
+      onSave = hostRulesForm.prop('onSaveHostRules')
     })
 
     describe('on save success', () => {
