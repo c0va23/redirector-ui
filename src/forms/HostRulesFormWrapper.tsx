@@ -172,7 +172,7 @@ class HostRulesFormWrapper extends React.Component<
           modelError,
         }),
       )
-      .catch(console.error)
+      .catch(this.showMessage)
 
   private setSimpleError = (response: Response) =>
     response.text()
@@ -185,7 +185,17 @@ class HostRulesFormWrapper extends React.Component<
           loading: false,
         }),
       )
-      .catch(console.error)
+      .catch(this.showMessage)
+
+  private showMessage = (rejected: { reason: any }) => {
+    this.setState({
+      message: {
+        text: rejected.reason.valueOf(),
+        className: this.props.classes.errorMessage,
+      },
+      loading: false,
+    })
+  }
 
   private clearError = () => this.setState({ message: undefined })
 }

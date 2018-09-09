@@ -4,6 +4,7 @@ import {
   ReactWrapper,
   mount,
 } from 'enzyme'
+import { lorem } from 'faker'
 
 import {
   Button,
@@ -11,6 +12,7 @@ import {
   IconButton,
   Snackbar,
 } from '@material-ui/core'
+import { SnackbarProps } from '@material-ui/core/Snackbar'
 
 import { HostRules, ModelValidationError } from 'redirector-client'
 
@@ -124,6 +126,32 @@ describe('HostRulesFormWrapper', () => {
 
       it('set model error to host rules form', () => {
         expect(hostRulesFormWrapper.find(HostRulesForm).prop('modelError')).toEqual(modelError)
+      })
+    })
+
+    describe('on error callback with model error', () => {
+      let reason: string
+      let snackbar: ReactWrapper<SnackbarProps>
+
+      beforeEach(() => {
+        let [ , onError ] = saveCb.mock.calls[0]
+        reason = lorem.word()
+        let response = {
+          status: 422,
+          json: jest.fn().mockRejectedValue({ reason }),
+        }
+        return onError(response).then(() => {
+          hostRulesFormWrapper = hostRulesFormWrapper.update()
+          snackbar = hostRulesFormWrapper.find(Snackbar).first()
+        })
+      })
+
+      it('set message on snackbar', () => {
+        expect(snackbar.text()).toMatch(reason)
+      })
+
+      it('show snackbar', () => {
+        expect(snackbar.prop('open')).toBeTruthy()
       })
     })
 
