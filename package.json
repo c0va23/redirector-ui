@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --coverage",
     "lint": "tslint --project .",
-    "dev-server": "NODE_ENV=development webpack-serve --config webpack.config.js --hot",
+    "dev-server": "NODE_ENV=development webpack-serve --config webpack.config.js --hotClient",
     "build": "webpack --config webpack.config.js"
   },
   "repository": {
@@ -49,10 +49,10 @@
     "tslint-config-standard": "7.0.0",
     "tslint-react": "^3.6.0",
     "typescript": "^2.9.2",
-    "webpack": "^4.14.0",
+    "webpack": "^4.17.2",
     "webpack-bundle-analyzer": "^2.13.1",
     "webpack-cli": "^3.1.0",
-    "webpack-serve": "1.0.4"
+    "webpack-serve": "^2.0.2"
   },
   "author": "c0va23@gmail.com",
   "license": "MIT"
