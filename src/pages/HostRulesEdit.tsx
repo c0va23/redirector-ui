@@ -56,7 +56,7 @@ class HostRulesEdit extends React.Component<
   state = new State()
 
   componentDidMount () {
-    this.fetchHostRules()
+    return this.fetchHostRules()
   }
 
   render () {
