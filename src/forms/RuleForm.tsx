@@ -24,6 +24,15 @@ import {
   fieldValidationErrors,
 } from '../utils/validationErrors'
 
+import {
+  buildLocalizer,
+  findLocaleTranslations,
+} from '../utils/localize'
+
+import AppContext, {
+  AppContextData,
+} from '../AppContext'
+
 import TargetForm from './TargetForm'
 
 export type UpdateRule = (rule: Rule) => void
@@ -50,7 +59,14 @@ const styles: StyleRulesCallback = (theme) => ({
 
 class RuleForm extends React.Component<Props & WithStyles> {
   render () {
+    return <AppContext.Consumer>{this.renderWithContext}</AppContext.Consumer>
+  }
+
+  private renderWithContext = (appContext: AppContextData) => {
     let classes = this.props.classes
+
+    let locaeTranslations = findLocaleTranslations(appContext.errorLocales)
+    let localizer = buildLocalizer(locaeTranslations)
 
     return (
       <FormGroup>
@@ -64,7 +80,7 @@ class RuleForm extends React.Component<Props & WithStyles> {
           className={classes.formControl}
           required
           error={this.fieldErrors('sourcePath').length > 0}
-          helperText={this.fieldErrors('sourcePath').join(', ')}
+          helperText={this.fieldErrors('sourcePath').map(localizer).join(', ')}
         />
 
         <FormControl
@@ -98,7 +114,7 @@ class RuleForm extends React.Component<Props & WithStyles> {
           InputLabelProps={{ shrink: true }}
           className={classes.formControl}
           error={this.fieldErrors('activeFrom').length > 0}
-          helperText={this.fieldErrors('activeFrom').join(', ')}
+          helperText={this.fieldErrors('activeFrom').map(localizer).join(', ')}
         />
 
         <TextField
@@ -111,7 +127,7 @@ class RuleForm extends React.Component<Props & WithStyles> {
           InputLabelProps={{ shrink: true }}
           className={classes.formControl}
           error={this.fieldErrors('activeTo').length > 0}
-          helperText={this.fieldErrors('activeTo').join(', ')}
+          helperText={this.fieldErrors('activeTo').map(localizer).join(', ')}
         />
 
         <h3>Target</h3>

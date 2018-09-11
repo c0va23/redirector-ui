@@ -8,6 +8,11 @@ import {
   Target,
 } from 'redirector-client'
 
+import AppContext, { AppContextData } from '../AppContext'
+import {
+  buildLocalizer,
+  findLocaleTranslations,
+} from '../utils/localize'
 import { fieldValidationErrors } from '../utils/validationErrors'
 
 export type UpdateTarget = (target: Target) => void
@@ -20,6 +25,12 @@ export interface TargetFormProps {
 
 export default class TargetForm extends React.Component<TargetFormProps> {
   render () {
+    return <AppContext.Consumer>{this.renderWithContext}</AppContext.Consumer>
+  }
+
+  private renderWithContext = (appContext: AppContextData) => {
+    let localeTranslations = findLocaleTranslations(appContext.errorLocales)
+    let localize = buildLocalizer(localeTranslations)
     return (
       <FormGroup>
         <TextField
@@ -31,7 +42,7 @@ export default class TargetForm extends React.Component<TargetFormProps> {
           fullWidth
           required
           error={this.fieldErrors('httpCode').length > 0}
-          helperText={this.fieldErrors('httpCode').join(', ')}
+          helperText={this.fieldErrors('httpCode').map(localize).join(', ')}
         />
 
         <br />
@@ -44,7 +55,7 @@ export default class TargetForm extends React.Component<TargetFormProps> {
           fullWidth
           required
           error={this.fieldErrors('path').length > 0}
-          helperText={this.fieldErrors('path').join(', ')}
+          helperText={this.fieldErrors('path').map(localize).join(', ')}
         />
       </FormGroup>
     )

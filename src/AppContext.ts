@@ -4,10 +4,10 @@ import {
   Locales,
 } from 'redirector-client'
 
-class AppContext {
+export class AppContextData {
   errorLocales: Locales
 }
 
-export default React.createContext<AppContext>({
+export default React.createContext<AppContextData>({
   errorLocales: [],
 })

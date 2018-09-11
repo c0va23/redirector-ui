@@ -16,6 +16,15 @@ import {
   fieldValidationErrors,
 } from '../utils/validationErrors'
 
+import {
+  buildLocalizer,
+  findLocaleTranslations,
+} from '../utils/localize'
+
+import AppContext, {
+  AppContextData,
+} from '../AppContext'
+
 import RuleForm from './RuleForm'
 import TargetForm from './TargetForm'
 
@@ -31,6 +40,12 @@ export default class HostRulesForm extends React.Component<
   HostRulesFormProps
 > {
   render () {
+    return <AppContext.Consumer>{this.renderWithContext}</AppContext.Consumer>
+  }
+
+  private renderWithContext = (appContext: AppContextData) => {
+    let localeTranslations = findLocaleTranslations(appContext.errorLocales)
+    let localize = buildLocalizer(localeTranslations)
     return (
       <>
         <TextField
@@ -41,7 +56,7 @@ export default class HostRulesForm extends React.Component<
           fullWidth
           required
           error={this.fieldErrors('host').length > 0}
-          helperText={this.fieldErrors('host').join(', ')}
+          helperText={this.fieldErrors('host').map(localize).join(', ')}
         />
 
         <br />
