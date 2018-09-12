@@ -1,3 +1,6 @@
+swagger-clean:
+	rm -r gen/
+
 swagger-gen:
 	mkdir gen
 	docker run \

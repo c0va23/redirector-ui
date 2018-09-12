@@ -55,6 +55,7 @@ describe('App', () => {
     apiUrl = internet.url()
     configStore = new ConfigStoreMock()
     configApi = new ConfigApiMock()
+    configApi.localesMock.mockResolvedValue([])
   })
 
   describe('unauthenticated', () => {
@@ -84,7 +85,9 @@ describe('App', () => {
           .props()
           .logIn(config)
 
-        app = app.update()
+        return configApi.locales().then(() => {
+          app = app.update()
+        })
       })
 
       it('store config', () => {
@@ -111,6 +114,10 @@ describe('App', () => {
       configStore.loadMock.mockReturnValue(config)
 
       app = buildApp()
+
+      return configApi.locales().then(() => {
+        app = app.update()
+      })
     })
 
     describe('logOut button', () => {

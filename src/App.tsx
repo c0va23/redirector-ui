@@ -10,6 +10,11 @@ import withStyles, {
   WithStyles,
 } from '@material-ui/core/styles/withStyles'
 
+import {
+  Locales,
+} from 'redirector-client'
+
+import AppContext from './AppContext'
 import Config, {
   ConfigApiBuilder,
   ConfigStore,
@@ -19,7 +24,11 @@ import {
   UnauthorizedRoutes,
 } from './routes'
 
+import Loader from './components/Loader'
+
 class AppState {
+  errorLocales?: Locales
+
   constructor (
     readonly config?: Config,
   ) {}
@@ -69,9 +78,16 @@ class App extends React.Component<AppProps & WithStyles, AppState> {
     )
   }
 
+  componentDidMount () {
+    if (undefined !== this.state.config) {
+      this.loadErrorLocales(this.state.config)
+    }
+  }
+
   private logIn = (config: Config) => {
     this.setState({ config })
     this.props.configStore.store(config)
+    this.loadErrorLocales(config)
   }
 
   private logOut = () => {
@@ -98,9 +114,28 @@ class App extends React.Component<AppProps & WithStyles, AppState> {
         logIn: this.logIn,
       })
     }
+
+    if (undefined === this.state.errorLocales) {
+      return <Loader label='Load locales...' />
+    }
+
     let configApi = this.props.configApiBuilder(this.state.config)
-    return this.props.authorizedRoutes({ configApi })
+    return (
+      <AppContext.Provider value={{ errorLocales: this.state.errorLocales }}>
+        {this.props.authorizedRoutes({ configApi })}
+      </AppContext.Provider>
+    )
   }
+
+  private loadErrorLocales (config: Config) {
+    this.props.configApiBuilder(config)
+      .locales().then(this.setErrorLocales)
+  }
+
+  private setErrorLocales = (locales: Locales) =>
+    this.setState({
+      errorLocales: locales,
+    })
 }
 
 export default withStyles(styles)(App)

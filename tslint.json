@@ -11,6 +11,7 @@
       "no-console": [true],
       "no-debugger": true,
       "no-implicit-dependencies": [true, "dev"],
+      "no-floating-promises": false,
       "ordered-imports": [
         true,
         {
