@@ -16,4 +16,8 @@ module.exports = {
   ],
   setupTestFrameworkScriptFile: '<rootDir>/specs/setup.ts',
   collectCoverage: true,
+  collectCoverageFrom: [
+    "src/**/*.(ts|tsx)",
+    "!src/index.tsx",
+  ],
 }
