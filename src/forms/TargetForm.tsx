@@ -8,6 +8,10 @@ import {
 
 import AppContext, { AppContextData } from '../AppContext'
 import {
+  ChangeStatusCodeEvent,
+  StatusCodeSelect,
+} from '../components/StatusCodeSelect'
+import {
   buildLocalizer,
   findLocaleTranslations,
 } from '../utils/localize'
@@ -31,12 +35,11 @@ export default class TargetForm extends React.Component<TargetFormProps> {
     let localize = buildLocalizer(localeTranslations)
     return (
       <FormGroup>
-        <TextField
+        <StatusCodeSelect
           name='httpCode'
           label='HTTP Code'
           value={this.props.target.httpCode}
           onChange={this.onNumberChange}
-          type='number'
           fullWidth
           required
           error={this.fieldErrors('httpCode').length > 0}
@@ -59,13 +62,11 @@ export default class TargetForm extends React.Component<TargetFormProps> {
     )
   }
 
-  private onNumberChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault()
-    const name = event.target.name
-    const value = Number.parseFloat(event.target.value)
+  private onNumberChange = (event: ChangeStatusCodeEvent) => {
+    const name = event.name
     this.props.onUpdateTarget({
       ...this.props.target,
-      [name]: value,
+      [name]: event.value,
     })
   }
 

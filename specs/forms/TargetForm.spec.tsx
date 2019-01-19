@@ -7,6 +7,7 @@ import {
   Target,
 } from 'redirector-client'
 
+import { StatusCodeSelect } from '../../src/components/StatusCodeSelect'
 import TargetForm, {
   UpdateTarget,
 } from '../../src/forms/TargetForm'
@@ -36,7 +37,7 @@ describe('TargetForm', () => {
 
   describe('field httpCode', () => {
     let httpCodeField = () =>
-      targetForm().find('TextField[name="httpCode"]').first()
+      targetForm().find(StatusCodeSelect).first()
 
     beforeEach(() => {
       modelError = []
@@ -48,10 +49,6 @@ describe('TargetForm', () => {
 
     it('have value', () => {
       expect(httpCodeField().prop('value')).toEqual(target.httpCode)
-    })
-
-    it('have type number', () => {
-      expect(httpCodeField().prop('type')).toEqual('number')
     })
 
     it('not have error', () => {
@@ -67,13 +64,10 @@ describe('TargetForm', () => {
 
       beforeEach(() => {
         newHttpCode = randomHttpCode()
-        httpCodeField().find('input')
-          .simulate('change', {
-            target: {
-              name: 'httpCode',
-              value: newHttpCode,
-            },
-          })
+        httpCodeField().prop('onChange')({
+          name: 'httpCode',
+          value: newHttpCode,
+        })
       })
 
       it('call update target callback', () => {
