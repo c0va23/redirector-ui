@@ -1,11 +1,11 @@
 clean-swagger:
-	rm -r gen/
+	rm -r gen/ || true
 
 clean-dist:
-	rm dist/*
+	rm dist/* || true
 
 clean-node_modules:
-	rm -r node_modules/
+	rm -rf node_modules/ || true
 
 clean-all: clean-swagger clean-dist clean-node_modules
 
@@ -17,19 +17,16 @@ gen/redirector-client/: api.yml
 		-v ${PWD}:/app \
 		-w /app \
 		--user $(shell id -u) \
-		swaggerapi/swagger-codegen-cli \
+		swaggerapi/swagger-codegen-cli:2.4.1 \
 		generate \
 		-i api.yml \
 		-l typescript-fetch \
-		-D withInterfaces=true,npmName=redirector-client,supportsES6=true \
+		-D withInterfaces=true,npmName=redirector-client,supportsES6=true,npmRepository=github.com/c0va23/redirector-ui \
 		-o gen/redirector-client/
+	cd gen/redirector-client && npm install --no-save && npm run build
 
-
-gen/redirector-client/node_modules/: gen/redirector-client/
-	cd gen/redirector-client && npm install && npm run build
-
-node_modules/: package.json package-lock.json
+node_modules/: package.json gen/redirector-client/
 	npm ci
 
-dist/index.html: gen/redirector-client/ gen/redirector-client/node_modules/ node_modules/
+dist/index.html: node_modules/
 	npm run build
