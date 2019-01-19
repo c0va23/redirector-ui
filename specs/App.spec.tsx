@@ -1,10 +1,8 @@
-import * as React from 'react'
-
 import Button from '@material-ui/core/Button'
-import { MemoryRouter } from 'react-router-dom'
-
 import { ReactWrapper, mount } from 'enzyme'
 import { internet } from 'faker'
+import * as React from 'react'
+import { MemoryRouter } from 'react-router-dom'
 
 import App, { AppProps } from '../src/App'
 import Config from '../src/Config'
@@ -14,7 +12,6 @@ import {
 } from '../src/routes'
 
 import { randomConfig } from './factories/ConfigFactory'
-
 import { ConfigApiMock } from './mocks/ConfigApiMock'
 import ConfigStoreMock from './mocks/ConfigStoreMock'
 import {

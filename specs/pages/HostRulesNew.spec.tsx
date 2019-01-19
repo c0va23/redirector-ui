@@ -1,26 +1,20 @@
-import * as React from 'react'
-
-import { History } from 'history'
-import { MemoryRouter } from 'react-router-dom'
-
 import {
   ReactWrapper,
   mount,
 } from 'enzyme'
-
+import { History } from 'history'
+import * as React from 'react'
+import { MemoryRouter } from 'react-router-dom'
 import { HostRules } from 'redirector-client'
 
 import ButtonLink from '../../src/components/ButtonLink'
-
 import HostRulesFormWrapper, {
   ErrorSaveCb,
   HostRulesFormWrapperProps,
   SaveHostRules,
   SuccessSaveCb,
 } from '../../src/forms/HostRulesFormWrapper'
-
 import HostRulesNew from '../../src/pages/HostRulesNew'
-
 import {
   newHostRules,
   randomHostRules,

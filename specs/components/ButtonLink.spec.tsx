@@ -1,7 +1,6 @@
+import { mount } from 'enzyme'
 import * as React from 'react'
 import * as ReactRouterDom from 'react-router-dom'
-
-import { mount } from 'enzyme'
 
 import ButtonLink from '../../src/components/ButtonLink'
 

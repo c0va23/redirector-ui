@@ -1,10 +1,9 @@
-import * as React from 'react'
-
 import {
   ReactWrapper,
   mount,
 } from 'enzyme'
 import { internet } from 'faker'
+import * as React from 'react'
 
 import LoginForm, {
   LogIn,

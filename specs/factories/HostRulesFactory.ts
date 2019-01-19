@@ -1,5 +1,4 @@
 import * as Faker from 'faker'
-
 import { HostRules } from 'redirector-client'
 
 import { randomArray } from './ArrayFactory'

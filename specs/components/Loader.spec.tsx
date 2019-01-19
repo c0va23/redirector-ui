@@ -1,12 +1,10 @@
-import * as React from 'react'
-
+import { CircularProgress } from '@material-ui/core'
 import {
   ReactWrapper,
   mount,
 } from 'enzyme'
 import { lorem } from 'faker'
-
-import { CircularProgress } from '@material-ui/core'
+import * as React from 'react'
 
 import Loader from '../../src/components/Loader'
 

@@ -1,9 +1,7 @@
-import * as React from 'react'
-
 import { Typography } from '@material-ui/core'
-
 import { ReactWrapper, mount } from 'enzyme'
 import { lorem } from 'faker'
+import * as React from 'react'
 
 import ErrorView from '../../src/components/ErrorView'
 

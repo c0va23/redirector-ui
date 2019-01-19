@@ -1,15 +1,12 @@
-import * as React from 'react'
-
 import {
   Button,
   TextField,
 } from '@material-ui/core'
-
 import {
   mount,
 } from 'enzyme'
 import * as Faker from 'faker'
-
+import * as React from 'react'
 import {
   HostRules,
   ModelValidationError,
@@ -19,12 +16,10 @@ import {
 import HostRulesForm from '../../src/forms/HostRulesForm'
 import RuleForm from '../../src/forms/RuleForm'
 import TargetForm from '../../src/forms/TargetForm'
-
+import { embedValidationErrors } from '../../src/utils/validationErrors'
 import * as HostRulesFactory from '../factories/HostRulesFactory'
 import * as RuleFactory from '../factories/RuleFactory'
 import * as TargetFactory from '../factories/TargetFactory'
-
-import { embedValidationErrors } from '../../src/utils/validationErrors'
 
 describe('HostRulesForm', () => {
   let hostRules: HostRules

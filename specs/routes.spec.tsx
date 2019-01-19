@@ -1,8 +1,3 @@
-import * as React from 'react'
-import {
-  MemoryRouter,
-} from 'react-router-dom'
-
 import {
   ReactWrapper,
   mount,
@@ -11,11 +6,14 @@ import {
   internet,
   lorem,
 } from 'faker'
+import * as React from 'react'
+import {
+  MemoryRouter,
+} from 'react-router-dom'
 
 import HostRulesEdit from '../src/pages/HostRulesEdit'
 import HostRulesNew from '../src/pages/HostRulesNew'
 import LoginForm from '../src/pages/LoginForm'
-
 import {
   defaultAuthorizedRoutes,
   defaultUnauthorizedRoutes,

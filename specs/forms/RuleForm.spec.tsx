@@ -1,5 +1,3 @@
-import * as React from 'react'
-
 import {
   Button,
   InputLabel,
@@ -7,12 +5,11 @@ import {
   TextField,
 } from '@material-ui/core'
 import { InputProps } from '@material-ui/core/Input'
-
 import {
   ReactWrapper,
   mount,
 } from 'enzyme'
-
+import * as React from 'react'
 import {
   ModelValidationError,
   Rule,
@@ -24,9 +21,7 @@ import RuleForm, {
   UpdateRule,
 } from '../../src/forms/RuleForm'
 import TargetForm from '../../src/forms/TargetForm'
-
 import formatInputTime from '../../src/utils/formatInputTime'
-
 import { randomDate } from '../factories/DateFactory'
 import { randomPath } from '../factories/PathFactory'
 import {

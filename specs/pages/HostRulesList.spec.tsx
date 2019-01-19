@@ -1,11 +1,7 @@
+import { ReactWrapper, mount } from 'enzyme'
 import * as React from 'react'
 import { MemoryRouter } from 'react-router-dom'
-
 import { HostRules } from 'redirector-client'
-
-import { ReactWrapper, mount } from 'enzyme'
-
-import HostRulesList from '../../src/pages/HostRulesList'
 
 import ButtonLink from '../../src/components/ButtonLink'
 import ErrorView from '../../src/components/ErrorView'
@@ -13,7 +9,7 @@ import HostRulesView, {
   OnDeleteHostRules,
 } from '../../src/components/HostRulesView'
 import Loader from '../../src/components/Loader'
-
+import HostRulesList from '../../src/pages/HostRulesList'
 import { randomArray } from '../factories/ArrayFactory'
 import { randomHostRules } from '../factories/HostRulesFactory'
 import { randomResponse } from '../factories/ResponseFactory'

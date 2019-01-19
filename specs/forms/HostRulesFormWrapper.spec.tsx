@@ -1,11 +1,3 @@
-import * as React from 'react'
-
-import {
-  ReactWrapper,
-  mount,
-} from 'enzyme'
-import { lorem } from 'faker'
-
 import {
   Button,
   CircularProgress,
@@ -13,14 +5,18 @@ import {
   Snackbar,
 } from '@material-ui/core'
 import { SnackbarProps } from '@material-ui/core/Snackbar'
-
+import {
+  ReactWrapper,
+  mount,
+} from 'enzyme'
+import { lorem } from 'faker'
+import * as React from 'react'
 import { HostRules, ModelValidationError } from 'redirector-client'
 
 import HostRulesForm from '../../src/forms/HostRulesForm'
 import HostRulesFormWrapper, {
   HostRulesFormWrapperProps,
 } from '../../src/forms/HostRulesFormWrapper'
-
 import { randomHostRules } from '../factories/HostRulesFactory'
 
 describe('HostRulesFormWrapper', () => {

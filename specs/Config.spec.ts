@@ -9,9 +9,8 @@ import Config, {
   defaultConfigApiBuilder,
 } from '../src/Config'
 
-import { StorageMock } from './mocks/StorageMock'
-
 import { randomConfig } from './factories/ConfigFactory'
+import { StorageMock } from './mocks/StorageMock'
 
 describe('ConfigStore', () => {
   let storageMock: StorageMock

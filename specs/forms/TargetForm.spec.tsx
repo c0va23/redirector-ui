@@ -1,9 +1,7 @@
-import * as React from 'react'
-
 import {
   mount,
 } from 'enzyme'
-
+import * as React from 'react'
 import {
   ModelValidationError,
   Target,
@@ -12,7 +10,6 @@ import {
 import TargetForm, {
   UpdateTarget,
 } from '../../src/forms/TargetForm'
-
 import { randomPath } from '../factories/PathFactory'
 import {
   randomHttpCode,

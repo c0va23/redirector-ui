@@ -5,7 +5,6 @@ import {
   buildLocalizer,
   localize,
 } from '../../src/utils/localize'
-
 import {
   randomLocaleTranslations,
   randomMessage,
