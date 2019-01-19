@@ -17,6 +17,7 @@ import Config, {
   ConfigApiBuilder,
   ConfigStore,
 } from './Config'
+import ErrorView from './components/ErrorView'
 import Loader from './components/Loader'
 import {
   AuthorizedRoutes,
@@ -25,6 +26,7 @@ import {
 
 class AppState {
   errorLocales?: Locales
+  errorLocalesError?: Error
 
   constructor (
     readonly config?: Config,
@@ -112,6 +114,10 @@ class App extends React.Component<AppProps & WithStyles, AppState> {
       })
     }
 
+    if (undefined !== this.state.errorLocalesError) {
+      return <ErrorView response={this.state.errorLocalesError} />
+    }
+
     if (undefined === this.state.errorLocales) {
       return <Loader label='Load locales...' />
     }
@@ -126,12 +132,19 @@ class App extends React.Component<AppProps & WithStyles, AppState> {
 
   private loadErrorLocales (config: Config) {
     this.props.configApiBuilder(config)
-      .locales().then(this.setErrorLocales)
+      .locales()
+      .then(this.setErrorLocales)
+      .catch(this.setErrorLocaelsError)
   }
 
   private setErrorLocales = (locales: Locales) =>
     this.setState({
       errorLocales: locales,
+    })
+
+  private setErrorLocaelsError = (error: Error) =>
+    this.setState({
+      errorLocalesError: error,
     })
 }
 

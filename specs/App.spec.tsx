@@ -6,6 +6,7 @@ import { MemoryRouter } from 'react-router-dom'
 
 import App, { AppProps } from '../src/App'
 import Config from '../src/Config'
+import ErrorView from '../src/components/ErrorView'
 import {
   AuthorizedRoutesProps,
   UnauthorizedRoutesProps,
@@ -44,6 +45,7 @@ describe('App', () => {
 
   let findLogOutButton = () =>
     app
+      .update()
       .find(Button)
       .filter({ name: 'logOut' })
       .first()
@@ -52,7 +54,6 @@ describe('App', () => {
     apiUrl = internet.url()
     configStore = new ConfigStoreMock()
     configApi = new ConfigApiMock()
-    configApi.localesMock.mockResolvedValue([])
   })
 
   describe('unauthenticated', () => {
@@ -72,19 +73,16 @@ describe('App', () => {
       expect(findLogOutButton()).toHaveLength(0)
     })
 
-    describe('on logIn', () => {
+    describe('on logIn with succes load locales', () => {
       let config: Config
 
       beforeEach(() => {
         config = randomConfig()
+        configApi.localesMock.mockResolvedValue([])
 
         unauthorizedRoutes
           .props()
           .logIn(config)
-
-        return configApi.locales().then(() => {
-          app = app.update()
-        })
       })
 
       it('store config', () => {
@@ -93,12 +91,34 @@ describe('App', () => {
 
       it('render host rules list', () => {
         let authorizedRoutes: ReactWrapper<AuthorizedRoutesProps> =
-          app.find(AuthorizedRoutesMock).first()
+          app.update().find(AuthorizedRoutesMock).first()
         expect(authorizedRoutes.props().configApi).toEqual(configApi)
       })
 
       it('render logOut Button', () => {
         expect(findLogOutButton()).toHaveLength(1)
+      })
+    })
+
+    describe('on logIn with succes load locales', () => {
+      let config: Config
+      const errorMessage: Error = {
+        name: 'NetworkError',
+        message: 'Network error',
+      }
+
+      beforeEach(() => {
+        config = randomConfig()
+
+        configApi.localesMock.mockRejectedValue(errorMessage)
+
+        unauthorizedRoutes
+          .props()
+          .logIn(config)
+      })
+
+      it('show error', () => {
+        expect(app.update().find(ErrorView)).toHaveLength(1)
       })
     })
   })
@@ -108,6 +128,7 @@ describe('App', () => {
 
     beforeEach(() => {
       config = randomConfig()
+      configApi.localesMock.mockResolvedValue([])
       configStore.loadMock.mockReturnValue(config)
 
       app = buildApp()
