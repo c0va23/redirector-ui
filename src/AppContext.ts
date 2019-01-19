@@ -1,5 +1,4 @@
 import * as React from 'react'
-
 import {
   Locales,
 } from 'redirector-client'

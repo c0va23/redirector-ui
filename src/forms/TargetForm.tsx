@@ -1,8 +1,6 @@
-import * as React from 'react'
-
 import FormGroup from '@material-ui/core/FormGroup'
 import TextField from '@material-ui/core/TextField'
-
+import * as React from 'react'
 import {
   ModelValidationError,
   Target,

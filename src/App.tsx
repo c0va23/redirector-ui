@@ -1,5 +1,3 @@
-import * as React from 'react'
-
 import AppBar from '@material-ui/core/AppBar'
 import Button from '@material-ui/core/Button'
 import CssBaseline from '@material-ui/core/CssBaseline'
@@ -9,7 +7,7 @@ import withStyles, {
   StyleRulesCallback,
   WithStyles,
 } from '@material-ui/core/styles/withStyles'
-
+import * as React from 'react'
 import {
   Locales,
 } from 'redirector-client'
@@ -19,12 +17,11 @@ import Config, {
   ConfigApiBuilder,
   ConfigStore,
 } from './Config'
+import Loader from './components/Loader'
 import {
   AuthorizedRoutes,
   UnauthorizedRoutes,
 } from './routes'
-
-import Loader from './components/Loader'
 
 class AppState {
   errorLocales?: Locales

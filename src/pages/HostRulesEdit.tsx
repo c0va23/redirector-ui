@@ -1,26 +1,23 @@
-import * as React from 'react'
-
 import Paper from '@material-ui/core/Paper'
 import withStyles, {
   StyleRulesCallback,
   WithStyles,
 } from '@material-ui/core/styles/withStyles'
 import * as log from 'loglevel'
+import * as React from 'react'
 import {
   RouteComponentProps,
   withRouter,
 } from 'react-router-dom'
-
 import {
   ConfigApiInterface,
   HostRules,
 } from 'redirector-client'
 
-import HostRulesFormWrapper from '../forms/HostRulesFormWrapper'
-
 import ButtonLink from '../components/ButtonLink'
 import ErrorView from '../components/ErrorView'
 import Loader from '../components/Loader'
+import HostRulesFormWrapper from '../forms/HostRulesFormWrapper'
 
 const logger = log.getLogger('HostRulesEdit')
 

@@ -1,5 +1,3 @@
-import * as React from 'react'
-
 import Button from '@material-ui/core/Button'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import IconButton from '@material-ui/core/IconButton'
@@ -10,7 +8,7 @@ import withStyles, {
   WithStyles,
 } from '@material-ui/core/styles/withStyles'
 import Close from '@material-ui/icons/Close'
-
+import * as React from 'react'
 import {
   HostRules,
   ModelValidationError,

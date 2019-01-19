@@ -1,9 +1,7 @@
-import * as React from 'react'
-
 import Button from '@material-ui/core/Button'
 import FormControl from '@material-ui/core/FormControl'
 import TextField from '@material-ui/core/TextField'
-
+import * as React from 'react'
 import {
   HostRules,
   ModelValidationError,
@@ -11,19 +9,17 @@ import {
   Target,
 } from 'redirector-client'
 
-import {
-  embedValidationErrors,
-  fieldValidationErrors,
-} from '../utils/validationErrors'
-
+import AppContext, {
+  AppContextData,
+} from '../AppContext'
 import {
   buildLocalizer,
   findLocaleTranslations,
 } from '../utils/localize'
-
-import AppContext, {
-  AppContextData,
-} from '../AppContext'
+import {
+  embedValidationErrors,
+  fieldValidationErrors,
+} from '../utils/validationErrors'
 
 import RuleForm from './RuleForm'
 import TargetForm from './TargetForm'

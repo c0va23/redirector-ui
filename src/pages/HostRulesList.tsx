@@ -1,12 +1,10 @@
-import * as React from 'react'
-
 import Paper from '@material-ui/core/Paper'
 import withStyles, {
   StyleRulesCallback,
   WithStyles,
 } from '@material-ui/core/styles/withStyles'
 import * as log from 'loglevel'
-
+import * as React from 'react'
 import {
   ConfigApiInterface,
   HostRules,

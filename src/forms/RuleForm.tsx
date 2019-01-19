@@ -1,5 +1,3 @@
-import * as React from 'react'
-
 import Button from '@material-ui/core/Button'
 import FormControl from '@material-ui/core/FormControl'
 import FormGroup from '@material-ui/core/FormGroup'
@@ -11,27 +9,25 @@ import withStyles, {
   StyleRulesCallback,
   WithStyles,
 } from '@material-ui/core/styles/withStyles'
-
+import * as React from 'react'
 import {
   ModelValidationError,
   Rule,
   Target,
 } from 'redirector-client'
 
+import AppContext, {
+  AppContextData,
+} from '../AppContext'
 import formatInputTime from '../utils/formatInputTime'
-import {
-  embedValidationErrors,
-  fieldValidationErrors,
-} from '../utils/validationErrors'
-
 import {
   buildLocalizer,
   findLocaleTranslations,
 } from '../utils/localize'
-
-import AppContext, {
-  AppContextData,
-} from '../AppContext'
+import {
+  embedValidationErrors,
+  fieldValidationErrors,
+} from '../utils/validationErrors'
 
 import TargetForm from './TargetForm'
 

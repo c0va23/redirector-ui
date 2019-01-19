@@ -1,8 +1,7 @@
+import * as log from 'loglevel'
 import * as React from 'react'
 import { render } from 'react-dom'
 import { HashRouter } from 'react-router-dom'
-
-import * as log from 'loglevel'
 
 import App from './App'
 import {

@@ -4,11 +4,9 @@ import {
   Route,
   Switch,
 } from 'react-router-dom'
-
 import { ConfigApiInterface } from 'redirector-client'
 
 import Config from './Config'
-
 import HostRulesEdit from './pages/HostRulesEdit'
 import HostRulesList from './pages/HostRulesList'
 import HostRulesNew from './pages/HostRulesNew'
