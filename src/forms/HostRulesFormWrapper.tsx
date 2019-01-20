@@ -103,7 +103,7 @@ class HostRulesFormWrapper extends React.Component<
             <Button
               type='submit'
               color='primary'
-              variant='raised'
+              variant='contained'
               name='save'
               disabled={this.state.loading}
               className={this.props.classes.button}

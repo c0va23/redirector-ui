@@ -100,7 +100,7 @@ class LoginForm extends React.Component<
       />
       <Button
         type='submit'
-        variant='raised'
+        variant='contained'
         className={this.props.classes.button}
       >
         Login
