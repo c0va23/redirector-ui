@@ -4,6 +4,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
+const CompressionPlugin = require('compression-webpack-plugin')
+
 /*
  * We've enabled UglifyJSPlugin for you! This minifies your app
  * in order to load faster and run less javascript.
@@ -69,5 +71,6 @@ module.exports = {
     new BundleAnalyzerPlugin({
       analyzerMode: ANALYZER_MODE,
     }),
+    new CompressionPlugin(),
   ],
 }
