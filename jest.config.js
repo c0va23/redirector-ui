@@ -14,7 +14,9 @@ module.exports = {
     "jsx",
     "json",
   ],
-  setupTestFrameworkScriptFile: '<rootDir>/specs/setup.ts',
+  setupFilesAfterEnv: [
+    '<rootDir>/specs/setup.ts',
+  ],
   collectCoverage: true,
   collectCoverageFrom: [
     "src/**/*.(ts|tsx)",
