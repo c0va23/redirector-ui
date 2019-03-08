@@ -20,7 +20,7 @@
   "dependencies": {
     "@material-ui/core": "^3.9.2",
     "@material-ui/icons": "^3.0.2",
-    "@types/loglevel": "^1.5.3",
+    "@types/loglevel": "^1.5.4",
     "@types/react": "^16.8.7",
     "@types/react-dom": "^16.8.2",
     "@types/react-router-dom": "^4.3.1",
