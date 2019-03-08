@@ -1,3 +1,6 @@
+DOCKER_IMAGE := c0va23/redirector-ui
+DOCKER_TAG := latest
+
 clean-swagger:
 	rm -r gen/ || true
 
@@ -30,3 +33,6 @@ node_modules/: package.json gen/redirector-client/
 
 dist/index.html: node_modules/
 	npm run build
+
+build-docker-image:
+	docker build -t $(DOCKER_IMAGE):$(DOCKER_TAG) .
