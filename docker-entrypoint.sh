@@ -6,4 +6,4 @@ sed \
     -i /app/index.html \
     -e "s/data-api-url=\"\"/data-api-url=\"$ESCAPED_API_URL\"/g"
 
-nginx -g 'daemon off;'
+exec nginx -g 'daemon off;'
