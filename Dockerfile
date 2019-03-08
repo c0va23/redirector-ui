@@ -1,5 +1,5 @@
 # Generate code from thrift-files
-FROM swaggerapi/swagger-codegen-cli AS thrift
+FROM swaggerapi/swagger-codegen-cli:2.4.1 AS swagger
 
 ADD api.yml /app/
 
@@ -17,7 +17,7 @@ FROM node:10-alpine AS builder
 WORKDIR /app
 
 # Build redirect-client
-COPY --from=thrift /app/gen /app/gen
+COPY --from=swagger /app/gen /app/gen
 RUN cd gen/redirector-client && npm install && npm run build
 
 ADD package-lock.json package.json /app/
